@@ -2,7 +2,6 @@
 
 use SimpleXMLElement;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
@@ -58,7 +57,7 @@ class Document extends BaseDocument
     {
         if (preg_match('/^(.*)\[(.*)\]$/', $use, $matches) && $content instanceof SimpleXMLElement) {
             return $this->getValueCollection($content, $matches, $default);
-        } elseif (Str::contains($use, '::') && $content instanceof SimpleXMLElement) {
+        } elseif (strpos($use, '::') !== false && $content instanceof SimpleXMLElement) {
             return $this->getValueAttribute($content, $use, $default);
         }
 
@@ -151,7 +150,7 @@ class Document extends BaseDocument
         $parent    = $matches[1];
         $namespace = null;
 
-        if (Str::contains($parent, '/')) {
+        if (strpos($parent, '/') !== false) {
             list($parent, $namespace) = explode('/', $parent, 2);
         }
 
@@ -193,7 +192,7 @@ class Document extends BaseDocument
         $value = [];
 
         foreach ($uses as $use) {
-            list($name, $as) = Str::contains($use, '>') ? explode('>', $use, 2) : [$use, $use];
+            list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
             if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                 if ($name == $as) {
