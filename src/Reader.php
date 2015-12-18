@@ -5,14 +5,14 @@ abstract class Reader
     /**
      * Document instance.
      *
-     * @var \Orchestra\Parser\Document
+     * @var \Laravie\Parser\Document
      */
     protected $document;
 
     /**
      * Construct a new reader.
      *
-     * @param  \Orchestra\Parser\Document  $document
+     * @param  \Laravie\Parser\Document  $document
      */
     public function __construct(Document $document)
     {
@@ -24,7 +24,7 @@ abstract class Reader
      *
      * @param  string  $content
      *
-     * @return \Orchestra\Parser\Document
+     * @return \Laravie\Parser\Document
      */
     abstract public function extract($content);
 
@@ -33,7 +33,7 @@ abstract class Reader
      *
      * @param  string  $filename
      *
-     * @return \Orchestra\Parser\Document
+     * @return \Laravie\Parser\Document
      */
     abstract public function load($filename);
 }
