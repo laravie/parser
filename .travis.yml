@@ -20,6 +20,7 @@ before_script:
   - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-source --no-interaction; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
+  - if [[ $setup = 'compatibility' ]]; then composer require "illuminate/contracts=$illuminate.*" --prefer-source --no-interaction --prefer-stable; fi
   - if [[ $setup = 'coveralls' ]]; then travis_retry composer require "psr/log=1.0.0" "satooshi/php-coveralls=~0.7" --prefer-source --no-interaction --dev; fi
 
 script:
@@ -37,6 +38,12 @@ matrix:
       env: setup=stable
     - php: 5.4
       env: setup=coveralls coverage=yes
+    - php: 5.4
+      env: setup=compatibility illuminate='5.0'
+    - php: 5.4
+      env: setup=compatibility illuminate='5.1'
+    - php: 5.4
+      env: setup=compatibility illuminate='5.2'
   allow_failures:
     - env: setup=stable
     - env: setup=coveralls coverage=yes
