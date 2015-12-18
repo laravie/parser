@@ -1,0 +1,29 @@
+{
+    "name": "laravie/parser",
+    "description": "XML Document Parser for PHP",
+    "keywords": ["xml", "parser"],
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mior Muhammad Zaki",
+            "email": "crynobone@gmail.com",
+            "homepage": "https://github.com/crynobone"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Laravie\\Parser\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "illuminate/contracts": "~5.0",
+        "illuminate/support": "~5.0",
+        "paragonie/random_compat": "~1.1"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*"
+    },
+    "minimum-stability": "dev"
+}
