@@ -148,7 +148,7 @@ class Document extends BaseDocument
      */
     protected function getValueCollection(SimpleXMLElement $content, array $matches, $default = null)
     {
-        $parent = $matches[1];
+        $parent    = $matches[1];
         $namespace = null;
 
         if (Str::contains($parent, '/')) {
@@ -170,7 +170,7 @@ class Document extends BaseDocument
                 continue;
             }
 
-            if (! is_null($namespace) && isset($namespaces[$namespace]) ) {
+            if (! is_null($namespace) && isset($namespaces[$namespace])) {
                 $content = $content->children($namespaces[$namespace]);
             }
 
@@ -185,7 +185,6 @@ class Document extends BaseDocument
      *
      * @param  \SimpleXMLElement  $content
      * @param  array  $uses
-     * @param  mixed  $default
      *
      * @return array
      */
@@ -229,14 +228,18 @@ class Document extends BaseDocument
         $meta = $matches[3];
 
         $item = [];
+        $uses = ($key == '!' ? $meta : "{$key},{$meta}");
 
-        $collection = $this->getValue($content, "{$name}[{$key},{$meta}]");
+        $collection = $this->getValue($content, "{$name}[{$uses}]");
 
-        foreach ($collection as $collect) {
-            $k = $collect[$key];
+        foreach ((array) $collection as $collect) {
             $v = $collect[$meta];
 
-            $item[$k] = $v;
+            if ($key == '!') {
+                $item[$name][] = $v;
+            } else {
+                $item[$collect[$key]] = $v;
+            }
         }
 
         return $item;
