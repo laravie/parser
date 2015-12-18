@@ -70,6 +70,49 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $data);
     }
 
+    /**
+     * Test Laravie\Parser\Xml\Document::parse() method with tags.
+     *
+     * @test
+     */
+    public function testParseMethodWithTags()
+    {
+        $expected = [
+            'users' => [
+                [
+                    'id'   => '1',
+                    'fullname' => 'Mior Muhammad Zaki',
+                ],
+                [
+                    'id'   => '2',
+                    'fullname' => 'Taylor Otwell',
+                    'tag' => ['Laravel', 'PHP']
+                ],
+            ],
+        ];
+
+        $stub = new DocumentStub(new Container());
+
+        $stub->setContent(simplexml_load_string('<api>
+    <user>
+        <id>1</id>
+        <name>Mior Muhammad Zaki</name>
+    </user>
+    <user>
+        <id>2</id>
+        <name>Taylor Otwell</name>
+        <tag>Laravel</tag>
+        <tag>PHP</tag>
+    </user>
+</api>'));
+
+        $data = $stub->parse([
+            'users' => ['uses' => 'user[id,name>fullname,tag(@=@)]'],
+        ]);
+
+        $this->assertEquals($expected, $data);
+    }
+
     public function dataCollectionProvider()
     {
         return [
@@ -176,36 +219,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
                         [
                             'id'   => '2',
                             'fullname' => 'Taylor Otwell',
-                        ],
-                    ],
-                ],
-            ],
-            [
-'<api>
-    <user>
-        <id>1</id>
-        <name>Mior Muhammad Zaki</name>
-    </user>
-    <user>
-        <id>2</id>
-        <name>Taylor Otwell</name>
-        <tag>Laravel</tag>
-        <tag>PHP</tag>
-    </user>
-</api>',
-                [
-                    'users' => ['uses' => 'user[id,name>fullname,tag(@=@)]'],
-                ],
-                [
-                    'users' => [
-                        [
-                            'id'   => '1',
-                            'fullname' => 'Mior Muhammad Zaki',
-                        ],
-                        [
-                            'id'   => '2',
-                            'fullname' => 'Taylor Otwell',
-                            'tag' => ['Laravel', 'PHP']
                         ],
                     ],
                 ],
