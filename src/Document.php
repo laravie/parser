@@ -1,6 +1,5 @@
 <?php namespace Laravie\Parser;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 abstract class Document
@@ -32,9 +31,10 @@ abstract class Document
         $output = [];
 
         foreach ($schema as $key => $data) {
-            $value = $this->parseData($data);
+            $value  = $this->parseData($data);
+            $ignore = isset($config['ignore']) ? $config['ignore'] : false;
 
-            if (! Arr::get($config, 'ignore', false)) {
+            if (! $ignore) {
                 $output[$key] = $value;
             }
         }
@@ -146,12 +146,14 @@ abstract class Document
         $class  = $filter;
         $method = 'filter';
 
-        if (Str::startsWith($filter, '@')) {
-            $method = 'filter'.Str::studly(substr($filter, 1));
+        $position = strpos($filter, '@');
+
+        if ($position === 0) {
+            $method = 'filter'.ucwords(substr($filter, 1));
             return [$this, $method];
         }
 
-        if (Str::contains($filter, '@')) {
+        if ($position !== false) {
             list($class, $method) = explode('@', $filter, 2);
         }
 
@@ -173,11 +175,11 @@ abstract class Document
 
         if (is_array($data)) {
             $value  = $this->resolveValue($data, $hash);
-            $filter = Arr::get($data, 'filter');
+            $filter = isset($data['filter']) ? $data['filter'] : null;
         }
 
         if ($value === $hash) {
-            $value = Arr::get($data, 'default');
+            $value = isset($data['default']) ? $data['default'] : null;
         }
 
         if (! is_null($filter)) {
