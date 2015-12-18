@@ -74,6 +74,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      * Test Laravie\Parser\Xml\Document::parse() method with tags.
      *
      * @test
+     * @requires PHP 7.0
      */
     public function testParseMethodWithTags()
     {
