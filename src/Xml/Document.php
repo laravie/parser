@@ -230,7 +230,7 @@ class Document extends BaseDocument
         $item = [];
         $uses = ($key == '!' ? $meta : "{$key},{$meta}");
 
-        $collection = $this->getValue($content, "{$name}[{$uses}]");
+        $collection = $this->getValue($content, sprintf('%s[%s]', $name, $uses));
 
         foreach ((array) $collection as $collect) {
             $v = $collect[$meta];
