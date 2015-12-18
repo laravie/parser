@@ -196,15 +196,21 @@ class Document extends BaseDocument
             list($name, $as) = Str::contains($use, '>') ? explode('>', $use, 2) : [$use, $use];
 
             if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                $item = $this->getSelfMatchingValue($content, $matches);
-
                 if ($name == $as) {
+                    $as = null;
+                }
+
+                $item = $this->getSelfMatchingValue($content, $matches, $as);
+
+                if (is_null($as)) {
                     $value = array_merge($value, $item);
                 } else {
                     Arr::set($value, $as, $item);
                 }
             } else {
-                $name == '@' && $name = null;
+                if ($name == '@') {
+                    $name = null;
+                }
 
                 Arr::set($value, $as, $this->getValue($content, $name));
             }
@@ -218,10 +224,11 @@ class Document extends BaseDocument
      *
      * @param  \SimpleXMLElement  $content
      * @param  array  $matches
+     * @param  string|null  $alias
      *
      * @return array
      */
-    protected function getSelfMatchingValue(SimpleXMLElement $content, array $matches = [])
+    protected function getSelfMatchingValue(SimpleXMLElement $content, array $matches = [], $alias = null)
     {
         $name = $matches[1];
         $key  = $matches[2];
@@ -230,13 +237,17 @@ class Document extends BaseDocument
         $item = [];
         $uses = ($key == '!' ? $meta : "{$key},{$meta}");
 
+        if (is_null($alias)) {
+            $alias = $name;
+        }
+
         $collection = $this->getValue($content, sprintf('%s[%s]', $name, $uses));
 
         foreach ((array) $collection as $collect) {
             $v = $collect[$meta];
 
             if ($key == '!') {
-                $item[$name][] = $v;
+                $item[$alias][] = $v;
             } else {
                 $item[$collect[$key]] = $v;
             }
