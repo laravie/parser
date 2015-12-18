@@ -194,7 +194,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     </user>
 </api>',
                 [
-                    'users' => ['uses' => 'user[id,name>fullname,tag(!=@)]'],
+                    'users' => ['uses' => 'user[id,name>fullname,tag(@=@)]'],
                 ],
                 [
                     'users' => [

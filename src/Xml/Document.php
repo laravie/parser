@@ -235,7 +235,7 @@ class Document extends BaseDocument
         $meta = $matches[3];
 
         $item = [];
-        $uses = ($key == '!' ? $meta : "{$key},{$meta}");
+        $uses = ($key == '@' ? $meta : "{$key},{$meta}");
 
         if (is_null($alias)) {
             $alias = $name;
@@ -246,7 +246,7 @@ class Document extends BaseDocument
         foreach ((array) $collection as $collect) {
             $v = $collect[$meta];
 
-            if ($key == '!') {
+            if ($key == '@') {
                 $item[$alias][] = $v;
             } else {
                 $item[$collect[$key]] = $v;
