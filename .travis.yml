@@ -1,0 +1,44 @@
+language: php
+
+sudo: false
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
+
+env:
+  global:
+    - setup=basic
+    - coverage=no
+
+before_script:
+  - travis_retry composer self-update
+  - composer config discard-changes true
+  - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-source --no-interaction; fi
+  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
+  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
+  - if [[ $setup = 'coveralls' ]]; then travis_retry composer require "psr/log=1.0.0" "satooshi/php-coveralls=~0.7" --prefer-source --no-interaction --dev; fi
+
+script:
+  - if [[ $coverage = 'yes' ]]; then phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml; fi
+  - if [[ $coverage = 'no' ]]; then phpunit -c phpunit.xml; fi
+
+after_script:
+  - if [[ $setup = 'coveralls' ]]; then php vendor/bin/coveralls -v; fi
+
+matrix:
+  include:
+    - php: 5.4
+      env: setup=lowest
+    - php: 5.4
+      env: setup=stable
+    - php: 5.4
+      env: setup=coveralls coverage=yes
+  allow_failures:
+    - env: setup=stable
+    - env: setup=coveralls coverage=yes
+    - php: hhvm
+  fast_finish: true
