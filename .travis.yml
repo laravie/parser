@@ -40,10 +40,12 @@ matrix:
       env: setup=coveralls coverage=yes
     - php: 5.4
       env: setup=compatibility illuminate='5.0'
-    - php: 5.4
+    - php: 5.5
       env: setup=compatibility illuminate='5.1'
-    - php: 5.4
+    - php: 5.5
       env: setup=compatibility illuminate='5.2'
+    - php: 5.6
+      env: setup=compatibility illuminate='5.3'
   allow_failures:
     - env: setup=stable
     - env: setup=coveralls coverage=yes
