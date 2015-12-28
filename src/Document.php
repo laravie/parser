@@ -32,7 +32,7 @@ abstract class Document
 
         foreach ($schema as $key => $data) {
             $value  = $this->parseData($data);
-            $ignore = isset($config['ignore']) ? $config['ignore'] : false;
+            $ignore = array_get($config, 'ignore');
 
             if (! $ignore) {
                 $output[$key] = $value;
@@ -106,7 +106,7 @@ abstract class Document
      */
     protected function resolveValue(array $config, $hash)
     {
-        if (! isset($config['uses'])) {
+        if (! array_get($config, 'uses')) {
             return $config['default'];
         }
 
@@ -175,7 +175,7 @@ abstract class Document
 
         if (is_array($data)) {
             $value  = $this->resolveValue($data, $hash);
-            $filter = isset($data['filter']) ? $data['filter'] : null;
+            $filter = array_get($data, 'filter');
         }
 
         if ($value === $hash) {
