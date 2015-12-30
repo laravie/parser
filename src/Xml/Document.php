@@ -1,7 +1,8 @@
 <?php namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
-use Illuminate\Support\Arr;
+use Underscore\Types\Arrays;
+use Underscore\Types\Object;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
@@ -22,7 +23,7 @@ class Document extends BaseDocument
      */
     public function rebase($base = null)
     {
-        $this->content = data_get($this->getOriginalContent(), $base);
+        $this->content = Arrays::get($this->getOriginalContent(), $base);
 
         return $this;
     }
@@ -107,13 +108,15 @@ class Document extends BaseDocument
     {
         list($value, $attribute) = explode('::', $use, 2);
 
-        if (is_null($parent = object_get($content, $value))) {
+        $parent = $content;
+
+        if (! empty($value) && is_null($parent = Object::get($content, $value))) {
             return $default;
         }
 
         $attributes = $parent->attributes();
 
-        return Arr::get($attributes, $attribute, $default);
+        return Arrays::get($attributes, $attribute, $default);
     }
 
     /**
@@ -127,7 +130,7 @@ class Document extends BaseDocument
      */
     protected function getValueData(SimpleXMLElement $content, $use, $default = null)
     {
-        $value = $this->castValue(data_get($content, $use));
+        $value = $this->castValue(Arrays::get($content, $use));
 
         if (empty($value) && ! in_array($value, ['0'])) {
             return $default;
@@ -154,7 +157,7 @@ class Document extends BaseDocument
             list($parent, $namespace) = explode('/', $parent, 2);
         }
 
-        $collection = data_get($content, $parent);
+        $collection = Arrays::get($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
         $uses   = explode(',', $matches[2]);
@@ -204,14 +207,14 @@ class Document extends BaseDocument
                 if (is_null($as)) {
                     $value = array_merge($value, $item);
                 } else {
-                    Arr::set($value, $as, $item);
+                    $value = Arrays::set($value, $as, $item);
                 }
             } else {
                 if ($name == '@') {
                     $name = null;
                 }
 
-                Arr::set($value, $as, $this->getValue($content, $name));
+                $value = Arrays::set($value, $as, $this->getValue($content, $name));
             }
         }
 

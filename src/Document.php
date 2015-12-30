@@ -1,6 +1,6 @@
 <?php namespace Laravie\Parser;
 
-use Illuminate\Support\Str;
+use Underscore\Types\Strings;
 
 abstract class Document
 {
@@ -169,7 +169,7 @@ abstract class Document
      */
     protected function parseData($data)
     {
-        $hash   = Str::random(60);
+        $hash   = Strings::random(60);
         $value  = $data;
         $filter = null;
 
