@@ -61,7 +61,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseMethod($content, $schema, $expected)
     {
-        $stub = new DocumentStub(new Container());
+        $stub = new DocumentStub();
 
         $stub->setContent(simplexml_load_string($content));
 
