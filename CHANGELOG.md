@@ -4,6 +4,8 @@ This changelog references the relevant changes (bug and security fixes) done to 
 
 ## 1.1.1 - 2016-03-02
 
+### Fixes
+
 * Check if index `default` exist before returning the default parameter.
 
 ## 1.1.0 - 2016-01-12
