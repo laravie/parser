@@ -118,6 +118,26 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
+'<api>
+    <user followers="5">
+        <id>1</id>
+        <email type="primary">crynobone@gmail.com</email>
+    </user>
+</api>',
+                [
+                    'id' => ['uses' => 'user.id'],
+                    'email' => ['uses' => 'user.email'],
+                    'followers' => ['uses' => 'user::followers'],
+                    'email_type' => ['uses' => 'user.email::type'],
+                ],
+                [
+                    'id' => 1,
+                    'email' => 'crynobone@gmail.com',
+                    'followers' => 5,
+                    'email_type' => 'primary',
+                ],
+            ],
+            [
 '<foo>
     <bar hello="hello world">foobar</bar>
     <world></world>
