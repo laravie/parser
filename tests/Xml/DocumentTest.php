@@ -464,6 +464,32 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
                         ]
                     ],
                 ]
+            ],
+            [
+'<xml time="1460026675">
+    <Country id="ALG" name="Algeria" image="Algeria.png" lastupdate="1315773004"/>
+    <Country id="ASM" name="American Samoa" image="American-Samoa.png" lastupdate="1315773004"/>
+    <Country id="AND" name="Andorra" image="Andorra.png" lastupdate="1315773004"/>
+</xml>',
+                [
+                    'countries' => ['uses' => 'Country[::id>id,::name>name]', 'default' => null],
+                ],
+                [
+                    'countries' => [
+                        [
+                            'id' => 'ALG',
+                            'name' => 'Algeria',
+                        ],
+                        [
+                            'id' => 'ASM',
+                            'name' => 'American Samoa',
+                        ],
+                        [
+                            'id' => 'AND',
+                            'name' => 'Andorra',
+                        ]
+                    ],
+                ]
             ]
         ];
     }
