@@ -438,6 +438,33 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
                     ]
                 ]
             ],
+            [
+'<api>
+    <Country name="Albania" id="ALB">
+        <Competition id="ALB_1" name="Albania 1" event_name="Super League" sport="soccer" levels_on_pyramid="0" competition_type="league" image="" timestamp="0"/>
+    </Country>
+    <Country name="Algeria" id="ALG">
+        <Competition id="ALG_1" name="Algeria 1" event_name="Ligue 1" sport="soccer" levels_on_pyramid="0" competition_type="league" image="" timestamp="0"/>
+    </Country>
+</api>',
+                [
+                    'data' => ['uses' => 'Country[Competition::id>id,Competition::name>name,Competition::event_name>event_name]', 'default' => null],
+                ],
+                [
+                    'data' => [
+                        [
+                            'id' => 'ALB_1',
+                            'name' => 'Albania 1',
+                            'event_name' => 'Super League',
+                        ],
+                        [
+                            'id' => 'ALG_1',
+                            'name' => 'Algeria 1',
+                            'event_name' => 'Ligue 1',
+                        ]
+                    ],
+                ]
+            ]
         ];
     }
 }
