@@ -1,4 +1,6 @@
-<?php namespace Laravie\Parser\Xml;
+<?php
+
+namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
 use Underscore\Types\Arrays;

@@ -1,4 +1,6 @@
-<?php namespace Laravie\Parser;
+<?php
+
+namespace Laravie\Parser;
 
 use Underscore\Types\Strings;
 

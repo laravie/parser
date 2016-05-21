@@ -1,4 +1,6 @@
-<?php namespace Laravie\Parser\TestCase\Xml;
+<?php
+
+namespace Laravie\Parser\TestCase\Xml;
 
 use Mockery as m;
 use Laravie\Parser\Xml\Document;

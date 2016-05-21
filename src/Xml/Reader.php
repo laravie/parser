@@ -1,4 +1,6 @@
-<?php namespace Laravie\Parser\Xml;
+<?php
+
+namespace Laravie\Parser\Xml;
 
 use Laravie\Parser\Reader as BaseReader;
 use Laravie\Parser\InvalidContentException;

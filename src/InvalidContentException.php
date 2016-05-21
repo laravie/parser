@@ -1,4 +1,6 @@
-<?php namespace Laravie\Parser;
+<?php
+
+namespace Laravie\Parser;
 
 class InvalidContentException extends \InvalidArgumentException
 {

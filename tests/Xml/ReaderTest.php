@@ -1,4 +1,6 @@
-<?php namespace Laravie\Parser\Xml\TestCase;
+<?php
+
+namespace Laravie\Parser\Xml\TestCase;
 
 use Laravie\Parser\Xml\Reader;
 use Laravie\Parser\Xml\Document;
