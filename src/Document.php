@@ -2,8 +2,6 @@
 
 namespace Laravie\Parser;
 
-use Underscore\Types\Strings;
-
 abstract class Document
 {
     /**
@@ -171,7 +169,7 @@ abstract class Document
      */
     protected function parseData($data)
     {
-        $hash   = Strings::random(60);
+        $hash   = hash('sha256', microtime(true));
         $value  = $data;
         $filter = null;
 
