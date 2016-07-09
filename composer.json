@@ -17,8 +17,8 @@
         }
     },
     "require": {
-        "php": ">=5.4.0",
-        "anahkiasen/underscore-php": "~2.0"
+        "php": ">=5.5.9",
+        "tightenco/collect": "~5.2"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
