@@ -44,7 +44,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function testNamespaced()
     {
-        $stub = new DocumentStub(new Container());
+        $stub = new DocumentStub();
 
         $stub->setContent(simplexml_load_string(
             '<?xml version="1.0" standalone="yes"?>
@@ -139,7 +139,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $stub = new DocumentStub(new Container());
+        $stub = new DocumentStub();
 
         $stub->setContent(simplexml_load_string('<api>
     <user>
