@@ -16,6 +16,51 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test Laravie\Parser\Xml\Document::rebase() method.
+     *
+     * @test
+     */
+    public function testRebase()
+    {
+        $expected = '<foo><bar>foobar</bar></foo>';
+
+        $stub = new Document();
+
+        $stub->setContent($expected);
+
+        $result = $stub->rebase();
+
+        $refl    = new \ReflectionObject($stub);
+        $content = $refl->getProperty('content');
+        $content->setAccessible(true);
+
+        $this->assertEquals($expected, $content->getValue($stub));
+    }
+
+    /**
+     * Test Laravie\Parser\Xml\Document::namespaced() method.
+     *
+     * @test
+     */
+    public function testNamespaced()
+    {
+        $stub = new DocumentStub(new Container());
+
+        $stub->setContent(simplexml_load_string(
+            '<?xml version="1.0" standalone="yes"?>
+                <people xmlns:p="http://example.org/ns" xmlns:t="http://example.org/test">
+                    <p:person id="1">JohnDoe</p:person>
+                    <p:person id="2">@Susie Q. Public</p:person>
+                </people>'
+        ));
+
+
+        $result = $stub->namespaced('p', [], []);
+
+        $this->assertCount(0, $result);
+    }
+
+    /**
      * Test Laravie\Parser\Xml\Document::setContent() method.
      *
      * @test
