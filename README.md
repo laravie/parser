@@ -35,8 +35,8 @@ $user = [
 by just writing this:
 
 ```php
-use Laravie\Xml\Reader;
-use Laravie\Xml\Document;
+use Laravie\Parser\Xml\Reader;
+use Laravie\Parser\Xml\Document;
 
 $xml = (new Reader(new Document())->load('path/to/above.xml');
 
