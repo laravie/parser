@@ -29,10 +29,10 @@ abstract class Document
     public function parse(array $schema, array $config = [])
     {
         $output = [];
+        $ignore = isset($config['ignore']) ? $config['ignore'] : false;
 
         foreach ($schema as $key => $data) {
             $value  = $this->parseData($data);
-            $ignore = isset($config['ignore']) ? $config['ignore'] : false;
 
             if (! $ignore) {
                 $output[$key] = $value;
