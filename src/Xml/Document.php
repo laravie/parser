@@ -4,7 +4,6 @@ namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
 use Illuminate\Support\Arr;
-use Underscore\Types\Arrays;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
