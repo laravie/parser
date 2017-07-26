@@ -37,9 +37,7 @@ by just writing this:
 use Laravie\Parser\Xml\Reader;
 use Laravie\Parser\Xml\Document;
 
-$document = new Document();
-$reader = new Reader($document);
-$xml = $reader->load('path/to/above.xml');
+$xml = (new Reader(new Document()))->load('path/to/above.xml');
 
 $user = $xml->parse([
     'id' => ['uses' => 'user.id'],
