@@ -4,12 +4,11 @@ XML Document Parser PHP
 
 Parser Component is a framework agnostic package that provide a simple way to parse XML to array without having to write a complex logic.
 
-[![Latest Stable Version](https://img.shields.io/github/release/laravie/parser.svg?style=flat-square)](https://packagist.org/packages/laravie/parser)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravie/parser.svg?style=flat-square)](https://packagist.org/packages/laravie/parser)
-[![MIT License](https://img.shields.io/packagist/l/laravie/parser.svg?style=flat-square)](https://packagist.org/packages/laravie/parser)
-[![Build Status](https://img.shields.io/travis/laravie/parser/master.svg?style=flat-square)](https://travis-ci.org/laravie/parser)
-[![Coverage Status](https://img.shields.io/coveralls/laravie/parser/master.svg?style=flat-square)](https://coveralls.io/r/laravie/parser?branch=master)
-[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/laravie/parser/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravie/parser/)
+[![Build Status](https://travis-ci.org/laravie/parser.svg?branch=master)](https://travis-ci.org/laravie/parser)
+[![Latest Stable Version](https://poser.pugx.org/laravie/parser/version)](https://packagist.org/packages/laravie/parser)
+[![Total Downloads](https://poser.pugx.org/laravie/parser/downloads)](https://packagist.org/packages/laravie/parser)
+[![Latest Unstable Version](https://poser.pugx.org/laravie/parser/v/unstable)](//packagist.org/packages/laravie/parser)
+[![License](https://poser.pugx.org/laravie/parser/license)](https://packagist.org/packages/laravie/parser)
 
 Imagine if you can parse
 
