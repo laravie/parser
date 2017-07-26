@@ -3,9 +3,10 @@
 namespace Laravie\Parser\Xml\TestCase;
 
 use Laravie\Parser\Xml\Reader;
+use PHPUnit\Framework\TestCase;
 use Laravie\Parser\Xml\Document;
 
-class ReaderTest extends \PHPUnit_Framework_TestCase
+class ReaderTest extends TestCase
 {
     /**
      * Test Laravie\Parser\Xml\Reader::extract() method.
@@ -32,7 +33,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     {
         $document = new Document();
         $stub     = new Reader($document);
-        $output   = $stub->load(__DIR__.'/stub/foo.xml');
+        $output   = $stub->load(__DIR__.'/stubs/foo.xml');
 
         $this->assertInstanceOf('\Laravie\Parser\Xml\Document', $output);
     }
