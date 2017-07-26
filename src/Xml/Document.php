@@ -4,7 +4,7 @@ namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
 use Underscore\Types\Arrays;
-use Underscore\Types\Object;
+use Underscore\Types\Object as BaseObject;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
@@ -112,7 +112,7 @@ class Document extends BaseDocument
 
         $parent = $content;
 
-        if (! empty($value) && is_null($parent = Object::get($content, $value))) {
+        if (! empty($value) && is_null($parent = BaseObject::get($content, $value))) {
             return $default;
         }
 
