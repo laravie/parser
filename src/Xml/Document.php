@@ -110,10 +110,12 @@ class Document extends BaseDocument
     {
         list($value, $attribute) = explode('::', $use, 2);
 
-        $parent = $content;
-
-        if (! empty($value) && is_null($parent = BaseObject::get($content, $value))) {
-            return $default;
+        if (! empty($value)) {
+            if (is_null($parent = BaseObject::get($content, $value))) {
+                return $default;
+            }
+        } else {
+            $parent = $content;
         }
 
         $attributes = $parent->attributes();
