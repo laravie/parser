@@ -18,8 +18,8 @@ class ReaderTest extends TestCase
         $xml = '<xml><foo>foobar</foo></xml>';
 
         $document = new Document();
-        $stub     = new Reader($document);
-        $output   = $stub->extract($xml);
+        $stub = new Reader($document);
+        $output = $stub->extract($xml);
 
         $this->assertInstanceOf('\Laravie\Parser\Xml\Document', $output);
     }
@@ -32,8 +32,8 @@ class ReaderTest extends TestCase
     public function testLoadMethod()
     {
         $document = new Document();
-        $stub     = new Reader($document);
-        $output   = $stub->load(__DIR__.'/stubs/foo.xml');
+        $stub = new Reader($document);
+        $output = $stub->load(__DIR__.'/stubs/foo.xml');
 
         $this->assertInstanceOf('\Laravie\Parser\Xml\Document', $output);
     }
@@ -48,7 +48,7 @@ class ReaderTest extends TestCase
         $xml = '<xml><foo>foobar<foo></xml>';
 
         $document = new Document();
-        $stub     = new Reader($document);
-        $output   = $stub->extract($xml);
+        $stub = new Reader($document);
+        $output = $stub->extract($xml);
     }
 }

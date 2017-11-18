@@ -31,7 +31,7 @@ class DocumentTest extends TestCase
 
         $result = $stub->rebase();
 
-        $refl    = new \ReflectionObject($stub);
+        $refl = new \ReflectionObject($stub);
         $content = $refl->getProperty('content');
         $content->setAccessible(true);
 
@@ -74,7 +74,7 @@ class DocumentTest extends TestCase
 
         $stub->setContent($expected);
 
-        $refl    = new \ReflectionObject($stub);
+        $refl = new \ReflectionObject($stub);
         $content = $refl->getProperty('content');
         $content->setAccessible(true);
 
@@ -92,7 +92,7 @@ class DocumentTest extends TestCase
 
         $stub = new Document();
 
-        $refl    = new \ReflectionObject($stub);
+        $refl = new \ReflectionObject($stub);
         $content = $refl->getProperty('content');
         $content->setAccessible(true);
 
@@ -129,13 +129,13 @@ class DocumentTest extends TestCase
         $expected = [
             'users' => [
                 [
-                    'id'   => '1',
+                    'id' => '1',
                     'fullname' => 'Mior Muhammad Zaki',
                 ],
                 [
-                    'id'   => '2',
+                    'id' => '2',
                     'fullname' => 'Taylor Otwell',
-                    'tag' => ['Laravel', 'PHP']
+                    'tag' => ['Laravel', 'PHP'],
                 ],
             ],
         ];
@@ -191,21 +191,21 @@ class DocumentTest extends TestCase
     <world></world>
 </foo>',
                 [
-                    'foo'      => ['uses' => 'bar', 'filter' => '@strToUpper'],
-                    'hello'    => ['uses' => ['bar::hello', 'bar'], 'filter' => '@notFilterable'],
-                    'world'    => ['uses' => 'world', 'default' => false],
-                    'foobar'   => ['uses' => 'bar::foobar', 'default' => false],
+                    'foo' => ['uses' => 'bar', 'filter' => '@strToUpper'],
+                    'hello' => ['uses' => ['bar::hello', 'bar'], 'filter' => '@notFilterable'],
+                    'world' => ['uses' => 'world', 'default' => false],
+                    'foobar' => ['uses' => 'bar::foobar', 'default' => false],
                     'username' => ['uses' => 'user::name', 'default' => 'Guest', 'filter' => '\Laravie\Parser\TestCase\Xml\FilterStub@filterStrToLower'],
-                    'google'   => 'google.com',
+                    'google' => 'google.com',
                     'facebook' => ['default' => 'facebook.com'],
                 ],
                 [
-                    'foo'      => 'FOOBAR',
-                    'hello'    => ['hello world', 'foobar'],
-                    'world'    => false,
-                    'foobar'   => false,
+                    'foo' => 'FOOBAR',
+                    'hello' => ['hello world', 'foobar'],
+                    'world' => false,
+                    'foobar' => false,
                     'username' => 'guest',
-                    'google'   => 'google.com',
+                    'google' => 'google.com',
                     'facebook' => 'facebook.com',
                 ],
             ],
@@ -228,11 +228,11 @@ class DocumentTest extends TestCase
                 [
                     'users' => [
                         [
-                            'id'   => '1',
+                            'id' => '1',
                             'name' => 'Mior Muhammad Zaki',
                         ],
                         [
-                            'id'   => '2',
+                            'id' => '2',
                             'name' => 'Taylor Otwell',
                         ],
                     ],
@@ -255,11 +255,11 @@ class DocumentTest extends TestCase
                 [
                     'users' => [
                         [
-                            'id'   => '1',
+                            'id' => '1',
                             'name' => 'Mior Muhammad Zaki',
                         ],
                         [
-                            'id'   => '2',
+                            'id' => '2',
                             'name' => 'Taylor Otwell',
                         ],
                     ],
@@ -282,11 +282,11 @@ class DocumentTest extends TestCase
                 [
                     'users' => [
                         [
-                            'id'   => '1',
+                            'id' => '1',
                             'fullname' => 'Mior Muhammad Zaki',
                         ],
                         [
-                            'id'   => '2',
+                            'id' => '2',
                             'fullname' => 'Taylor Otwell',
                         ],
                     ],
@@ -317,11 +317,11 @@ class DocumentTest extends TestCase
                 [
                     'users' => [
                         [
-                            'id'   => '1',
+                            'id' => '1',
                             'name' => 'Mior Muhammad Zaki',
                         ],
                         [
-                            'id'   => '2',
+                            'id' => '2',
                             'name' => 'Taylor Otwell',
                         ],
                     ],
@@ -344,11 +344,11 @@ class DocumentTest extends TestCase
                 [
                     'users' => [
                         [
-                            'id'   => '1',
+                            'id' => '1',
                             'name' => 'Mior Muhammad Zaki',
                         ],
                         [
-                            'id'   => '2',
+                            'id' => '2',
                             'name' => 'Taylor Otwell',
                         ],
                     ],
@@ -406,7 +406,7 @@ class DocumentTest extends TestCase
     </product>
 </products>',
                 [
-                    'books' => ['uses' => 'product[::ID>id,name,properties.property(::name=value)>meta]', 'default' => null]
+                    'books' => ['uses' => 'product[::ID>id,name,properties.property(::name=value)>meta]', 'default' => null],
                 ],
                 [
                     'books' => [
@@ -428,8 +428,8 @@ class DocumentTest extends TestCase
                                 'cat' => 'Child Books',
                             ],
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
 '<products>
@@ -465,7 +465,7 @@ class DocumentTest extends TestCase
     </product>
 </products>',
                 [
-                    'books' => ['uses' => 'product[::ID>bookID,name,properties.property(::name=value)]', 'default' => null]
+                    'books' => ['uses' => 'product[::ID>bookID,name,properties.property(::name=value)]', 'default' => null],
                 ],
                 [
                     'books' => [
@@ -483,8 +483,8 @@ class DocumentTest extends TestCase
                             'avail' => '0',
                             'cat' => 'Child Books',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
 '<api>
@@ -509,9 +509,9 @@ class DocumentTest extends TestCase
                             'id' => 'ALG_1',
                             'name' => 'Algeria 1',
                             'event_name' => 'Ligue 1',
-                        ]
+                        ],
                     ],
-                ]
+                ],
             ],
             [
 '<xml time="1460026675">
@@ -535,10 +535,10 @@ class DocumentTest extends TestCase
                         [
                             'id' => 'AND',
                             'name' => 'Andorra',
-                        ]
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }

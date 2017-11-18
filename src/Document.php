@@ -32,7 +32,7 @@ abstract class Document
         $ignore = isset($config['ignore']) ? $config['ignore'] : false;
 
         foreach ($schema as $key => $data) {
-            $value  = $this->parseData($data);
+            $value = $this->parseData($data);
 
             if (! $ignore) {
                 $output[$key] = $value;
@@ -51,7 +51,7 @@ abstract class Document
      */
     public function setContent($content)
     {
-        $this->content         = $content;
+        $this->content = $content;
         $this->originalContent = $content;
 
         return $this;
@@ -143,13 +143,14 @@ abstract class Document
      */
     protected function getFilterResolver($filter)
     {
-        $class  = $filter;
+        $class = $filter;
         $method = 'filter';
 
         $position = strpos($filter, '@');
 
         if ($position === 0) {
             $method = 'filter'.ucwords(substr($filter, 1));
+
             return [$this, $method];
         }
 
@@ -169,12 +170,12 @@ abstract class Document
      */
     protected function parseData($data)
     {
-        $hash   = hash('sha256', microtime(true));
-        $value  = $data;
+        $hash = hash('sha256', microtime(true));
+        $value = $data;
         $filter = null;
 
         if (is_array($data)) {
-            $value  = $this->resolveValue($data, $hash);
+            $value = $this->resolveValue($data, $hash);
             $filter = isset($data['filter']) ? $data['filter'] : null;
         }
 

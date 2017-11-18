@@ -40,7 +40,7 @@ class Document extends BaseDocument
      */
     public function namespaced($namespace, array $schema, array $config = [])
     {
-        $document   = $this->getContent();
+        $document = $this->getContent();
         $namespaces = $this->getAvailableNamespaces();
 
         if (! is_null($namespace) && isset($namespaces[$namespace])) {
@@ -153,7 +153,7 @@ class Document extends BaseDocument
      */
     protected function getValueCollection(SimpleXMLElement $content, array $matches, $default = null)
     {
-        $parent    = $matches[1];
+        $parent = $matches[1];
         $namespace = null;
 
         if (strpos($parent, '/') !== false) {
@@ -163,7 +163,7 @@ class Document extends BaseDocument
         $collection = data_get($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
-        $uses   = explode(',', $matches[2]);
+        $uses = explode(',', $matches[2]);
         $values = [];
 
         if (! $collection instanceof SimpleXMLElement) {
@@ -236,7 +236,7 @@ class Document extends BaseDocument
     protected function getSelfMatchingValue(SimpleXMLElement $content, array $matches = [], $alias = null)
     {
         $name = $matches[1];
-        $key  = $matches[2];
+        $key = $matches[2];
         $meta = $matches[3];
 
         $item = [];
