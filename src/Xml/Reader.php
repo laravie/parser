@@ -4,13 +4,14 @@ namespace Laravie\Parser\Xml;
 
 use Laravie\Parser\Reader as BaseReader;
 use Laravie\Parser\InvalidContentException;
+use Laravie\Parser\Document as BaseDocument;
 
 class Reader extends BaseReader
 {
     /**
      * {@inheritdoc}
      */
-    public function extract($content)
+    public function extract(string $content): BaseDocument
     {
         $xml = @simplexml_load_string($content);
 
@@ -20,7 +21,7 @@ class Reader extends BaseReader
     /**
      * {@inheritdoc}
      */
-    public function load($filename)
+    public function load(string $filename): BaseDocument
     {
         $xml = @simplexml_load_file($filename);
 
@@ -32,11 +33,11 @@ class Reader extends BaseReader
      *
      * @param  object $xml
      *
-     * @return \Orchestra\Parser\Document
+     * @return \Laravie\Parser\Document
      *
-     * @throws \Orchestra\Parser\InvalidContentException
+     * @throws \Laravie\Parser\InvalidContentException
      */
-    protected function resolveXmlObject($xml)
+    protected function resolveXmlObject($xml): Document
     {
         if (! $xml) {
             throw new InvalidContentException('Unable to parse XML from string.');

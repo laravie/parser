@@ -26,10 +26,10 @@ abstract class Document
      *
      * @return array
      */
-    public function parse(array $schema, array $config = [])
+    public function parse(array $schema, array $config = []): array
     {
         $output = [];
-        $ignore = isset($config['ignore']) ? $config['ignore'] : false;
+        $ignore = $config['ignore'] ?? false;
 
         foreach ($schema as $key => $data) {
             $value = $this->parseData($data);
@@ -49,7 +49,7 @@ abstract class Document
      *
      * @return $this
      */
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->content = $content;
         $this->originalContent = $content;
@@ -81,11 +81,11 @@ abstract class Document
      * Filter value.
      *
      * @param  mixed   $value
-     * @param  string  $filter
+     * @param  string|null  $filter
      *
      * @return mixed
      */
-    protected function filterValue($value, $filter)
+    protected function filterValue($value, $filter = null)
     {
         $resolver = $this->getFilterResolver($filter);
 
@@ -104,10 +104,10 @@ abstract class Document
      *
      * @return mixed
      */
-    protected function resolveValue(array $config, $hash)
+    protected function resolveValue(array $config, string $hash)
     {
         if (! isset($config['uses'])) {
-            return isset($config['default']) ? $config['default'] : null;
+            return ($config['default'] ?? null);
         }
 
         if (! is_array($config['uses'])) {
@@ -127,8 +127,8 @@ abstract class Document
      * Resolve value from uses filter.
      *
      * @param  mixed   $content
-     * @param  string  $use
-     * @param  string  $default
+     * @param  string|null  $use
+     * @param  string|null  $default
      *
      * @return mixed
      */
@@ -141,7 +141,7 @@ abstract class Document
      *
      * @return array
      */
-    protected function getFilterResolver($filter)
+    protected function getFilterResolver(string $filter): array
     {
         $class = $filter;
         $method = 'filter';
@@ -176,11 +176,11 @@ abstract class Document
 
         if (is_array($data)) {
             $value = $this->resolveValue($data, $hash);
-            $filter = isset($data['filter']) ? $data['filter'] : null;
+            $filter = $data['filter'] ?? null;
         }
 
         if ($value === $hash) {
-            $value = isset($data['default']) ? $data['default'] : null;
+            $value = $data['default'] ?? null;
         }
 
         if (! is_null($filter)) {
@@ -193,12 +193,12 @@ abstract class Document
     /**
      * Make filter resolver.
      *
-     * @param  array  $class
-     * @param  mixed  $method
+     * @param  string  $class
+     * @param  string  $method
      *
      * @return array
      */
-    protected function makeFilterResolver($class, $method)
+    protected function makeFilterResolver(string $class, string $method): array
     {
         $class = new $class();
 
@@ -208,12 +208,12 @@ abstract class Document
     /**
      * Call filter to parse the value.
      *
-     * @param  array  $resolver
+     * @param  callable  $resolver
      * @param  mixed  $value
      *
      * @return mixed
      */
-    protected function callFilterResolver($resolver, $value)
+    protected function callFilterResolver(callable $resolver, $value)
     {
         return call_user_func($resolver, $value);
     }

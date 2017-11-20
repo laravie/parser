@@ -28,7 +28,7 @@ abstract class Reader
      *
      * @return \Laravie\Parser\Document
      */
-    abstract public function extract($content);
+    abstract public function extract(string $content): Document;
 
     /**
      * Load content from file.
@@ -37,5 +37,5 @@ abstract class Reader
      *
      * @return \Laravie\Parser\Document
      */
-    abstract public function load($filename);
+    abstract public function load(string $filename): Document;
 }
