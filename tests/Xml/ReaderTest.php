@@ -39,6 +39,30 @@ class ReaderTest extends TestCase
     }
 
     /**
+     * Test Laravie\Parser\Xml\Reader::load() method.
+     *
+     * @expectedException \Laravie\Parser\FileNotFoundException
+     */
+    public function testLoadMethodThrowsFileNotFoundException()
+    {
+        $document = new Document();
+        $stub = new Reader($document);
+        $output = $stub->load('');
+    }
+
+    /**
+     * Test Laravie\Parser\Xml\Reader::load() method.
+     *
+     * @expectedException \Laravie\Parser\InvalidContentException
+     */
+    public function testLoadMethodThrowsInvalidContentExceptionException()
+    {
+        $document = new Document();
+        $stub = new Reader($document);
+        $output = $stub->load(__DIR__.'/stubs/invalid.xml');
+    }
+
+    /**
      * Test Laravie\Parser\Xml\Reader::extract() method throws exception.
      *
      * @expectedException \Laravie\Parser\InvalidContentException
