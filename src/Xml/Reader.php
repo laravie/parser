@@ -3,6 +3,7 @@
 namespace Laravie\Parser\Xml;
 
 use Laravie\Parser\Reader as BaseReader;
+use Laravie\Parser\FileNotFoundException;
 use Laravie\Parser\InvalidContentException;
 
 class Reader extends BaseReader
@@ -22,6 +23,10 @@ class Reader extends BaseReader
      */
     public function load($filename)
     {
+        if (!file_exists($filename)) {
+            throw new FileNotFoundException('Could not find the file: ' . $filename);
+        }
+
         $xml = @simplexml_load_file($filename);
 
         return $this->resolveXmlObject($xml);
