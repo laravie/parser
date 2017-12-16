@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `parser`.
 
+## 1.2.1
+
+Released: 2017-12-16
+
+### Changes
+
+* Throws `Laravie\Parser\FileNotFoundException` when loading invalid file.
+
 ## 1.2.0
 
 Released: 2017-07-26
