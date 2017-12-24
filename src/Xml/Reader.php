@@ -3,8 +3,8 @@
 namespace Laravie\Parser\Xml;
 
 use Laravie\Parser\Reader as BaseReader;
-use Laravie\Parser\InvalidContentException;
 use Laravie\Parser\FileNotFoundException;
+use Laravie\Parser\InvalidContentException;
 use Laravie\Parser\Document as BaseDocument;
 
 class Reader extends BaseReader
@@ -24,13 +24,29 @@ class Reader extends BaseReader
      */
     public function load(string $filename): BaseDocument
     {
-        if (!file_exists($filename)) {
-            throw new FileNotFoundException('Could not find the file: ' . $filename);
-        }
-
         $xml = @simplexml_load_file($filename);
 
         return $this->resolveXmlObject($xml);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function local(string $filename): BaseDocument
+    {
+        if (! file_exists($filename)) {
+            throw new FileNotFoundException('Could not find the file: '.$filename);
+        }
+
+        return $this->load($filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remote(string $filename): BaseDocument
+    {
+        return $this->load($filename);
     }
 
     /**

@@ -107,7 +107,7 @@ abstract class Document
     protected function resolveValue(array $config, string $hash)
     {
         if (! isset($config['uses'])) {
-            return ($config['default'] ?? null);
+            return $config['default'] ?? null;
         }
 
         if (! is_array($config['uses'])) {
