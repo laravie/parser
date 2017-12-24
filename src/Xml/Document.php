@@ -55,7 +55,7 @@ class Document extends BaseDocument
     /**
      * {@inheritdoc}
      */
-    protected function getValue($content, $use, $default = null)
+    protected function getValue($content, ?string $use, ?string $default = null)
     {
         if (preg_match('/^(.*)\[(.*)\]$/', $use, $matches) && $content instanceof SimpleXMLElement) {
             return $this->getValueCollection($content, $matches, $default);
@@ -105,7 +105,7 @@ class Document extends BaseDocument
      *
      * @return mixed
      */
-    protected function getRawValueAttribute(SimpleXMLElement $content, string $use, $default = null)
+    protected function getRawValueAttribute(SimpleXMLElement $content, ?string $use, $default = null)
     {
         list($value, $attribute) = explode('::', $use, 2);
 
@@ -131,7 +131,7 @@ class Document extends BaseDocument
      *
      * @return mixed
      */
-    protected function getValueData(SimpleXMLElement $content, $use, $default = null)
+    protected function getValueData(SimpleXMLElement $content, ?string $use, $default = null)
     {
         $value = $this->castValue(data_get($content, $use));
 
@@ -236,7 +236,7 @@ class Document extends BaseDocument
     protected function getSelfMatchingValue(
         SimpleXMLElement $content,
         array $matches = [],
-        string $alias = null
+        ?string $alias = null
     ): array {
         $name = $matches[1];
         $key = $matches[2];
@@ -270,7 +270,7 @@ class Document extends BaseDocument
      *
      * @return array|null
      */
-    protected function getAvailableNamespaces()
+    protected function getAvailableNamespaces(): ?array
     {
         if (is_null($this->namespaces)) {
             $this->namespaces = $this->getOriginalContent()->getNameSpaces(true);

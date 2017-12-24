@@ -85,7 +85,7 @@ abstract class Document
      *
      * @return mixed
      */
-    protected function filterValue($value, $filter = null)
+    protected function filterValue($value, ?string $filter = null)
     {
         $resolver = $this->getFilterResolver($filter);
 
@@ -132,7 +132,7 @@ abstract class Document
      *
      * @return mixed
      */
-    abstract protected function getValue($content, $use, $default = null);
+    abstract protected function getValue($content, ?string $use, ?string $default = null);
 
     /**
      * Get filter resolver.

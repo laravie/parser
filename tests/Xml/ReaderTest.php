@@ -47,7 +47,7 @@ class ReaderTest extends TestCase
     {
         $document = new Document();
         $stub = new Reader($document);
-        $output = $stub->load('');
+        $output = $stub->local('');
     }
 
     /**
