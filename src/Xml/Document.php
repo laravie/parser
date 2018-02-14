@@ -3,7 +3,8 @@
 namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
-use Illuminate\Support\Arr;
+use Laravie\Parser\Support;
+use Tightenco\Collect\Support\Arr;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
@@ -24,7 +25,7 @@ class Document extends BaseDocument
      */
     public function rebase(string $base = null): self
     {
-        $this->content = data_get($this->getOriginalContent(), $base);
+        $this->content = Support::fromData($this->getOriginalContent(), $base);
 
         return $this;
     }
@@ -110,7 +111,7 @@ class Document extends BaseDocument
         list($value, $attribute) = explode('::', $use, 2);
 
         if (! empty($value)) {
-            if (is_null($parent = object_get($content, $value))) {
+            if (is_null($parent = Support::fromObject($content, $value))) {
                 return $default;
             }
         } else {
@@ -119,7 +120,7 @@ class Document extends BaseDocument
 
         $attributes = $parent->attributes();
 
-        return data_get($attributes, $attribute, $default);
+        return Support::fromData($attributes, $attribute, $default);
     }
 
     /**
@@ -133,7 +134,7 @@ class Document extends BaseDocument
      */
     protected function getValueData(SimpleXMLElement $content, ?string $use, $default = null)
     {
-        $value = $this->castValue(data_get($content, $use));
+        $value = $this->castValue(Support::fromData($content, $use));
 
         if (empty($value) && ! in_array($value, ['0'])) {
             return $default;
@@ -160,7 +161,7 @@ class Document extends BaseDocument
             list($parent, $namespace) = explode('/', $parent, 2);
         }
 
-        $collection = data_get($content, $parent);
+        $collection = Support::fromData($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
         $uses = explode(',', $matches[2]);
