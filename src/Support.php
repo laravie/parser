@@ -59,7 +59,7 @@ class Support
      *
      * @return mixed
      */
-    public static function fromObject($object, string $key, $default)
+    public static function fromObject($object, string $key, $default = null)
     {
         if (is_null($key) || trim($key) == '') {
             return $object;
