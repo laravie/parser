@@ -54,9 +54,9 @@ class Reader extends BaseReader
      *
      * @param  object $xml
      *
-     * @return \Laravie\Parser\Document
-     *
      * @throws \Laravie\Parser\InvalidContentException
+     *
+     * @return \Laravie\Parser\Document
      */
     protected function resolveXmlObject($xml): Document
     {
