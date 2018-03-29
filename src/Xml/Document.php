@@ -163,7 +163,10 @@ class Document extends BaseDocument
         $collection = data_get($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
-        $uses = explode(',', $matches[2]);
+        //$uses = explode(',', $matches[2]);
+        // use preg_split to split all comma ignoring
+        // the commas inside curly brackets
+        $uses = preg_split('/(,)(?=(?:[^}]|{[^{]*})*$)/',$matches[2]);
         $values = [];
 
         if (! $collection instanceof SimpleXMLElement) {
@@ -198,31 +201,85 @@ class Document extends BaseDocument
         $value = [];
 
         foreach ($uses as $use) {
-            list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+            if (preg_match("/^(.*)\{(.*)\}(\>(.*)|)/", $use, $output_array))
+            {
+                $thirdArrayName = $output_array[1];
+                $thirdArrayData = $output_array[2];
+                $thirdArrayOutputName = (isset($output_array[4]))? $output_array[4]:$thirdArrayName;
+                $usesThird = explode(',', $thirdArrayData);
+                $value[$thirdArrayOutputName] = $this->parseValueCollectionThird($content,$thirdArrayName,$usesThird);
+            }
+            else
+            {
+                list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
+                if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                    if ($name == $as) {
+                        $as = null;
+                    }
+
+                    $item = $this->getSelfMatchingValue($content, $matches, $as);
+
+                    if (is_null($as)) {
+                        $value = array_merge($value, $item);
+                    } else {
+                        Arr::set($value, $as, $item);
+                    }
+                }
+                else
+                {
+                    if ($name == '@') {
+                        $name = null;
+                    }
+                    Arr::set($value, $as, $this->getValue($content, $name));
+                }
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Resolve values by collection for third level.
+     *
+     * @param  \SimpleXMLElement  $content
+     * @param  string  $thirdArrayName
+     * @param  array  $uses
+     *
+     * @return array
+     */
+    protected function parseValueCollectionThird(SimpleXMLElement $content,$thirdArrayName, array $uses)
+    {
+        $value = [];
+
+        foreach ($uses as $use)
+        {
+            list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
             if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                 if ($name == $as) {
                     $as = null;
                 }
 
-                $item = $this->getSelfMatchingValue($content, $matches, $as);
+                $item = $this->getSelfMatchingValue($content->{$thirdArrayName}, $matches, $as);
 
                 if (is_null($as)) {
                     $value = array_merge($value, $item);
                 } else {
                     Arr::set($value, $as, $item);
                 }
-            } else {
+            }
+            else
+            {
                 if ($name == '@') {
                     $name = null;
                 }
-
-                Arr::set($value, $as, $this->getValue($content, $name));
+                Arr::set($value, $as, $this->getValue($content->$thirdArrayName, $name));
             }
         }
 
         return $value;
     }
+
 
     /**
      * Get self matching value.
