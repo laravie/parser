@@ -201,6 +201,7 @@ class Document extends BaseDocument
         $value = [];
 
         foreach ($uses as $use) {
+
             // check for 2 levels array in the pattern
             if (preg_match("/^(.*)\{(.*)\}(\>(.*)|)/", $use, $output_array))
             {
@@ -243,7 +244,6 @@ class Document extends BaseDocument
                     }
 
                     $item = $this->getSelfMatchingValue($content, $matches, $as);
-
 
                     if (is_null($as)) {
                         $value = array_merge($value, $item);
@@ -337,33 +337,34 @@ class Document extends BaseDocument
         {
             list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
-            if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                if ($name == $as) {
-                    $as = null;
-                }
-
-                $item = $this->getSelfMatchingValue($content->{$arrayName}, $matches, $as);
-
-                if (is_null($as)) {
-                    $value = array_merge($value, $item);
-                } else {
-                    Arr::set($value, $as, $item);
-                }
-            }
-            else
+            foreach ($uses as $use)
             {
-                if ($name == '@') {
-                    $name = null;
-                }
+                list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+                if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                    if ($name == $as) {
+                        $as = null;
+                    }
 
-                Arr::set($value, $as, $this->getValue($content->{$arrayName}, $name));
+                    $item = $this->getSelfMatchingValue($content->{$arrayName}, $matches, $as);
+
+                    if (is_null($as)) {
+                        $value = array_merge($value, $item);
+                    } else {
+                        Arr::set($value, $as, $item);
+                    }
+                }
+                else
+                {
+                    if ($name == '@') {
+                        $name = null;
+                    }
+
+                    Arr::set($value, $as, $this->getValue($content->{$arrayName}, $name));
+                }
             }
-        }
 
         return $value;
     }
-
-
 
     /**
      * Get self matching value.
