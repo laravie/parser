@@ -155,6 +155,7 @@ class Document extends BaseDocument
     {
         $parent = $matches[1];
         $namespace = null;
+        
 
         if (strpos($parent, '/') !== false) {
             list($parent, $namespace) = explode('/', $parent, 2);
@@ -201,7 +202,6 @@ class Document extends BaseDocument
         $value = [];
 
         foreach ($uses as $use) {
-
             // check for 2 levels array in the pattern
             if (preg_match("/^(.*)\{(.*)\}(\>(.*)|)/", $use, $output_array))
             {
@@ -212,7 +212,7 @@ class Document extends BaseDocument
                     $secondArrayData = $output_array[2];
                     $secondArrayOutputName = (isset($output_array[4]))? $output_array[4]:$secondArrayName;
                     $usesSecondArray = explode(',', $secondArrayData);
-                    $value[$secondArrayOutputName] = $this->parseValueCollectionSecond($content,$secondArrayName,$usesSecondArray);
+                    $value[$secondArrayOutputName] = $this->parseValueCollectionMultiLevels($content,$usesSecondArray,$secondArrayName);
                 }
                 else
                 {
@@ -228,7 +228,7 @@ class Document extends BaseDocument
                             $thirdArrayOutputName = (isset($output_array[5]))? $output_array[5]:$thirdArrayName;
                             $usesThirdArray = explode(',', $thirdArrayData);
 
-                            $value[$secondArrayOutputName][$thirdArrayOutputName] = $this->parseValueCollectionThird($content,$secondArrayName,$thirdArrayName,$usesThirdArray);
+                            $value[$secondArrayOutputName][$thirdArrayOutputName] = $this->parseValueCollectionMultiLevels($content,$usesThirdArray,$secondArrayName,$thirdArrayName);
                         }
                     }
 
@@ -244,6 +244,7 @@ class Document extends BaseDocument
                     }
 
                     $item = $this->getSelfMatchingValue($content, $matches, $as);
+
 
                     if (is_null($as)) {
                         $value = array_merge($value, $item);
@@ -264,22 +265,31 @@ class Document extends BaseDocument
         return $value;
     }
 
+
     /**
-     * Resolve values by collection for third level.
+     * Resolve values by collection of multi levels.
      *
      * @param  \SimpleXMLElement  $content
+     *  @param  array  $uses
      * @param  string  $secondArrayName
      * @param  string  $thirdArrayName
-     * @param  array  $uses
      *
      * @return array
      */
-    protected function parseValueCollectionThird(SimpleXMLElement $content,$secondArrayName,$thirdArrayName, array $uses)
+    protected function parseValueCollectionMultiLevels(SimpleXMLElement $content, array $uses,$secondArrayName,$thirdArrayName = null)
     {
         $value = [];
         $result = [];
+        // check for 3 level tag
+        if ($thirdArrayName)
+        {
+            $feature = $content->{$secondArrayName}->{$thirdArrayName};
+        }
+        else
+        {
+            $feature = $content->{$secondArrayName};
+        }
 
-        $feature = $content->{$secondArrayName}->{$thirdArrayName};
         if (!empty($feature))
         {
             foreach ($feature as $key=>$contentArray)
@@ -315,55 +325,9 @@ class Document extends BaseDocument
                     }
                 }
                 $result[] =$value;
-            }            
+            }
         }
         return $result;
-    }
-
-    /**
-     * Resolve values by collection for third level.
-     *
-     * @param  \SimpleXMLElement  $content
-     * @param  string  $arrayName
-     * @param  array  $uses
-     *
-     * @return array
-     */
-    protected function parseValueCollectionSecond(SimpleXMLElement $content,$arrayName, array $uses)
-    {
-        $value = [];
-
-        foreach ($uses as $use)
-        {
-            list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
-
-            foreach ($uses as $use)
-            {
-                list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
-                if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                    if ($name == $as) {
-                        $as = null;
-                    }
-
-                    $item = $this->getSelfMatchingValue($content->{$arrayName}, $matches, $as);
-
-                    if (is_null($as)) {
-                        $value = array_merge($value, $item);
-                    } else {
-                        Arr::set($value, $as, $item);
-                    }
-                }
-                else
-                {
-                    if ($name == '@') {
-                        $name = null;
-                    }
-
-                    Arr::set($value, $as, $this->getValue($content->{$arrayName}, $name));
-                }
-            }
-
-        return $value;
     }
 
     /**
