@@ -3,8 +3,7 @@
 namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
-use Laravie\Parser\Support;
-use Tightenco\Collect\Support\Arr;
+use Illuminate\Support\Arr;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
@@ -23,9 +22,9 @@ class Document extends BaseDocument
      *
      * @return $this
      */
-    public function rebase(string $base = null): self
+    public function rebase($base = null)
     {
-        $this->content = Support::fromData($this->getOriginalContent(), $base);
+        $this->content = data_get($this->getOriginalContent(), $base);
 
         return $this;
     }
@@ -39,7 +38,7 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    public function namespaced(string $namespace, array $schema, array $config = []): array
+    public function namespaced($namespace, array $schema, array $config = [])
     {
         $document = $this->getContent();
         $namespaces = $this->getAvailableNamespaces();
@@ -56,12 +55,14 @@ class Document extends BaseDocument
     /**
      * {@inheritdoc}
      */
-    protected function getValue($content, ?string $use, ?string $default = null)
+    protected function getValue($content, $use, $default = null)
     {
         if (preg_match('/^(.*)\[(.*)\]$/', $use, $matches) && $content instanceof SimpleXMLElement) {
             return $this->getValueCollection($content, $matches, $default);
         } elseif (strpos($use, '::') !== false && $content instanceof SimpleXMLElement) {
             return $this->getValueAttribute($content, $use, $default);
+        } elseif (strpos($use, '!') !== false && $content instanceof SimpleXMLElement) {
+            return $this->getInnerText($content, $use, $default);
         }
 
         return $this->getValueData($content, $use, $default);
@@ -92,7 +93,7 @@ class Document extends BaseDocument
      *
      * @return mixed
      */
-    protected function getValueAttribute(SimpleXMLElement $content, string $use, $default = null)
+    protected function getValueAttribute(SimpleXMLElement $content, $use, $default = null)
     {
         return $this->castValue($this->getRawValueAttribute($content, $use, $default));
     }
@@ -101,17 +102,17 @@ class Document extends BaseDocument
      * Resolve value by uses as attribute as raw.
      *
      * @param  \SimpleXMLElement  $content
-     * @param  string|null  $use
+     * @param  string  $use
      * @param  mixed  $default
      *
      * @return mixed
      */
-    protected function getRawValueAttribute(SimpleXMLElement $content, ?string $use, $default = null)
+    protected function getRawValueAttribute(SimpleXMLElement $content, $use, $default = null)
     {
         list($value, $attribute) = explode('::', $use, 2);
 
         if (! empty($value)) {
-            if (is_null($parent = Support::fromObject($content, $value))) {
+            if (is_null($parent = object_get($content, $value))) {
                 return $default;
             }
         } else {
@@ -120,21 +121,41 @@ class Document extends BaseDocument
 
         $attributes = $parent->attributes();
 
-        return Support::fromData($attributes, $attribute, $default);
+        return data_get($attributes, $attribute, $default);
     }
 
     /**
      * Resolve value by uses as data.
      *
      * @param  \SimpleXMLElement  $content
-     * @param  string|null  $use
+     * @param  string  $use
      * @param  mixed  $default
      *
      * @return mixed
      */
-    protected function getValueData(SimpleXMLElement $content, ?string $use, $default = null)
+    protected function getValueData(SimpleXMLElement $content, $use, $default = null)
     {
-        $value = $this->castValue(Support::fromData($content, $use));
+        $value = $this->castValue(data_get($content, $use));
+
+        if (empty($value) && ! in_array($value, ['0'])) {
+            return $default;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Resolve value by uses as data.
+     *
+     * @param  \SimpleXMLElement  $content
+     * @param  string  $use
+     * @param  mixed  $default
+     *
+     * @return mixed
+     */
+    protected function getInnerText(SimpleXMLElement $content, $use, $default = null)
+    {
+        $value = $this->castValue($content[0]);
 
         if (empty($value) && ! in_array($value, ['0'])) {
             return $default;
@@ -150,7 +171,7 @@ class Document extends BaseDocument
      * @param  array  $matches
      * @param  mixed  $default
      *
-     * @return mixed
+     * @return array
      */
     protected function getValueCollection(SimpleXMLElement $content, array $matches, $default = null)
     {
@@ -161,7 +182,7 @@ class Document extends BaseDocument
             list($parent, $namespace) = explode('/', $parent, 2);
         }
 
-        $collection = Support::fromData($content, $parent);
+        $collection = data_get($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
         $uses = explode(',', $matches[2]);
@@ -194,7 +215,7 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    protected function parseValueCollection(SimpleXMLElement $content, array $uses): array
+    protected function parseValueCollection(SimpleXMLElement $content, array $uses)
     {
         $value = [];
 
@@ -234,11 +255,8 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    protected function getSelfMatchingValue(
-        SimpleXMLElement $content,
-        array $matches = [],
-        ?string $alias = null
-    ): array {
+    protected function getSelfMatchingValue(SimpleXMLElement $content, array $matches = [], $alias = null)
+    {
         $name = $matches[1];
         $key = $matches[2];
         $meta = $matches[3];
@@ -271,7 +289,7 @@ class Document extends BaseDocument
      *
      * @return array|null
      */
-    protected function getAvailableNamespaces(): ?array
+    protected function getAvailableNamespaces()
     {
         if (is_null($this->namespaces)) {
             $this->namespaces = $this->getOriginalContent()->getNameSpaces(true);
