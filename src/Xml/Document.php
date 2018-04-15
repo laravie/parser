@@ -62,6 +62,8 @@ class Document extends BaseDocument
             return $this->getValueCollection($content, $matches, $default);
         } elseif (strpos($use, '::') !== false && $content instanceof SimpleXMLElement) {
             return $this->getValueAttribute($content, $use, $default);
+        } elseif (strpos($use, '!') !== false && $content instanceof SimpleXMLElement) {
+            return $this->getInnerText($content, $use, $default);
         }
 
         return $this->getValueData($content, $use, $default);
@@ -135,6 +137,26 @@ class Document extends BaseDocument
     protected function getValueData(SimpleXMLElement $content, ?string $use, $default = null)
     {
         $value = $this->castValue(Support::fromData($content, $use));
+
+        if (empty($value) && ! in_array($value, ['0'])) {
+            return $default;
+        }
+
+        return $value;
+    }
+
+     /**
+     * Resolve value by returning the inner text.
+     *
+     * @param  \SimpleXMLElement  $content
+     * @param  string|null  $use
+     * @param  mixed  $default
+     *
+     * @return mixed
+     */
+    protected function getInnerText(SimpleXMLElement $content, ?string $use, $default = null)
+    {
+        $value = $this->castValue($content[0]);
 
         if (empty($value) && ! in_array($value, ['0'])) {
             return $default;
