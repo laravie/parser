@@ -539,6 +539,23 @@ class DocumentTest extends TestCase
                     ],
                 ],
             ],
+            [
+'<course code="ABC">
+    <title lang="sv">Utmattning</title>
+    <title lang="en">Fatigue</title>
+</course>',
+                [
+                    'code' => ['uses' => '::code'],
+                    'title' => ['uses' => 'title[::lang>locale,@>name]'],
+                ],
+                [
+                    'code' => 'ABC',
+                    'title' => [
+                        ['locale' => 'sv', 'name' => 'Utmattning'],
+                        ['locale' => 'en', 'name' => 'Fatigue'],
+                    ],
+                ],
+            ]
         ];
     }
 }
