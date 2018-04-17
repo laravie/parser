@@ -163,10 +163,9 @@ class Document extends BaseDocument
         $collection = data_get($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
-        //$uses = explode(',', $matches[2]);
-        // use preg_split to split all comma ignoring
-        // the commas inside curly brackets
+        // split all comma ignoring the commas inside curly brackets
         $uses = $this->specialSplit($matches[2]);
+
         $values = [];
 
         if (! $collection instanceof SimpleXMLElement) {
@@ -188,6 +187,7 @@ class Document extends BaseDocument
         return $values;
     }
 
+
     /**
      * Resolve values by collection.
      *
@@ -204,44 +204,240 @@ class Document extends BaseDocument
         foreach ($uses as $use)
         {
             $outputFirstLevel = $this->prepareUse($use);
-            {
-                if (is_array($outputFirstLevel))
-                {
-                    $parent1 = $outputFirstLevel['parent'];
-                    $alias1 = $outputFirstLevel['parent_alias'];
+            if (is_array($outputFirstLevel)) {
+                $parent1 = $outputFirstLevel['parent'];
+                $alias1 = $outputFirstLevel['parent_alias'];
 
-                    $result[$alias1] = $this->parseValueCollectionMultiLevels($content,$outputFirstLevel['array'],$parent1);
-                }
-                else
-                {
-                    list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+                $result[$alias1] = $this->parseValueCollectionMultiLevels($content,$outputFirstLevel['array'],$parent1);
+            } else {
+                list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
-                    if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                        if ($name == $as) {
-                            $as = null;
-                        }
-
-                        $item = $this->getSelfMatchingValue($content, $matches, $as);
-
-
-                        if (is_null($as)) {
-                            $value = array_merge($value, $item);
-                        } else {
-                            Arr::set($value, $as, $item);
-                        }
+                if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                    if ($name == $as) {
+                        $as = null;
                     }
-                    else
-                    {
-                        if ($name == '@') {
-                            $name = null;
-                        }
-                        Arr::set($value, $as, $this->getValue($content, $name));
+
+                    $item = $this->getSelfMatchingValue($content, $matches, $as);
+
+                    if (is_null($as)) {
+                        $value = array_merge($value, $item);
+                    } else {
+                        Arr::set($value, $as, $item);
                     }
-                    $result = $value;
+                } else {
+                    if ($name == '@') {
+                        $name = null;
+                    }
+                    Arr::set($value, $as, $this->getValue($content, $name));
                 }
+                $result = $value;
             }
         }
         return $result;
+    }
+
+    /**
+     * Resolve values by collection of multi levels.
+     *
+     * @param  \SimpleXMLElement  $content
+     * @param  array  $uses
+     * @param  string  $objectName
+     *
+     * @return array
+     */
+    protected function parseValueCollectionMultiLevels(SimpleXMLElement $content, array $uses,$objectName)
+    {
+        $value = [];
+        $result = [];
+        $feature = $content->{$objectName};
+
+        if (!empty($feature)) {
+            foreach ($feature as $key => $contentArray) {
+                foreach ($uses as $use) {
+                    if (strpos($use, '{') !== false) {
+                        $outputSecondLevel = $this->prepareUse($use);
+                        $parent2 = $outputSecondLevel['parent'];
+                        $alias2 = $outputSecondLevel['parent_alias'];
+
+                        $value[$alias2] = $this->parseValueCollectionMultiLevels($contentArray,$outputSecondLevel['array'],$parent2);
+                    } else {
+                        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+                        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                            if ($name == $as) {
+                                $as = null;
+                            }
+
+                            $item = $this->getSelfMatchingValue($content, $matches, $as);
+
+                            if (is_null($as)) {
+                                $value = array_merge($value, $item);
+                            } else {
+                                Arr::set($value, $as, $item);
+                            }
+                        } else {
+
+                            if ($name == '@') {
+                                $name = null;
+                            }
+                            Arr::set($value, $as, $this->getValue($contentArray, $name));
+                        }
+                    }
+                }
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Resolve values by collection of one level.
+     *
+     * @param  \SimpleXMLElement  $content
+     * @param  array  $use
+     *
+     * @return array
+     */
+    protected function parseValueCollectionOneLevel(SimpleXMLElement $content, $use)
+    {
+        $value = [];
+
+        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+
+        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+            if ($name == $as) {
+                $as = null;
+            }
+
+            $item = $this->getSelfMatchingValue($content, $matches, $as);
+
+            if (is_null($as)) {
+                $value = array_merge($value, $item);
+            } else {
+                Arr::set($value, $as, $item);
+            }
+        } else {
+            if ($name == '@') {
+                $name = null;
+            }
+            Arr::set($value, $as, $this->getValue($content, $name));
+        }
+        return $value;
+    }
+
+    /**
+     * prepare use variable for using.
+     *
+     * @param  string  $use
+     *
+     * @return array or string
+     */
+    protected function prepareUse($use)
+    {
+        $result = $this->specialSplitAdvanced($use);
+        if (empty($result['parent'])) {
+            return $use;
+        } else {
+            return $result;
+        }
+    }
+
+    /**
+     * split the use .
+     *
+     * @param  string  $string
+     *
+     * @return array
+     */
+    public function specialSplit($string) {
+        $level = 0;     // number of nested sets of brackets
+        $ret = [''];    // array to return
+        $cur = 0;       // current index in the array to return, for convenience
+
+        for ($i = 0; $i < strlen($string); $i++) {
+            switch ($string[$i]) {
+                case '{':
+                    $level++;
+                    $ret[$cur] .= '{';
+                    break;
+                case '}':
+                    $level--;
+                    $ret[$cur] .= '}';
+                    break;
+                case ',':
+                    if ($level == 0) {
+                        $cur++;
+                        $ret[$cur] = '';
+                        break;
+                    }
+                default:
+                    $ret[$cur] .= $string[$i];
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * split the use .
+     *
+     * @param  string  $string
+     *
+     * @return array
+     */
+    public function specialSplitAdvanced($string) {
+        $level = 0;     // number of nested sets of brackets
+        $ret = [''];    // array to return
+        $cur = 0;       // current index in the array to return, for convenience
+        $parent = '';
+        for ($i = 0; $i < strlen($string); $i++) {
+            switch ($string[$i]) {
+                case '{':
+                    if ($level == 0) {
+                        $parent = $ret[0];
+                        $ret[$cur] = '';
+                        $level++;
+                        break;
+                    }
+                    else{
+                        //$cur++;
+                        $ret[$cur] .= '{';
+                        $level++;
+                        break;
+                    }
+                case ',':
+                    if ($level == 1) {
+                        $cur++;
+                        $ret[$cur] = '';
+                        break;
+                    }
+                    else{
+                        $ret[$cur] .= ',';
+                        break;
+                    }
+                case '}':
+                    if ($level == 2) {
+                        $ret[$cur] .= '}';
+                        $level--;
+                        break;
+                    }
+                    elseif ($level == 1){
+                        $cur++;
+                        $ret[$cur] = '';
+                        $level--;
+                        break;
+                    }
+                default:
+                    $ret[$cur] .= $string[$i];
+            }
+        }
+        $parent_alias = $ret[$cur];
+        if ($parent_alias) {
+            $parent_alias = str_replace(">","",$parent_alias);
+        } else {
+            $parent_alias = $parent;
+        }
+        array_pop($ret);
+
+        return ['parent'=>$parent,'parent_alias'=>$parent_alias,'array'=>$ret];
     }
 
     /**
@@ -295,235 +491,4 @@ class Document extends BaseDocument
 
         return $this->namespaces;
     }
-
-    /**
-     * Resolve values by collection of multi levels.
-     *
-     * @param  \SimpleXMLElement  $content
-     * @param  array  $uses
-     * @param  string  $objectName
-     *
-     * @return array
-     */
-    protected function parseValueCollectionMultiLevels(SimpleXMLElement $content, array $uses,$objectName)
-    {
-        $value = [];
-        $result = [];
-
-        $feature = $content->{$objectName};
-
-        if (!empty($feature))
-        {
-            foreach ($feature as $key=>$contentArray)
-            {
-                foreach ($uses as $use)
-                {
-                    if (strpos($use, '{') !== false)
-                    {
-                        $outputSecondLevel = $this->prepareUse($use);
-                        $parent2 = $outputSecondLevel['parent'];
-                        $alias2 = $outputSecondLevel['parent_alias'];
-
-                        $value[$alias2] = $this->parseValueCollectionMultiLevels($contentArray,$outputSecondLevel['array'],$parent2);
-                    }
-                    else
-                    {
-                        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
-                        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches))
-                        {
-                            if ($name == $as)
-                            {
-                                $as = null;
-                            }
-
-                            $item = $this->getSelfMatchingValue($content, $matches, $as);
-
-                            if (is_null($as))
-                            {
-                                $value = array_merge($value, $item);
-                            }
-                            else
-                            {
-                                Arr::set($value, $as, $item);
-                            }
-                        }
-                        else
-                        {
-
-                            if ($name == '@') {
-                                $name = null;
-                            }
-
-                            Arr::set($value, $as, $this->getValue($contentArray, $name));
-                        }
-                    }
-                }
-                $result[] = $value;
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Resolve values by collection of one level.
-     *
-     * @param  \SimpleXMLElement  $content
-     * @param  array  $use
-     *
-     * @return array
-     */
-    protected function parseValueCollectionOneLevel(SimpleXMLElement $content, $use)
-    {
-        $value = [];
-
-        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
-
-                if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                    if ($name == $as) {
-                        $as = null;
-                    }
-
-                    $item = $this->getSelfMatchingValue($content, $matches, $as);
-
-                    if (is_null($as)) {
-                        $value = array_merge($value, $item);
-                    } else {
-                        Arr::set($value, $as, $item);
-                    }
-                }
-                else
-                {
-                    if ($name == '@') {
-                        $name = null;
-                    }
-                    Arr::set($value, $as, $this->getValue($content, $name));
-                }
-        return $value;
-    }
-
-    /**
-     * prepare use variable for using.
-     *
-     * @param  array  $use
-     *
-     * @return array or string
-     */
-    protected function prepareUse($use)
-    {
-        $result = $this->specialSplitAdvanced($use);
-        if (empty($result['parent']))
-        {
-            return $use;
-        }
-        else{
-            return $result;
-        }
-    }
-
-    /**
-     * split the use .
-     *
-     * @param  string  $string
-     *
-     * @return array
-     */
-    public function specialSplit($string) {
-        $level = 0;       // number of nested sets of brackets
-        $ret = array(''); // array to return
-        $cur = 0;         // current index in the array to return, for convenience
-
-        for ($i = 0; $i < strlen($string); $i++) {
-            switch ($string[$i]) {
-                case '{':
-                    $level++;
-                    $ret[$cur] .= '{';
-                    break;
-                case '}':
-                    $level--;
-                    $ret[$cur] .= '}';
-                    break;
-                case ',':
-                    if ($level == 0) {
-                        $cur++;
-                        $ret[$cur] = '';
-                        break;
-                    }
-                // else fallthrough
-                default:
-                    $ret[$cur] .= $string[$i];
-            }
-        }
-
-        return $ret;
-    }
-
-    /**
-     * split the use .
-     *
-     * @param  string  $string
-     *
-     * @return array
-     */
-    public function specialSplitAdvanced($string) {
-        $level = 0;       // number of nested sets of brackets
-        $ret = array(''); // array to return
-        $cur = 0;         // current index in the array to return, for convenience
-        $parent = '';
-        for ($i = 0; $i < strlen($string); $i++) {
-            switch ($string[$i]) {
-
-                case '{':
-                    if ($level == 0) {
-                        $parent = $ret[0];
-                        $ret[$cur] = '';
-                        $level++;
-                        break;
-                    }
-                    else{
-                        //$cur++;
-                        $ret[$cur] .= '{';
-                        $level++;
-                        break;
-                    }
-
-                case ',':
-                    if ($level == 1) {
-                        $cur++;
-                        $ret[$cur] = '';
-                        break;
-                    }
-                    else{
-                        $ret[$cur] .= ',';
-                        break;
-                    }
-
-                case '}':
-                    if ($level == 2) {
-                        $ret[$cur] .= '}';
-                        $level--;
-                        break;
-                    }
-                    elseif ($level == 1){
-                        $cur++;
-                        $ret[$cur] = '';
-                        $level--;
-                        break;
-                    }
-
-                default:
-                    $ret[$cur] .= $string[$i];
-            }
-        }
-        $parent_alias = $ret[$cur];
-        if ($parent_alias) {
-            $parent_alias = str_replace(">","",$parent_alias);
-        }
-        else{
-            $parent_alias = $parent;
-        }
-        array_pop($ret);
-
-        return $result = ['parent'=>$parent,'parent_alias'=>$parent_alias,'array'=>$ret];
-    }
-
 }
