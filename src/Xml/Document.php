@@ -8,7 +8,7 @@ use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
 {
-    use Concerns\UsesParser;
+    use Concerns\SupportMultiLevel;
 
     /**
      * Available namespaces.
@@ -228,59 +228,6 @@ class Document extends BaseDocument
                     Arr::set($value, $as, $this->getValue($content, $name));
                 }
                 $result = $value;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Resolve values by collection of multi levels.
-     *
-     * @param  \SimpleXMLElement  $content
-     * @param  array  $uses
-     * @param  string  $objectName
-     *
-     * @return array
-     */
-    protected function parseMultiLevelsValueCollection(SimpleXMLElement $content, Definitions\MultiLevel $multilevel)
-    {
-        $value = [];
-        $result = [];
-        $features = $content->{$multilevel->getRoot()};
-
-        if (! empty($features)) {
-            foreach ($features as $key => $feature) {
-                foreach ($multilevel as $use) {
-                    if (strpos($use, '{') !== false) {
-                        $secondary = $this->resolveUses($use);
-
-                        $value[$secondary->getKey()] = $this->parseMultiLevelsValueCollection($feature, $secondary);
-                    } else {
-                        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
-
-                        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                            if ($name == $as) {
-                                $as = null;
-                            }
-
-                            $item = $this->getSelfMatchingValue($feature, $matches, $as);
-
-                            if (is_null($as)) {
-                                $value = array_merge($value, $item);
-                            } else {
-                                Arr::set($value, $as, $item);
-                            }
-                        } else {
-                            if ($name == '@') {
-                                $name = null;
-                            }
-
-                            Arr::set($value, $as, $this->getValue($feature, $name));
-                        }
-                    }
-                }
-                $result[] = $value;
             }
         }
 

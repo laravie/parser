@@ -2,9 +2,11 @@
 
 namespace Laravie\Parser\Xml\Concerns;
 
+use SimpleXMLElement;
+use Illuminate\Support\Arr;
 use Laravie\Parser\Xml\Definitions\MultiLevel;
 
-trait UsesParser
+trait SupportMultiLevel
 {
     /**
      * prepare use variable for using.
@@ -118,5 +120,58 @@ trait UsesParser
         array_pop($uses);
 
         return new MultiLevel($root, $alias, $uses);
+    }
+
+    /**
+     * Resolve values by collection of multi levels.
+     *
+     * @param  \SimpleXMLElement  $content
+     * @param  \Laravie\Parser\Xml\Definitions\MultiLevel  $multilevel
+     *
+     * @return array
+     */
+    protected function parseMultiLevelsValueCollection(SimpleXMLElement $content, MultiLevel $multilevel)
+    {
+        $value = [];
+        $result = [];
+        $features = $content->{$multilevel->getRoot()};
+
+        if (! empty($features)) {
+            foreach ($features as $key => $feature) {
+                foreach ($multilevel as $use) {
+                    if (strpos($use, '{') !== false) {
+                        $secondary = $this->resolveUses($use);
+
+                        $value[$secondary->getKey()] = $this->parseMultiLevelsValueCollection($feature, $secondary);
+                    } else {
+                        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+
+                        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                            if ($name == $as) {
+                                $as = null;
+                            }
+
+                            $item = $this->getSelfMatchingValue($feature, $matches, $as);
+
+                            if (is_null($as)) {
+                                $value = array_merge($value, $item);
+                            } else {
+                                Arr::set($value, $as, $item);
+                            }
+                        } else {
+                            if ($name == '@') {
+                                $name = null;
+                            }
+
+                            Arr::set($value, $as, $this->getValue($feature, $name));
+                        }
+                    }
+                }
+
+                $result[] = $value;
+            }
+        }
+
+        return $result;
     }
 }
