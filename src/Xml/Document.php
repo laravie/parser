@@ -8,6 +8,8 @@ use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
 {
+    use Concerns\UsesParser;
+
     /**
      * Available namespaces.
      *
@@ -163,8 +165,7 @@ class Document extends BaseDocument
         $collection = data_get($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
-        // split all comma ignoring the commas inside curly brackets
-        $uses = $this->specialSplit($matches[2]);
+        $uses = $this->parseBasicUses($matches[2]);
 
         $values = [];
 
@@ -201,13 +202,10 @@ class Document extends BaseDocument
         $result = [];
 
         foreach ($uses as $use) {
-            $outputFirstLevel = $this->prepareUse($use);
+            $primary = $this->resolveUses($use);
 
-            if (is_array($outputFirstLevel)) {
-                $parent1 = $outputFirstLevel['parent'];
-                $alias1 = $outputFirstLevel['parent_alias'];
-
-                $result[$alias1] = $this->parseValueCollectionMultiLevels($content, $outputFirstLevel['array'], $parent1);
+            if ($primary instanceof Definitions\MultiLevel) {
+                $result[$primary->getKey()] = $this->parseMultiLevelsValueCollection($content, $primary);
             } else {
                 list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
@@ -245,28 +243,28 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    protected function parseValueCollectionMultiLevels(SimpleXMLElement $content, array $uses, $objectName)
+    protected function parseMultiLevelsValueCollection(SimpleXMLElement $content, Definitions\MultiLevel $multilevel)
     {
         $value = [];
         $result = [];
-        $feature = $content->{$objectName};
+        $features = $content->{$multilevel->getRoot()};
 
-        if (! empty($feature)) {
-            foreach ($feature as $key => $contentArray) {
-                foreach ($uses as $use) {
+        if (! empty($features)) {
+            foreach ($features as $key => $feature) {
+                foreach ($multilevel as $use) {
                     if (strpos($use, '{') !== false) {
-                        $outputSecondLevel = $this->prepareUse($use);
-                        $parent2 = $outputSecondLevel['parent'];
-                        $alias2 = $outputSecondLevel['parent_alias'];
-                        $value[$alias2] = $this->parseValueCollectionMultiLevels($contentArray, $outputSecondLevel['array'], $parent2);
+                        $secondary = $this->resolveUses($use);
+
+                        $value[$secondary->getKey()] = $this->parseMultiLevelsValueCollection($feature, $secondary);
                     } else {
                         list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+
                         if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                             if ($name == $as) {
                                 $as = null;
                             }
 
-                            $item = $this->getSelfMatchingValue($contentArray, $matches, $as);
+                            $item = $this->getSelfMatchingValue($feature, $matches, $as);
 
                             if (is_null($as)) {
                                 $value = array_merge($value, $item);
@@ -277,7 +275,8 @@ class Document extends BaseDocument
                             if ($name == '@') {
                                 $name = null;
                             }
-                            Arr::set($value, $as, $this->getValue($contentArray, $name));
+
+                            Arr::set($value, $as, $this->getValue($feature, $name));
                         }
                     }
                 }
@@ -286,125 +285,6 @@ class Document extends BaseDocument
         }
 
         return $result;
-    }
-
-    /**
-     * prepare use variable for using.
-     *
-     * @param  string  $use
-     *
-     * @return array or string
-     */
-    protected function prepareUse($use)
-    {
-        $result = $this->specialSplitAdvanced($use);
-        if (empty($result['parent'])) {
-            return $use;
-        } else {
-            return $result;
-        }
-    }
-
-    /**
-     * split the use .
-     *
-     * @param  string  $string
-     *
-     * @return array
-     */
-    protected function specialSplit($string)
-    {
-        $level = 0;     // number of nested sets of brackets
-        $ret = [''];    // array to return
-        $cur = 0;       // current index in the array to return, for convenience
-
-        for ($i = 0; $i < strlen($string); ++$i) {
-            switch ($string[$i]) {
-                case '{':
-                    $level++;
-                    $ret[$cur] .= '{';
-                    break;
-                case '}':
-                    $level--;
-                    $ret[$cur] .= '}';
-                    break;
-                case ',':
-                    if ($level == 0) {
-                        ++$cur;
-                        $ret[$cur] = '';
-                        break;
-                    }
-                    // no break
-                default:
-                    $ret[$cur] .= $string[$i];
-            }
-        }
-
-        return $ret;
-    }
-
-    /**
-     * split the use .
-     *
-     * @param  string  $string
-     *
-     * @return array
-     */
-    protected function specialSplitAdvanced($string)
-    {
-        $level = 0;     // number of nested sets of brackets
-        $ret = [''];    // array to return
-        $cur = 0;       // current index in the array to return, for convenience
-        $parent = '';
-        for ($i = 0; $i < strlen($string); ++$i) {
-            switch ($string[$i]) {
-                case '{':
-                    if ($level == 0) {
-                        $parent = $ret[0];
-                        $ret[$cur] = '';
-                        ++$level;
-                        break;
-                    } else {
-                        $ret[$cur] .= '{';
-                        ++$level;
-                        break;
-                    }
-                    // no break
-                case ',':
-                    if ($level == 1) {
-                        ++$cur;
-                        $ret[$cur] = '';
-                        break;
-                    } else {
-                        $ret[$cur] .= ',';
-                        break;
-                    }
-                    // no break
-                case '}':
-                    if ($level == 2) {
-                        $ret[$cur] .= '}';
-                        --$level;
-                        break;
-                    } elseif ($level == 1) {
-                        ++$cur;
-                        $ret[$cur] = '';
-                        --$level;
-                        break;
-                    }
-                    // no break
-                default:
-                    $ret[$cur] .= $string[$i];
-            }
-        }
-        $parent_alias = $ret[$cur];
-        if ($parent_alias) {
-            $parent_alias = str_replace('>', '', $parent_alias);
-        } else {
-            $parent_alias = $parent;
-        }
-        array_pop($ret);
-
-        return ['parent' => $parent, 'parent_alias' => $parent_alias, 'array' => $ret];
     }
 
     /**
