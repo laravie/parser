@@ -55,7 +55,6 @@ class DocumentTest extends TestCase
                 </people>'
         ));
 
-
         $result = $stub->namespaced('p', [], []);
 
         $this->assertCount(0, $result);
@@ -555,8 +554,156 @@ class DocumentTest extends TestCase
                         ['locale' => 'en', 'name' => 'Fatigue'],
                     ],
                 ],
-            ]
+            ],
         ];
+    }
+
+    /**
+     * Test Laravie\Parser\Xml\Document::parseValueCollectionMultiLevels() method.
+     * this test made by Ahmed Bermawy
+     * for testing multiLevels of arrays.
+     *
+     * @test
+     */
+    public function testParseValueCollectionMultiLevels()
+    {
+        $expected = [
+            'product' => [
+                [
+                    'node_id' => '98b9b3498bd0',
+                    'product_features' => [
+                        [
+                            'feature' => [
+                                [
+                                    'name' => 'Symbol Info',
+                                    'value' => 'Angabe der Bemessungstemperatur nach IEC. Dies ist die höchste Temperatur, für welche die Fassung konstruiert wurde.  Eventuell ist eine zusätzliche Information für die Temperatur an der Fassungsrückseite angegeben (z. B. Tm 110° C).',
+                                    'feature_translation_name' => 'Symbol Info',
+                                    'feature_translation_value' => 'The maximum operating temperature is given by a T marking according to IEC. This is the maximum continuous operating temperature for which the lampholder is designed.  Additional information may be given for the rear of the lampholder (i.e.. Tm 110° C). For UL temperature marks, contact BJB.',
+                                ],
+                                [
+                                    'name' => 'Symbol Ausprägung',
+                                    'value' => '0,4 - 1,5',
+                                    'feature_translation_name' => 'Symbol value',
+                                    'feature_translation_value' => '0.4 - 1.5',
+                                ],
+                                [
+                                    'name' => 'Symbol Text',
+                                    'value' => 'Leuchtwanddicke mit Angabe in mm',
+                                    'feature_translation_name' => 'Symbol Text',
+                                    'feature_translation_value' => 'Mounting material thickness (in mm)',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'mime_info' => [
+                        [
+                            'mime' => [
+                                [
+                                    'id' => '1',
+                                    'caption' => 'Web_Foto_Standard_1',
+                                    'mime_type' => 'image/jpeg',
+                                    'mime_source' => 'images\\Web_Foto_Standard_1\\47_319_2224.png',
+                                    'mime_description' => 'Web Foto Standard 1',
+                                ],
+                                [
+                                    'id' => '2',
+                                    'caption' => 'Web_Zeichnung_Standard_1',
+                                    'mime_type' => 'image/jpeg',
+                                    'mime_source' => 'images\\Web_Zeichnung_Standard_1\\test05.gif',
+                                    'mime_description' => 'Web Zeichnung Standard 1',
+                                ],
+                                [
+                                    'id' => '3',
+                                    'caption' => 'Zusatzinformation_1',
+                                    'mime_type' => 'application/pdf',
+                                    'mime_source' => 'images\\Zusatzinformation_1\\Informationen.pdf',
+                                    'mime_description' => 'Zusatzinformation 1',
+                                ],
+                                [
+                                    'id' => '4',
+                                    'caption' => 'CAD3D',
+                                    'mime_type' => 'image/jpeg',
+                                    'mime_source' => 'CAD3D\\01TYA5YY04X_T.ZIP',
+                                    'mime_description' => null,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $stub = new DocumentStub();
+
+        $stub->setContent(simplexml_load_string('<api>
+<T_NEW_CATALOG>
+    <PRODUCT mode="new">
+      <NODE_ID>98b9b3498bd0</NODE_ID>
+      <PRODUCT_FEATURES>
+        <FEATURE>
+          <FNAME>Symbol Info</FNAME>
+          <FVALUE>Angabe der Bemessungstemperatur nach IEC. Dies ist die höchste Temperatur, für welche die Fassung konstruiert wurde.  Eventuell ist eine zusätzliche Information für die Temperatur an der Fassungsrückseite angegeben (z. B. Tm 110° C).</FVALUE>
+          <TRANSLATION_US>
+            <FNAME>Symbol Info</FNAME>
+            <FVALUE>The maximum operating temperature is given by a T marking according to IEC. This is the maximum continuous operating temperature for which the lampholder is designed.  Additional information may be given for the rear of the lampholder (i.e.. Tm 110° C). For UL temperature marks, contact BJB.</FVALUE>
+          </TRANSLATION_US>
+        </FEATURE>
+        <FEATURE>
+          <FNAME>Symbol Ausprägung</FNAME>
+          <FVALUE>0,4 - 1,5</FVALUE>
+          <TRANSLATION_US>
+            <FNAME>Symbol value</FNAME>
+            <FVALUE>0.4 - 1.5</FVALUE>
+          </TRANSLATION_US>
+        </FEATURE>
+        <FEATURE>
+          <FNAME>Symbol Text</FNAME>
+          <FVALUE>Leuchtwanddicke mit Angabe in mm</FVALUE>
+          <TRANSLATION_US>
+            <FNAME>Symbol Text</FNAME>
+            <FVALUE>Mounting material thickness (in mm)</FVALUE>
+          </TRANSLATION_US>
+        </FEATURE>
+      </PRODUCT_FEATURES>
+      <MIME_INFO>
+        <MIME>
+          <property id="id">1</property>
+          <property id="caption">Web_Foto_Standard_1</property>
+          <MIME_TYPE>image/jpeg</MIME_TYPE>
+          <MIME_SOURCE>images\Web_Foto_Standard_1\47_319_2224.png</MIME_SOURCE>
+          <MIME_DESCRIPTION>Web Foto Standard 1</MIME_DESCRIPTION>
+        </MIME>
+        <MIME>
+          <property id="id">2</property>
+          <property id="caption">Web_Zeichnung_Standard_1</property>
+          <MIME_TYPE>image/jpeg</MIME_TYPE>
+          <MIME_SOURCE>images\Web_Zeichnung_Standard_1\test05.gif</MIME_SOURCE>
+          <MIME_DESCRIPTION>Web Zeichnung Standard 1</MIME_DESCRIPTION>
+        </MIME>
+        <MIME>
+          <property id="id">3</property>
+          <property id="caption">Zusatzinformation_1</property>
+          <MIME_TYPE>application/pdf</MIME_TYPE>
+          <MIME_SOURCE>images\Zusatzinformation_1\Informationen.pdf</MIME_SOURCE>
+          <MIME_DESCRIPTION>Zusatzinformation 1</MIME_DESCRIPTION>
+        </MIME>
+        <MIME>
+          <property id="id">4</property>
+          <property id="caption">CAD3D</property>
+          <MIME_TYPE>image/jpeg</MIME_TYPE>
+          <MIME_SOURCE>CAD3D\01TYA5YY04X_T.ZIP</MIME_SOURCE>
+          <MIME_DESCRIPTION></MIME_DESCRIPTION>
+        </MIME>
+      </MIME_INFO>
+    </PRODUCT>
+</T_NEW_CATALOG>
+</api>'));
+
+        $data = $stub->parse([
+            'product' => ['uses' => 'T_NEW_CATALOG.PRODUCT[NODE_ID>node_id,PRODUCT_FEATURES{FEATURE{FNAME>name,FVALUE>value,TRANSLATION_US.FNAME>feature_translation_name,TRANSLATION_US.FVALUE>feature_translation_value}>feature}>product_features,MIME_INFO{MIME{property(::id=@),MIME_TYPE>mime_type,MIME_SOURCE>mime_source,MIME_DESCRIPTION>mime_description}>mime}>mime_info]'],
+        ]);
+
+        $this->assertEquals($expected, $data);
     }
 }
 
