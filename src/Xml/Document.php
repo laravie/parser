@@ -362,9 +362,7 @@ class Document extends BaseDocument
                         $ret[$cur] = '';
                         $level++;
                         break;
-                    }
-                    else{
-                        //$cur++;
+                    } else {
                         $ret[$cur] .= '{';
                         $level++;
                         break;
@@ -374,8 +372,7 @@ class Document extends BaseDocument
                         $cur++;
                         $ret[$cur] = '';
                         break;
-                    }
-                    else{
+                    } else {
                         $ret[$cur] .= ',';
                         break;
                     }
@@ -384,8 +381,7 @@ class Document extends BaseDocument
                         $ret[$cur] .= '}';
                         $level--;
                         break;
-                    }
-                    elseif ($level == 1){
+                    } elseif ($level == 1) {
                         $cur++;
                         $ret[$cur] = '';
                         $level--;
