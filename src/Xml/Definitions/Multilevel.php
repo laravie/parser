@@ -12,14 +12,14 @@ class MultiLevel implements IteratorAggregate
      *
      * @var string
      */
-    protected $root;
+    protected $root = '';
 
     /**
      * Alias definition.
      *
      * @var string
      */
-    protected $alias;
+    protected $alias = '';
 
     /**
      * Uses definition.
@@ -35,19 +35,19 @@ class MultiLevel implements IteratorAggregate
      * @param  string  $alias
      * @param  array  $uses
      */
-    public function __construct($root, $alias, array $uses)
+    public function __construct(string $root, string $alias, array $uses)
     {
         $this->root = $root;
         $this->alias = $alias;
         $this->uses = $uses;
     }
 
-    public function getRoot()
+    public function getRoot(): string
     {
         return $this->root;
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return $this->alias;
     }

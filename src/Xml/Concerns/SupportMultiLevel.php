@@ -3,7 +3,7 @@
 namespace Laravie\Parser\Xml\Concerns;
 
 use SimpleXMLElement;
-use Illuminate\Support\Arr;
+use Tightenco\Collect\Support\Arr;
 use Laravie\Parser\Xml\Definitions\MultiLevel;
 
 trait SupportMultiLevel
@@ -15,7 +15,7 @@ trait SupportMultiLevel
      *
      * @return \Laravie\Parser\Xml\Definitions\MultiLevel|string
      */
-    protected function resolveUses($uses)
+    protected function resolveUses(string $uses)
     {
         $result = $this->parseAdvancedUses($uses);
 
@@ -29,7 +29,7 @@ trait SupportMultiLevel
      *
      * @return array
      */
-    protected function parseBasicUses($value)
+    protected function parseBasicUses(string $value): array
     {
         $level = 0;
         $uses = [''];
@@ -67,7 +67,7 @@ trait SupportMultiLevel
      *
      * @return \Laravie\Parser\Xml\Definitions\MultiLevel
      */
-    protected function parseAdvancedUses($value)
+    protected function parseAdvancedUses(string $value): MultiLevel
     {
         $level = 0;
         $uses = [''];
@@ -130,7 +130,7 @@ trait SupportMultiLevel
      *
      * @return array
      */
-    protected function parseMultiLevelsValueCollection(SimpleXMLElement $content, MultiLevel $multilevel)
+    protected function parseMultiLevelsValueCollection(SimpleXMLElement $content, MultiLevel $multilevel): array
     {
         $value = [];
         $result = [];
