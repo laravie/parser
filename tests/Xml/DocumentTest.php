@@ -55,7 +55,6 @@ class DocumentTest extends TestCase
                 </people>'
         ));
 
-
         $result = $stub->namespaced('p', [], []);
 
         $this->assertCount(0, $result);
@@ -555,82 +554,83 @@ class DocumentTest extends TestCase
                         ['locale' => 'en', 'name' => 'Fatigue'],
                     ],
                 ],
-            ]
+            ],
         ];
     }
 
     /**
      * Test Laravie\Parser\Xml\Document::parseValueCollectionMultiLevels() method.
-     * this test made by Ahmed Bermawy 
-     * for testing multiLevels of arrays
+     * this test made by Ahmed Bermawy
+     * for testing multiLevels of arrays.
+     *
      * @test
      */
     public function testParseValueCollectionMultiLevels()
     {
         $expected = [
-            "product"=> [
+            'product' => [
                 [
-                    "node_id"=> "98b9b3498bd0",
-                    "product_features"=> [
+                    'node_id' => '98b9b3498bd0',
+                    'product_features' => [
                         [
-                            "feature"=> [
+                            'feature' => [
                                 [
-                                    "name"=> "Symbol Info",
-                                    "value"=> "Angabe der Bemessungstemperatur nach IEC. Dies ist die höchste Temperatur, für welche die Fassung konstruiert wurde.  Eventuell ist eine zusätzliche Information für die Temperatur an der Fassungsrückseite angegeben (z. B. Tm 110° C).",
-                                    "feature_translation_name"=> "Symbol Info",
-                                    "feature_translation_value"=> "The maximum operating temperature is given by a T marking according to IEC. This is the maximum continuous operating temperature for which the lampholder is designed.  Additional information may be given for the rear of the lampholder (i.e.. Tm 110° C). For UL temperature marks, contact BJB."
+                                    'name' => 'Symbol Info',
+                                    'value' => 'Angabe der Bemessungstemperatur nach IEC. Dies ist die höchste Temperatur, für welche die Fassung konstruiert wurde.  Eventuell ist eine zusätzliche Information für die Temperatur an der Fassungsrückseite angegeben (z. B. Tm 110° C).',
+                                    'feature_translation_name' => 'Symbol Info',
+                                    'feature_translation_value' => 'The maximum operating temperature is given by a T marking according to IEC. This is the maximum continuous operating temperature for which the lampholder is designed.  Additional information may be given for the rear of the lampholder (i.e.. Tm 110° C). For UL temperature marks, contact BJB.',
                                 ],
                                 [
-                                    "name"=> "Symbol Ausprägung",
-                                    "value"=> "0,4 - 1,5",
-                                    "feature_translation_name"=> "Symbol value",
-                                    "feature_translation_value"=> "0.4 - 1.5"
+                                    'name' => 'Symbol Ausprägung',
+                                    'value' => '0,4 - 1,5',
+                                    'feature_translation_name' => 'Symbol value',
+                                    'feature_translation_value' => '0.4 - 1.5',
                                 ],
                                 [
-                                    "name"=> "Symbol Text",
-                                    "value"=> "Leuchtwanddicke mit Angabe in mm",
-                                    "feature_translation_name"=> "Symbol Text",
-                                    "feature_translation_value"=> "Mounting material thickness (in mm)"
-                                ]
-                            ]
-                        ]
+                                    'name' => 'Symbol Text',
+                                    'value' => 'Leuchtwanddicke mit Angabe in mm',
+                                    'feature_translation_name' => 'Symbol Text',
+                                    'feature_translation_value' => 'Mounting material thickness (in mm)',
+                                ],
+                            ],
+                        ],
                     ],
-                    "mime_info"=> [
+                    'mime_info' => [
                         [
-                            "mime"=> [
+                            'mime' => [
                                 [
-                                    "id"=> '1',
-                                    "caption"=> 'Web_Foto_Standard_1',
-                                    "mime_type"=> "image/jpeg",
-                                    "mime_source"=> "images\\Web_Foto_Standard_1\\47_319_2224.png",
-                                    "mime_description"=> "Web Foto Standard 1"
+                                    'id' => '1',
+                                    'caption' => 'Web_Foto_Standard_1',
+                                    'mime_type' => 'image/jpeg',
+                                    'mime_source' => 'images\\Web_Foto_Standard_1\\47_319_2224.png',
+                                    'mime_description' => 'Web Foto Standard 1',
                                 ],
                                 [
-                                    "id"=> '2',
-                                    "caption"=> 'Web_Zeichnung_Standard_1',
-                                    "mime_type"=> "image/jpeg",
-                                    "mime_source"=> "images\\Web_Zeichnung_Standard_1\\test05.gif",
-                                    "mime_description"=> "Web Zeichnung Standard 1"
+                                    'id' => '2',
+                                    'caption' => 'Web_Zeichnung_Standard_1',
+                                    'mime_type' => 'image/jpeg',
+                                    'mime_source' => 'images\\Web_Zeichnung_Standard_1\\test05.gif',
+                                    'mime_description' => 'Web Zeichnung Standard 1',
                                 ],
                                 [
-                                    "id"=> '3',
-                                    "caption"=> 'Zusatzinformation_1',
-                                    "mime_type"=> "application/pdf",
-                                    "mime_source"=> "images\\Zusatzinformation_1\\Informationen.pdf",
-                                    "mime_description"=> "Zusatzinformation 1"
+                                    'id' => '3',
+                                    'caption' => 'Zusatzinformation_1',
+                                    'mime_type' => 'application/pdf',
+                                    'mime_source' => 'images\\Zusatzinformation_1\\Informationen.pdf',
+                                    'mime_description' => 'Zusatzinformation 1',
                                 ],
                                 [
-                                    "id"=> '4',
-                                    "caption"=> 'CAD3D',
-                                    "mime_type"=> "image/jpeg",
-                                    "mime_source"=> "CAD3D\\01TYA5YY04X_T.ZIP",
-                                    "mime_description"=> null,
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                    'id' => '4',
+                                    'caption' => 'CAD3D',
+                                    'mime_type' => 'image/jpeg',
+                                    'mime_source' => 'CAD3D\\01TYA5YY04X_T.ZIP',
+                                    'mime_description' => null,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $stub = new DocumentStub();

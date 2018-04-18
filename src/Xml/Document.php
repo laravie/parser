@@ -187,7 +187,6 @@ class Document extends BaseDocument
         return $values;
     }
 
-
     /**
      * Resolve values by collection.
      *
@@ -201,15 +200,14 @@ class Document extends BaseDocument
         $value = [];
         $result = [];
 
-        foreach ($uses as $use)
-        {
+        foreach ($uses as $use) {
             $outputFirstLevel = $this->prepareUse($use);
 
             if (is_array($outputFirstLevel)) {
                 $parent1 = $outputFirstLevel['parent'];
                 $alias1 = $outputFirstLevel['parent_alias'];
 
-                $result[$alias1] = $this->parseValueCollectionMultiLevels($content,$outputFirstLevel['array'],$parent1);
+                $result[$alias1] = $this->parseValueCollectionMultiLevels($content, $outputFirstLevel['array'], $parent1);
             } else {
                 list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
@@ -225,7 +223,6 @@ class Document extends BaseDocument
                     } else {
                         Arr::set($value, $as, $item);
                     }
-
                 } else {
                     if ($name == '@') {
                         $name = null;
@@ -235,6 +232,7 @@ class Document extends BaseDocument
                 $result = $value;
             }
         }
+
         return $result;
     }
 
@@ -247,21 +245,20 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    protected function parseValueCollectionMultiLevels(SimpleXMLElement $content, array $uses,$objectName)
+    protected function parseValueCollectionMultiLevels(SimpleXMLElement $content, array $uses, $objectName)
     {
         $value = [];
         $result = [];
         $feature = $content->{$objectName};
 
-        if (!empty($feature)) {
+        if (! empty($feature)) {
             foreach ($feature as $key => $contentArray) {
                 foreach ($uses as $use) {
-
                     if (strpos($use, '{') !== false) {
                         $outputSecondLevel = $this->prepareUse($use);
                         $parent2 = $outputSecondLevel['parent'];
                         $alias2 = $outputSecondLevel['parent_alias'];
-                        $value[$alias2] = $this->parseValueCollectionMultiLevels($contentArray,$outputSecondLevel['array'],$parent2);
+                        $value[$alias2] = $this->parseValueCollectionMultiLevels($contentArray, $outputSecondLevel['array'], $parent2);
                     } else {
                         list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
                         if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
@@ -287,6 +284,7 @@ class Document extends BaseDocument
                 $result[] = $value;
             }
         }
+
         return $result;
     }
 
@@ -314,12 +312,13 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    protected function specialSplit($string) {
+    protected function specialSplit($string)
+    {
         $level = 0;     // number of nested sets of brackets
         $ret = [''];    // array to return
         $cur = 0;       // current index in the array to return, for convenience
 
-        for ($i = 0; $i < strlen($string); $i++) {
+        for ($i = 0; $i < strlen($string); ++$i) {
             switch ($string[$i]) {
                 case '{':
                     $level++;
@@ -331,14 +330,16 @@ class Document extends BaseDocument
                     break;
                 case ',':
                     if ($level == 0) {
-                        $cur++;
+                        ++$cur;
                         $ret[$cur] = '';
                         break;
                     }
+                    // no break
                 default:
                     $ret[$cur] .= $string[$i];
             }
         }
+
         return $ret;
     }
 
@@ -349,57 +350,61 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    protected function specialSplitAdvanced($string) {
+    protected function specialSplitAdvanced($string)
+    {
         $level = 0;     // number of nested sets of brackets
         $ret = [''];    // array to return
         $cur = 0;       // current index in the array to return, for convenience
         $parent = '';
-        for ($i = 0; $i < strlen($string); $i++) {
+        for ($i = 0; $i < strlen($string); ++$i) {
             switch ($string[$i]) {
                 case '{':
                     if ($level == 0) {
                         $parent = $ret[0];
                         $ret[$cur] = '';
-                        $level++;
+                        ++$level;
                         break;
                     } else {
                         $ret[$cur] .= '{';
-                        $level++;
+                        ++$level;
                         break;
                     }
+                    // no break
                 case ',':
                     if ($level == 1) {
-                        $cur++;
+                        ++$cur;
                         $ret[$cur] = '';
                         break;
                     } else {
                         $ret[$cur] .= ',';
                         break;
                     }
+                    // no break
                 case '}':
                     if ($level == 2) {
                         $ret[$cur] .= '}';
-                        $level--;
+                        --$level;
                         break;
                     } elseif ($level == 1) {
-                        $cur++;
+                        ++$cur;
                         $ret[$cur] = '';
-                        $level--;
+                        --$level;
                         break;
                     }
+                    // no break
                 default:
                     $ret[$cur] .= $string[$i];
             }
         }
         $parent_alias = $ret[$cur];
         if ($parent_alias) {
-            $parent_alias = str_replace(">","",$parent_alias);
+            $parent_alias = str_replace('>', '', $parent_alias);
         } else {
             $parent_alias = $parent;
         }
         array_pop($ret);
 
-        return ['parent'=>$parent,'parent_alias'=>$parent_alias,'array'=>$ret];
+        return ['parent' => $parent, 'parent_alias' => $parent_alias, 'array' => $ret];
     }
 
     /**
