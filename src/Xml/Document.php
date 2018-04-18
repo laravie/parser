@@ -204,6 +204,7 @@ class Document extends BaseDocument
         foreach ($uses as $use)
         {
             $outputFirstLevel = $this->prepareUse($use);
+
             if (is_array($outputFirstLevel)) {
                 $parent1 = $outputFirstLevel['parent'];
                 $alias1 = $outputFirstLevel['parent_alias'];
@@ -224,6 +225,7 @@ class Document extends BaseDocument
                     } else {
                         Arr::set($value, $as, $item);
                     }
+
                 } else {
                     if ($name == '@') {
                         $name = null;
@@ -254,11 +256,11 @@ class Document extends BaseDocument
         if (!empty($feature)) {
             foreach ($feature as $key => $contentArray) {
                 foreach ($uses as $use) {
+
                     if (strpos($use, '{') !== false) {
                         $outputSecondLevel = $this->prepareUse($use);
                         $parent2 = $outputSecondLevel['parent'];
                         $alias2 = $outputSecondLevel['parent_alias'];
-
                         $value[$alias2] = $this->parseValueCollectionMultiLevels($contentArray,$outputSecondLevel['array'],$parent2);
                     } else {
                         list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
@@ -267,7 +269,7 @@ class Document extends BaseDocument
                                 $as = null;
                             }
 
-                            $item = $this->getSelfMatchingValue($content, $matches, $as);
+                            $item = $this->getSelfMatchingValue($contentArray, $matches, $as);
 
                             if (is_null($as)) {
                                 $value = array_merge($value, $item);
@@ -275,7 +277,6 @@ class Document extends BaseDocument
                                 Arr::set($value, $as, $item);
                             }
                         } else {
-
                             if ($name == '@') {
                                 $name = null;
                             }
@@ -287,41 +288,6 @@ class Document extends BaseDocument
             }
         }
         return $result;
-    }
-
-    /**
-     * Resolve values by collection of one level.
-     *
-     * @param  \SimpleXMLElement  $content
-     * @param  array  $use
-     *
-     * @return array
-     */
-    protected function parseValueCollectionOneLevel(SimpleXMLElement $content, $use)
-    {
-        $value = [];
-
-        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
-
-        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-            if ($name == $as) {
-                $as = null;
-            }
-
-            $item = $this->getSelfMatchingValue($content, $matches, $as);
-
-            if (is_null($as)) {
-                $value = array_merge($value, $item);
-            } else {
-                Arr::set($value, $as, $item);
-            }
-        } else {
-            if ($name == '@') {
-                $name = null;
-            }
-            Arr::set($value, $as, $this->getValue($content, $name));
-        }
-        return $value;
     }
 
     /**
@@ -348,7 +314,7 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    public function specialSplit($string) {
+    protected function specialSplit($string) {
         $level = 0;     // number of nested sets of brackets
         $ret = [''];    // array to return
         $cur = 0;       // current index in the array to return, for convenience
@@ -383,7 +349,7 @@ class Document extends BaseDocument
      *
      * @return array
      */
-    public function specialSplitAdvanced($string) {
+    protected function specialSplitAdvanced($string) {
         $level = 0;     // number of nested sets of brackets
         $ret = [''];    // array to return
         $cur = 0;       // current index in the array to return, for convenience

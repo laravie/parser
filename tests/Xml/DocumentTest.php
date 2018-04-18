@@ -582,21 +582,29 @@ class DocumentTest extends TestCase
                         [
                             "mime"=> [
                                 [
+                                    "id"=> '1',
+                                    "caption"=> 'Web_Foto_Standard_1',
                                     "mime_type"=> "image/jpeg",
                                     "mime_source"=> "images\\Web_Foto_Standard_1\\47_319_2224.png",
                                     "mime_description"=> "Web Foto Standard 1"
                                 ],
                                 [
+                                    "id"=> '2',
+                                    "caption"=> 'Web_Zeichnung_Standard_1',
                                     "mime_type"=> "image/jpeg",
                                     "mime_source"=> "images\\Web_Zeichnung_Standard_1\\test05.gif",
                                     "mime_description"=> "Web Zeichnung Standard 1"
                                 ],
                                 [
+                                    "id"=> '3',
+                                    "caption"=> 'Zusatzinformation_1',
                                     "mime_type"=> "application/pdf",
                                     "mime_source"=> "images\\Zusatzinformation_1\\Informationen.pdf",
                                     "mime_description"=> "Zusatzinformation 1"
                                 ],
                                 [
+                                    "id"=> '4',
+                                    "caption"=> 'CAD3D',
                                     "mime_type"=> "image/jpeg",
                                     "mime_source"=> "CAD3D\\01TYA5YY04X_T.ZIP",
                                     "mime_description"=> null,
@@ -642,21 +650,29 @@ class DocumentTest extends TestCase
       </PRODUCT_FEATURES>
       <MIME_INFO>
         <MIME>
+          <property id="id">1</property>
+          <property id="caption">Web_Foto_Standard_1</property>
           <MIME_TYPE>image/jpeg</MIME_TYPE>
           <MIME_SOURCE>images\Web_Foto_Standard_1\47_319_2224.png</MIME_SOURCE>
           <MIME_DESCRIPTION>Web Foto Standard 1</MIME_DESCRIPTION>
         </MIME>
         <MIME>
+          <property id="id">2</property>
+          <property id="caption">Web_Zeichnung_Standard_1</property>
           <MIME_TYPE>image/jpeg</MIME_TYPE>
           <MIME_SOURCE>images\Web_Zeichnung_Standard_1\test05.gif</MIME_SOURCE>
           <MIME_DESCRIPTION>Web Zeichnung Standard 1</MIME_DESCRIPTION>
         </MIME>
         <MIME>
+          <property id="id">3</property>
+          <property id="caption">Zusatzinformation_1</property>
           <MIME_TYPE>application/pdf</MIME_TYPE>
           <MIME_SOURCE>images\Zusatzinformation_1\Informationen.pdf</MIME_SOURCE>
           <MIME_DESCRIPTION>Zusatzinformation 1</MIME_DESCRIPTION>
         </MIME>
         <MIME>
+          <property id="id">4</property>
+          <property id="caption">CAD3D</property>
           <MIME_TYPE>image/jpeg</MIME_TYPE>
           <MIME_SOURCE>CAD3D\01TYA5YY04X_T.ZIP</MIME_SOURCE>
           <MIME_DESCRIPTION></MIME_DESCRIPTION>
@@ -667,7 +683,7 @@ class DocumentTest extends TestCase
 </api>'));
 
         $data = $stub->parse([
-            'product' => ['uses' => 'T_NEW_CATALOG.PRODUCT[NODE_ID>node_id,PRODUCT_FEATURES{FEATURE{FNAME>name,FVALUE>value,TRANSLATION_US.FNAME>feature_translation_name,TRANSLATION_US.FVALUE>feature_translation_value}>feature}>product_features,MIME_INFO{MIME{MIME_TYPE>mime_type,MIME_SOURCE>mime_source,MIME_DESCRIPTION>mime_description}>mime}>mime_info]'],
+            'product' => ['uses' => 'T_NEW_CATALOG.PRODUCT[NODE_ID>node_id,PRODUCT_FEATURES{FEATURE{FNAME>name,FVALUE>value,TRANSLATION_US.FNAME>feature_translation_name,TRANSLATION_US.FVALUE>feature_translation_value}>feature}>product_features,MIME_INFO{MIME{property(::id=@),MIME_TYPE>mime_type,MIME_SOURCE>mime_source,MIME_DESCRIPTION>mime_description}>mime}>mime_info]'],
         ]);
 
         $this->assertEquals($expected, $data);
