@@ -558,13 +558,7 @@ class DocumentTest extends TestCase
         ];
     }
 
-    /**
-     * Test Laravie\Parser\Xml\Document::parseValueCollectionMultiLevels() method.
-     * this test made by Ahmed Bermawy
-     * for testing multiLevels of arrays.
-     *
-     * @test
-     */
+    /** @test */
     public function testParseValueCollectionMultiLevels()
     {
         $expected = [

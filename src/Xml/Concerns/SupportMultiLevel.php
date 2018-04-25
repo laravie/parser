@@ -4,6 +4,7 @@ namespace Laravie\Parser\Xml\Concerns;
 
 use SimpleXMLElement;
 use Tightenco\Collect\Support\Arr;
+use function Laravie\Parser\alias_get;
 use Laravie\Parser\Xml\Definitions\MultiLevel;
 
 trait SupportMultiLevel
@@ -136,6 +137,7 @@ trait SupportMultiLevel
         $result = [];
         $features = $content->{$multilevel->getRoot()};
 
+
         if (! empty($features)) {
             foreach ($features as $key => $feature) {
                 foreach ($multilevel as $use) {
@@ -147,9 +149,7 @@ trait SupportMultiLevel
                         list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
                         if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                            if ($name == $as) {
-                                $as = null;
-                            }
+                            $as = alias_get($as, $name);
 
                             $item = $this->getSelfMatchingValue($feature, $matches, $as);
 
@@ -159,9 +159,7 @@ trait SupportMultiLevel
                                 Arr::set($value, $as, $item);
                             }
                         } else {
-                            if ($name == '@') {
-                                $name = null;
-                            }
+                            $name = alias_get($name, '@');
 
                             Arr::set($value, $as, $this->getValue($feature, $name));
                         }

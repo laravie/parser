@@ -3,8 +3,10 @@
 namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
-use Laravie\Parser\Support;
 use Tightenco\Collect\Support\Arr;
+use function Laravie\Parser\data_get;
+use function Laravie\Parser\alias_get;
+use function Laravie\Parser\object_get;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
@@ -27,7 +29,7 @@ class Document extends BaseDocument
      */
     public function rebase(string $base = null): self
     {
-        $this->content = Support::fromData($this->getOriginalContent(), $base);
+        $this->content = data_get($this->getOriginalContent(), $base);
 
         return $this;
     }
@@ -113,7 +115,7 @@ class Document extends BaseDocument
         list($value, $attribute) = explode('::', $use, 2);
 
         if (! empty($value)) {
-            if (is_null($parent = Support::fromObject($content, $value))) {
+            if (is_null($parent = object_get($content, $value))) {
                 return $default;
             }
         } else {
@@ -122,7 +124,7 @@ class Document extends BaseDocument
 
         $attributes = $parent->attributes();
 
-        return Support::fromData($attributes, $attribute, $default);
+        return data_get($attributes, $attribute, $default);
     }
 
     /**
@@ -136,7 +138,7 @@ class Document extends BaseDocument
      */
     protected function getValueData(SimpleXMLElement $content, ?string $use, $default = null)
     {
-        $value = $this->castValue(Support::fromData($content, $use));
+        $value = $this->castValue(data_get($content, $use));
 
         if (empty($value) && ! in_array($value, ['0'])) {
             return $default;
@@ -163,7 +165,7 @@ class Document extends BaseDocument
             list($parent, $namespace) = explode('/', $parent, 2);
         }
 
-        $collection = Support::fromData($content, $parent);
+        $collection = data_get($content, $parent);
         $namespaces = $this->getAvailableNamespaces();
 
         $uses = $this->parseBasicUses($matches[2]);
@@ -211,9 +213,7 @@ class Document extends BaseDocument
                 list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
                 if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                    if ($name == $as) {
-                        $as = null;
-                    }
+                    $as = alias_get($as, $name);
 
                     $item = $this->getSelfMatchingValue($content, $matches, $as);
 
@@ -223,9 +223,8 @@ class Document extends BaseDocument
                         Arr::set($value, $as, $item);
                     }
                 } else {
-                    if ($name == '@') {
-                        $name = null;
-                    }
+                    $name = alias_get($name, '@');
+
                     Arr::set($value, $as, $this->getValue($content, $name));
                 }
                 $result = $value;

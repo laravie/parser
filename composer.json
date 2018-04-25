@@ -14,7 +14,10 @@
     "autoload": {
         "psr-4": {
             "Laravie\\Parser\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "require": {
         "php": ">=7.1",
