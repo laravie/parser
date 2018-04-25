@@ -4,6 +4,7 @@ namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
 use Illuminate\Support\Arr;
+use function Laravie\Parser\get_alias;
 use Laravie\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
@@ -210,9 +211,7 @@ class Document extends BaseDocument
                 list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
                 if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
-                    if ($name == $as) {
-                        $as = null;
-                    }
+                    $as = get_alias($as, $name);
 
                     $item = $this->getSelfMatchingValue($content, $matches, $as);
 
@@ -222,9 +221,8 @@ class Document extends BaseDocument
                         Arr::set($value, $as, $item);
                     }
                 } else {
-                    if ($name == '@') {
-                        $name = null;
-                    }
+                    $name = get_alias($name, '@');
+
                     Arr::set($value, $as, $this->getValue($content, $name));
                 }
                 $result = $value;
