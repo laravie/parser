@@ -42,11 +42,21 @@ class MultiLevel implements IteratorAggregate
         $this->uses = $uses;
     }
 
+    /**
+     * Get root method.
+     *
+     * @return string
+     */
     public function getRoot()
     {
         return $this->root;
     }
 
+    /**
+     * Get key.
+     *
+     * @return string
+     */
     public function getKey()
     {
         return $this->alias;

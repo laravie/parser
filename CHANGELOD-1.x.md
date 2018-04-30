@@ -2,6 +2,19 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `parser`.
 
+## 1.3.0
+
+Released: 2018-04-30
+
+### Added
+
+* Added support to parse multi-level attributes from XML.
+* Added common helper methods.
+
+### Changes
+
+* Bump minimum PHP version to 5.6.+.
+
 ## 1.2.2
 
 Released: 2017-12-25
