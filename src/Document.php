@@ -81,7 +81,7 @@ abstract class Document
      * Filter value.
      *
      * @param  mixed   $value
-     * @param  string  $filter
+     * @param  string|null  $filter
      *
      * @return mixed
      */
@@ -127,8 +127,8 @@ abstract class Document
      * Resolve value from uses filter.
      *
      * @param  mixed   $content
-     * @param  string  $use
-     * @param  string  $default
+     * @param  string|null  $use
+     * @param  string|null  $default
      *
      * @return mixed
      */
@@ -137,7 +137,7 @@ abstract class Document
     /**
      * Get filter resolver.
      *
-     * @param  string  $filter
+     * @param  string|null  $filter
      *
      * @return array
      */
@@ -193,8 +193,8 @@ abstract class Document
     /**
      * Make filter resolver.
      *
-     * @param  array  $class
-     * @param  mixed  $method
+     * @param  string  $class
+     * @param  string  $method
      *
      * @return array
      */
@@ -208,7 +208,7 @@ abstract class Document
     /**
      * Call filter to parse the value.
      *
-     * @param  array  $resolver
+     * @param  callable  $resolver
      * @param  mixed  $value
      *
      * @return mixed
