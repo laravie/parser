@@ -49,7 +49,7 @@ abstract class Document
      *
      * @return $this
      */
-    public function setContent($content): self
+    public function setContent($content)
     {
         $this->content = $content;
         $this->originalContent = $content;
