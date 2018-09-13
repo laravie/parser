@@ -137,7 +137,7 @@ abstract class Document
     /**
      * Get filter resolver.
      *
-     * @param  string  $filter
+     * @param  string|null  $filter
      *
      * @return array
      */
