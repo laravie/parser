@@ -54,7 +54,7 @@ To install through composer, simply put the following in your `composer.json` fi
 ```json
 {
     "require": {
-        "laravie/parser": "~1.0"
+        "laravie/parser": "^2.0"
     }
 }
 ```
@@ -65,5 +65,5 @@ And then run `composer install` from the terminal.
 
 Above installation can also be simplify by using the following command:
 
-    composer require "laravie/parser=~1.0"
+    composer require "laravie/parser=^2.0"
 
