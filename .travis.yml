@@ -6,6 +6,7 @@ php:
   - 7.0
   - 7.1
   - 7.2
+  - 7.3
   - nightly
 
 env:
@@ -21,10 +22,10 @@ before_install:
   - composer config discard-changes true
 
 before_script:
-  - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-dist --no-interaction; fi
-  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable; fi
-  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable; fi
-  - if [[ $setup = 'coveralls' ]]; then travis_retry composer require "php-coveralls/php-coveralls=^2.1" --prefer-dist --no-interaction; fi
+  - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-dist --no-interaction --no-suggest; fi
+  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
+  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-lowest --prefer-stable; fi
+  - if [[ $setup = 'coveralls' ]]; then travis_retry composer require "php-coveralls/php-coveralls=^2.1" --prefer-dist --no-interaction --no-suggest; fi
 
 script:
   - if [[ $coverage = 'yes' ]]; then ./vendor/bin/phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml; fi
@@ -38,5 +39,6 @@ matrix:
     - php: 5.6
       env: setup=coveralls coverage=yes
   allow_failures:
+    - php: nightly
     - env: setup=coveralls coverage=yes
   fast_finish: true
