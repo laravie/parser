@@ -13,7 +13,7 @@ class ReaderTest extends TestCase
      *
      * @test
      */
-    public function testExtractMethod()
+    public function it_can_extract_document()
     {
         $xml = '<xml><foo>foobar</foo></xml>';
 
@@ -29,7 +29,7 @@ class ReaderTest extends TestCase
      *
      * @test
      */
-    public function testLoadMethod()
+    public function it_can_load_document()
     {
         $document = new Document();
         $stub = new Reader($document);
@@ -41,10 +41,12 @@ class ReaderTest extends TestCase
     /**
      * Test Laravie\Parser\Xml\Reader::load() method.
      *
-     * @expectedException \Laravie\Parser\FileNotFoundException
+     * @test
      */
-    public function testLoadMethodThrowsFileNotFoundException()
+    public function it_throws_exception_when_loading_a_none_existing_file()
     {
+        $this->expectException('Laravie\Parser\FileNotFoundException');
+
         $document = new Document();
         $stub = new Reader($document);
         $output = $stub->local('');
@@ -53,10 +55,12 @@ class ReaderTest extends TestCase
     /**
      * Test Laravie\Parser\Xml\Reader::load() method.
      *
-     * @expectedException \Laravie\Parser\InvalidContentException
+     * @test
      */
-    public function testLoadMethodThrowsInvalidContentExceptionException()
+    public function it_throws_exception_when_content_is_not_a_valid_xml_on_load()
     {
+        $this->expectException('Laravie\Parser\InvalidContentException');
+
         $document = new Document();
         $stub = new Reader($document);
         $output = $stub->load(__DIR__.'/stubs/invalid.xml');
@@ -65,10 +69,12 @@ class ReaderTest extends TestCase
     /**
      * Test Laravie\Parser\Xml\Reader::extract() method throws exception.
      *
-     * @expectedException \Laravie\Parser\InvalidContentException
+     * @test
      */
-    public function testExtractMethodThrowsException()
+    public function it_throws_exception_when_content_is_not_a_valid_xml_on_extract()
     {
+        $this->expectException('Laravie\Parser\InvalidContentException');
+
         $xml = '<xml><foo>foobar<foo></xml>';
 
         $document = new Document();

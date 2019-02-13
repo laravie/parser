@@ -11,7 +11,7 @@ class DocumentTest extends TestCase
     /**
      * Teardown the test environment.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -21,7 +21,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function testRebase()
+    public function it_can_rebase_document()
     {
         $expected = '<foo><bar>foobar</bar></foo>';
 
@@ -43,7 +43,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function testNamespaced()
+    public function it_can_read_namespaced_document()
     {
         $stub = new DocumentStub();
 
@@ -65,7 +65,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function testSetContentMethod()
+    public function it_can_manually_set_content()
     {
         $expected = '<foo><bar>foobar</bar></foo>';
 
@@ -85,7 +85,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function testGetContentMethod()
+    public function it_can_get_content()
     {
         $expected = '<foo><bar>foobar</bar></foo>';
 
@@ -106,7 +106,7 @@ class DocumentTest extends TestCase
      * @test
      * @dataProvider dataCollectionProvider
      */
-    public function testParseMethod($content, $schema, $expected)
+    public function it_can_parse_content($content, $schema, $expected)
     {
         $stub = new DocumentStub();
 
@@ -121,9 +121,8 @@ class DocumentTest extends TestCase
      * Test Laravie\Parser\Xml\Document::parse() method with tags.
      *
      * @test
-     * @requires PHP 7.0
      */
-    public function testParseMethodWithTags()
+    public function it_can_parse_with_tag()
     {
         $expected = [
             'users' => [
