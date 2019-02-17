@@ -14,7 +14,7 @@ class Reader extends BaseReader
      */
     public function extract(string $content): BaseDocument
     {
-        $xml = @simplexml_load_string($content);
+        $xml = @\simplexml_load_string($content);
 
         return $this->resolveXmlObject($xml);
     }
@@ -24,7 +24,7 @@ class Reader extends BaseReader
      */
     public function load(string $filename): BaseDocument
     {
-        $xml = @simplexml_load_file($filename);
+        $xml = @\simplexml_load_file($filename);
 
         return $this->resolveXmlObject($xml);
     }
@@ -34,7 +34,7 @@ class Reader extends BaseReader
      */
     public function local(string $filename): BaseDocument
     {
-        if (! file_exists($filename)) {
+        if (! \file_exists($filename)) {
             throw new FileNotFoundException('Could not find the file: '.$filename);
         }
 

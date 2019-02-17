@@ -36,7 +36,7 @@ trait SupportMultiLevel
         $uses = [''];
         $current = 0;
 
-        foreach (str_split($value) as $char) {
+        foreach (\str_split($value) as $char) {
             switch ($char) {
                 case '{':
                     $level++;
@@ -75,7 +75,7 @@ trait SupportMultiLevel
         $current = 0;
         $root = '';
 
-        foreach (str_split($value) as $char) {
+        foreach (\str_split($value) as $char) {
             switch ($char) {
                 case '{':
                     if ($level == 0) {
@@ -116,9 +116,9 @@ trait SupportMultiLevel
             }
         }
 
-        $alias = $uses[$current] ? str_replace('>', '', $uses[$current]) : $root;
+        $alias = $uses[$current] ? \str_replace('>', '', $uses[$current]) : $root;
 
-        array_pop($uses);
+        \array_pop($uses);
 
         return new MultiLevel($root, $alias, $uses);
     }
@@ -141,20 +141,20 @@ trait SupportMultiLevel
         if (! empty($features)) {
             foreach ($features as $key => $feature) {
                 foreach ($multilevel as $use) {
-                    if (strpos($use, '{') !== false) {
+                    if (\strpos($use, '{') !== false) {
                         $secondary = $this->resolveUses($use);
 
                         $value[$secondary->getKey()] = $this->parseMultiLevelsValueCollection($feature, $secondary);
                     } else {
-                        list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+                        list($name, $as) = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
 
-                        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                        if (\preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                             $as = alias_get($as, $name);
 
                             $item = $this->getSelfMatchingValue($feature, $matches, $as);
 
-                            if (is_null($as)) {
-                                $value = array_merge($value, $item);
+                            if (\is_null($as)) {
+                                $value = \array_merge($value, $item);
                             } else {
                                 Arr::set($value, $as, $item);
                             }

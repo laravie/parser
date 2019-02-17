@@ -89,7 +89,7 @@ abstract class Document
     {
         $resolver = $this->getFilterResolver($filter);
 
-        if (method_exists($resolver[0], $resolver[1])) {
+        if (\method_exists($resolver[0], $resolver[1])) {
             return $this->callFilterResolver($resolver, $value);
         }
 
@@ -110,7 +110,7 @@ abstract class Document
             return $config['default'] ?? null;
         }
 
-        if (! is_array($config['uses'])) {
+        if (! \is_array($config['uses'])) {
             return $this->getValue($this->getContent(), $config['uses'], $hash);
         }
 
@@ -146,16 +146,16 @@ abstract class Document
         $class = $filter;
         $method = 'filter';
 
-        $position = strpos($filter, '@');
+        $position = \strpos($filter, '@');
 
         if ($position === 0) {
-            $method = 'filter'.ucwords(substr($filter, 1));
+            $method = 'filter'.\ucwords(\substr($filter, 1));
 
             return [$this, $method];
         }
 
         if ($position !== false) {
-            list($class, $method) = explode('@', $filter, 2);
+            list($class, $method) = \explode('@', $filter, 2);
         }
 
         return $this->makeFilterResolver($class, $method);
@@ -170,11 +170,11 @@ abstract class Document
      */
     protected function parseData($data)
     {
-        $hash = hash('sha256', microtime(true));
+        $hash = \hash('sha256', microtime(true));
         $value = $data;
         $filter = null;
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             $value = $this->resolveValue($data, $hash);
             $filter = $data['filter'] ?? null;
         }
@@ -183,7 +183,7 @@ abstract class Document
             $value = $data['default'] ?? null;
         }
 
-        if (! is_null($filter)) {
+        if (! \is_null($filter)) {
             $value = $this->filterValue($value, $filter);
         }
 
@@ -215,6 +215,6 @@ abstract class Document
      */
     protected function callFilterResolver(callable $resolver, $value)
     {
-        return call_user_func($resolver, $value);
+        return \call_user_func($resolver, $value);
     }
 }

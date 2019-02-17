@@ -48,7 +48,7 @@ class Document extends BaseDocument
         $document = $this->getContent();
         $namespaces = $this->getAvailableNamespaces();
 
-        if (! is_null($namespace) && isset($namespaces[$namespace])) {
+        if (! \is_null($namespace) && isset($namespaces[$namespace])) {
             $document = $document->children($namespaces[$namespace]);
         }
 
@@ -62,9 +62,9 @@ class Document extends BaseDocument
      */
     protected function getValue($content, ?string $use, ?string $default = null)
     {
-        if (preg_match('/^(.*)\[(.*)\]$/', $use, $matches) && $content instanceof SimpleXMLElement) {
+        if (\preg_match('/^(.*)\[(.*)\]$/', $use, $matches) && $content instanceof SimpleXMLElement) {
             return $this->getValueCollection($content, $matches, $default);
-        } elseif (strpos($use, '::') !== false && $content instanceof SimpleXMLElement) {
+        } elseif (\strpos($use, '::') !== false && $content instanceof SimpleXMLElement) {
             return $this->getValueAttribute($content, $use, $default);
         }
 
@@ -112,10 +112,10 @@ class Document extends BaseDocument
      */
     protected function getRawValueAttribute(SimpleXMLElement $content, ?string $use, $default = null)
     {
-        list($value, $attribute) = explode('::', $use, 2);
+        list($value, $attribute) = \explode('::', $use, 2);
 
         if (! empty($value)) {
-            if (is_null($parent = object_get($content, $value))) {
+            if (\is_null($parent = object_get($content, $value))) {
                 return $default;
             }
         } else {
@@ -140,7 +140,7 @@ class Document extends BaseDocument
     {
         $value = $this->castValue(data_get($content, $use));
 
-        if (empty($value) && ! in_array($value, ['0'])) {
+        if (empty($value) && ! \in_array($value, ['0'])) {
             return $default;
         }
 
@@ -161,8 +161,8 @@ class Document extends BaseDocument
         $parent = $matches[1];
         $namespace = null;
 
-        if (strpos($parent, '/') !== false) {
-            list($parent, $namespace) = explode('/', $parent, 2);
+        if (\strpos($parent, '/') !== false) {
+            list($parent, $namespace) = \explode('/', $parent, 2);
         }
 
         $collection = data_get($content, $parent);
@@ -181,7 +181,7 @@ class Document extends BaseDocument
                 continue;
             }
 
-            if (! is_null($namespace) && isset($namespaces[$namespace])) {
+            if (! \is_null($namespace) && isset($namespaces[$namespace])) {
                 $content = $content->children($namespaces[$namespace]);
             }
 
@@ -210,15 +210,15 @@ class Document extends BaseDocument
             if ($primary instanceof Definitions\MultiLevel) {
                 $result[$primary->getKey()] = $this->parseMultiLevelsValueCollection($content, $primary);
             } else {
-                list($name, $as) = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
+                list($name, $as) = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
 
-                if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                if (\preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                     $as = alias_get($as, $name);
 
                     $item = $this->getSelfMatchingValue($content, $matches, $as);
 
-                    if (is_null($as)) {
-                        $value = array_merge($value, $item);
+                    if (\is_null($as)) {
+                        $value = \array_merge($value, $item);
                     } else {
                         Arr::set($value, $as, $item);
                     }
@@ -255,11 +255,11 @@ class Document extends BaseDocument
         $item = [];
         $uses = ($key == '@' ? $meta : "{$key},{$meta}");
 
-        if (is_null($alias)) {
+        if (\is_null($alias)) {
             $alias = $name;
         }
 
-        $collection = $this->getValue($content, sprintf('%s[%s]', $name, $uses));
+        $collection = $this->getValue($content, \sprintf('%s[%s]', $name, $uses));
 
         foreach ((array) $collection as $collect) {
             $v = $collect[$meta];
@@ -282,7 +282,7 @@ class Document extends BaseDocument
      */
     protected function getAvailableNamespaces(): ?array
     {
-        if (is_null($this->namespaces)) {
+        if (\is_null($this->namespaces)) {
             $this->namespaces = $this->getOriginalContent()->getNameSpaces(true);
         }
 

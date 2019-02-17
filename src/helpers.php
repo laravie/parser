@@ -18,28 +18,28 @@ use Tightenco\Collect\Support\Collection as Collect;
  */
 function data_get($target, $key, $default = null)
 {
-    if (is_null($key)) {
+    if (\is_null($key)) {
         return $target;
     }
 
-    $key = is_array($key) ? $key : explode('.', $key);
+    $key = \is_array($key) ? $key : \explode('.', $key);
 
-    while (! is_null($segment = array_shift($key))) {
+    while (! \is_null($segment = \array_shift($key))) {
         if ($segment === '*') {
             if ($target instanceof Collection || $target instanceof Collect) {
                 $target = $target->all();
-            } elseif (! is_array($target)) {
+            } elseif (! \is_array($target)) {
                 return value($default);
             }
 
             $result = Arr::pluck($target, $key);
 
-            return in_array('*', $key) ? Arr::collapse($result) : $result;
+            return \in_array('*', $key) ? Arr::collapse($result) : $result;
         }
 
         if (Arr::accessible($target) && Arr::exists($target, $segment)) {
             $target = $target[$segment];
-        } elseif (is_object($target) && isset($target->{$segment})) {
+        } elseif (\is_object($target) && isset($target->{$segment})) {
             $target = $target->{$segment};
         } else {
             return value($default);
@@ -73,12 +73,12 @@ function alias_get($alias, $compared = null)
  */
 function object_get($object, string $key, $default = null)
 {
-    if (is_null($key) || trim($key) == '') {
+    if (\is_null($key) || \trim($key) == '') {
         return $object;
     }
 
-    foreach (explode('.', $key) as $segment) {
-        if (! is_object($object) || ! isset($object->{$segment})) {
+    foreach (\explode('.', $key) as $segment) {
+        if (! \is_object($object) || ! isset($object->{$segment})) {
             return value($default);
         }
 
