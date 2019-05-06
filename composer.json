@@ -24,7 +24,7 @@
         "tightenco/collect": "^5.6.16"
     },
     "require-dev": {
-        "mockery/mockery": "^1.0",
+        "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5 || ^8.0"
     },
     "extra": {
