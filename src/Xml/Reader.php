@@ -22,9 +22,10 @@ class Reader extends BaseReader
     /**
      * {@inheritdoc}
      */
-    public function load(string $filename): BaseDocument
+    public function load(string $filename, $ns = ""): BaseDocument
     {
-        $xml = @\simplexml_load_file($filename);
+        $is_prefix = $ns ? true : false;
+        $xml = @\simplexml_load_file($filename, "SimpleXMLElement", 0, $ns, $is_prefix);
 
         return $this->resolveXmlObject($xml);
     }
