@@ -12,7 +12,7 @@
         >
 
     <testsuites>
-        <testsuite name="Laravie\Parser Test Suite">
+        <testsuite name="Snowlyg\Parser Test Suite">
             <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>

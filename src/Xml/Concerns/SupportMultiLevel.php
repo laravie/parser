@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravie\Parser\Xml\Concerns;
+namespace Snowlyg\Parser\Xml\Concerns;
 
 use SimpleXMLElement;
 use Tightenco\Collect\Support\Arr;
-use function Laravie\Parser\alias_get;
-use Laravie\Parser\Xml\Definitions\MultiLevel;
+use function Snowlyg\Parser\alias_get;
+use Snowlyg\Parser\Xml\Definitions\MultiLevel;
 
 trait SupportMultiLevel
 {
@@ -14,7 +14,7 @@ trait SupportMultiLevel
      *
      * @param  string  $use
      *
-     * @return \Laravie\Parser\Xml\Definitions\MultiLevel|string
+     * @return \Snowlyg\Parser\Xml\Definitions\MultiLevel|string
      */
     protected function resolveUses(string $uses)
     {
@@ -66,7 +66,7 @@ trait SupportMultiLevel
      *
      * @param  string  $value
      *
-     * @return \Laravie\Parser\Xml\Definitions\MultiLevel
+     * @return \Snowlyg\Parser\Xml\Definitions\MultiLevel
      */
     protected function parseAdvancedUses(string $value): MultiLevel
     {
@@ -127,7 +127,7 @@ trait SupportMultiLevel
      * Resolve values by collection of multi levels.
      *
      * @param  \SimpleXMLElement  $content
-     * @param  \Laravie\Parser\Xml\Definitions\MultiLevel  $multilevel
+     * @param  \Snowlyg\Parser\Xml\Definitions\MultiLevel  $multilevel
      *
      * @return array
      */

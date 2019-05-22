@@ -1,19 +1,19 @@
 {
-    "name": "laravie/parser",
+    "name": "snowlyg/parser",
     "description": "XML Document Parser for PHP",
     "keywords": ["xml", "parser"],
     "license": "MIT",
     "type": "library",
     "authors": [
         {
-            "name": "Mior Muhammad Zaki",
-            "email": "crynobone@gmail.com",
-            "homepage": "https://github.com/crynobone"
+            "name": "snowly",
+            "email": "569616226@qq.com",
+            "homepage": "https://github.com/snowlyg/parser"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Laravie\\Parser\\": "src/"
+            "Snowlyg\\Parser\\": "src/"
         },
         "files": [
             "src/helpers.php"

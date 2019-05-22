@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravie\Parser;
+namespace Snowlyg\Parser;
 
 class FileNotFoundException extends \InvalidArgumentException
 {

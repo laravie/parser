@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravie\Parser\TestCase\Xml;
+namespace Snowlyg\Parser\TestCase\Xml;
 
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Laravie\Parser\Xml\Document;
+use Snowlyg\Parser\Xml\Document;
 
 class DocumentTest extends TestCase
 {
@@ -17,7 +17,7 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * Test Laravie\Parser\Xml\Document::rebase() method.
+     * Test Snowlyg\Parser\Xml\Document::rebase() method.
      *
      * @test
      */
@@ -39,7 +39,7 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * Test Laravie\Parser\Xml\Document::namespaced() method.
+     * Test Snowlyg\Parser\Xml\Document::namespaced() method.
      *
      * @test
      */
@@ -61,7 +61,7 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * Test Laravie\Parser\Xml\Document::setContent() method.
+     * Test Snowlyg\Parser\Xml\Document::setContent() method.
      *
      * @test
      */
@@ -81,7 +81,7 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * Test Laravie\Parser\Xml\Document::getContent() method.
+     * Test Snowlyg\Parser\Xml\Document::getContent() method.
      *
      * @test
      */
@@ -101,7 +101,7 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * Test Laravie\Parser\Xml\Document::parse() method.
+     * Test Snowlyg\Parser\Xml\Document::parse() method.
      *
      * @test
      * @dataProvider dataCollectionProvider
@@ -118,7 +118,7 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * Test Laravie\Parser\Xml\Document::parse() method with tags.
+     * Test Snowlyg\Parser\Xml\Document::parse() method with tags.
      *
      * @test
      */
@@ -193,7 +193,7 @@ class DocumentTest extends TestCase
                     'hello' => ['uses' => ['bar::hello', 'bar'], 'filter' => '@notFilterable'],
                     'world' => ['uses' => 'world', 'default' => false],
                     'foobar' => ['uses' => 'bar::foobar', 'default' => false],
-                    'username' => ['uses' => 'user::name', 'default' => 'Guest', 'filter' => '\Laravie\Parser\TestCase\Xml\FilterStub@filterStrToLower'],
+                    'username' => ['uses' => 'user::name', 'default' => 'Guest', 'filter' => '\Snowlyg\Parser\TestCase\Xml\FilterStub@filterStrToLower'],
                     'google' => 'google.com',
                     'facebook' => ['default' => 'facebook.com'],
                 ],
@@ -700,7 +700,7 @@ class DocumentTest extends TestCase
     }
 }
 
-class DocumentStub extends \Laravie\Parser\Xml\Document
+class DocumentStub extends \Snowlyg\Parser\Xml\Document
 {
     public function filterStrToUpper($value)
     {

@@ -16,9 +16,9 @@ Released: 2018-09-13
 
 ### Added
 
-* Add `Laravie\Parser\Xml\Reader::load()` for loading local XML file.
-* Add `Laravie\Parser\Xml\Reader::remote()` for loading remote XML file.
-* Throws `Laravie\Parser\FileNotFoundException` if loading local file failed.
+* Add `Snowlyg\Parser\Xml\Reader::load()` for loading local XML file.
+* Add `Snowlyg\Parser\Xml\Reader::remote()` for loading remote XML file.
+* Throws `Snowlyg\Parser\FileNotFoundException` if loading local file failed.
 
 ### Changes
 

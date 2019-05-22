@@ -21,7 +21,7 @@ Released: 2017-12-25
 
 ### Changes
 
-* Revert throws `Laravie\Parser\FileNotFoundException` when loading invalid file.
+* Revert throws `Snowlyg\Parser\FileNotFoundException` when loading invalid file.
 
 ## 1.2.1
 
@@ -29,7 +29,7 @@ Released: 2017-12-16
 
 ### Changes
 
-* Throws `Laravie\Parser\FileNotFoundException` when loading invalid file.
+* Throws `Snowlyg\Parser\FileNotFoundException` when loading invalid file.
 
 ## 1.2.0
 

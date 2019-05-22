@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravie\Parser;
+namespace Snowlyg\Parser;
 
 use Closure;
 use Illuminate\Support\Collection;

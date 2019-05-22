@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravie\Parser\Xml\Definitions;
+namespace Snowlyg\Parser\Xml\Definitions;
 
 use ArrayIterator;
 use IteratorAggregate;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravie\Parser\Xml;
+namespace Snowlyg\Parser\Xml;
 
-use Laravie\Parser\Reader as BaseReader;
-use Laravie\Parser\FileNotFoundException;
-use Laravie\Parser\InvalidContentException;
-use Laravie\Parser\Document as BaseDocument;
+use Snowlyg\Parser\Reader as BaseReader;
+use Snowlyg\Parser\FileNotFoundException;
+use Snowlyg\Parser\InvalidContentException;
+use Snowlyg\Parser\Document as BaseDocument;
 
 class Reader extends BaseReader
 {
@@ -55,9 +55,9 @@ class Reader extends BaseReader
      *
      * @param  object $xml
      *
-     * @throws \Laravie\Parser\InvalidContentException
+     * @throws \Snowlyg\Parser\InvalidContentException
      *
-     * @return \Laravie\Parser\Document
+     * @return \Snowlyg\Parser\Document
      */
     protected function resolveXmlObject($xml): Document
     {

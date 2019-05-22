@@ -1,20 +1,20 @@
 <?php
 
-namespace Laravie\Parser;
+namespace Snowlyg\Parser;
 
 abstract class Reader
 {
     /**
      * Document instance.
      *
-     * @var \Laravie\Parser\Document
+     * @var \Snowlyg\Parser\Document
      */
     protected $document;
 
     /**
      * Construct a new reader.
      *
-     * @param  \Laravie\Parser\Document  $document
+     * @param  \Snowlyg\Parser\Document  $document
      */
     public function __construct(Document $document)
     {
@@ -26,7 +26,7 @@ abstract class Reader
      *
      * @param  string  $content
      *
-     * @return \Laravie\Parser\Document
+     * @return \Snowlyg\Parser\Document
      */
     abstract public function extract(string $content): Document;
 
@@ -35,7 +35,7 @@ abstract class Reader
      *
      * @param  string  $filename
      *
-     * @return \Laravie\Parser\Document
+     * @return \Snowlyg\Parser\Document
      */
     abstract public function load(string $filename): Document;
 
@@ -44,7 +44,7 @@ abstract class Reader
      *
      * @param  string  $filename
      *
-     * @return \Laravie\Parser\Document
+     * @return \Snowlyg\Parser\Document
      */
     abstract public function local(string $filename): Document;
 
@@ -53,7 +53,7 @@ abstract class Reader
      *
      * @param  string  $filename
      *
-     * @return \Laravie\Parser\Document
+     * @return \Snowlyg\Parser\Document
      */
     abstract public function remote(string $filename): Document;
 }

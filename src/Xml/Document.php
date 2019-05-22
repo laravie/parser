@@ -1,13 +1,13 @@
 <?php
 
-namespace Laravie\Parser\Xml;
+namespace Snowlyg\Parser\Xml;
 
 use SimpleXMLElement;
 use Tightenco\Collect\Support\Arr;
-use function Laravie\Parser\data_get;
-use function Laravie\Parser\alias_get;
-use function Laravie\Parser\object_get;
-use Laravie\Parser\Document as BaseDocument;
+use function Snowlyg\Parser\data_get;
+use function Snowlyg\Parser\alias_get;
+use function Snowlyg\Parser\object_get;
+use Snowlyg\Parser\Document as BaseDocument;
 
 class Document extends BaseDocument
 {
