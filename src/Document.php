@@ -155,7 +155,7 @@ abstract class Document
         }
 
         if ($position !== false) {
-            list($class, $method) = \explode('@', $filter, 2);
+            [$class, $method] = \explode('@', $filter, 2);
         }
 
         return $this->makeFilterResolver($class, $method);

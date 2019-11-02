@@ -146,7 +146,7 @@ trait SupportMultiLevel
 
                         $value[$secondary->getKey()] = $this->parseMultiLevelsValueCollection($feature, $secondary);
                     } else {
-                        list($name, $as) = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
+                        [$name, $as] = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
 
                         if (\preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                             $as = alias_get($as, $name);

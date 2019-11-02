@@ -112,7 +112,7 @@ class Document extends BaseDocument
      */
     protected function getRawValueAttribute(SimpleXMLElement $content, ?string $use, $default = null)
     {
-        list($value, $attribute) = \explode('::', $use, 2);
+        [$value, $attribute] = \explode('::', $use, 2);
 
         if (! empty($value)) {
             if (\is_null($parent = object_get($content, $value))) {
@@ -162,7 +162,7 @@ class Document extends BaseDocument
         $namespace = null;
 
         if (\strpos($parent, '/') !== false) {
-            list($parent, $namespace) = \explode('/', $parent, 2);
+            [$parent, $namespace] = \explode('/', $parent, 2);
         }
 
         $collection = data_get($content, $parent);
@@ -210,7 +210,7 @@ class Document extends BaseDocument
             if ($primary instanceof Definitions\MultiLevel) {
                 $result[$primary->getKey()] = $this->parseMultiLevelsValueCollection($content, $primary);
             } else {
-                list($name, $as) = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
+                [$name, $as] = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
 
                 if (\preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                     $as = alias_get($as, $name);
