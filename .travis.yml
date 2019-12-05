@@ -1,5 +1,5 @@
+dist: bionic
 language: php
-dist: xenial
 
 php:
   - 7.1
@@ -11,8 +11,8 @@ env:
     - coverage=no
   matrix:
     - setup=basic
-    - setup=lowest
     - setup=stable
+    - setup=lowest
 
 before_install:
   - travis_retry composer self-update
@@ -33,6 +33,10 @@ after_script:
 
 matrix:
   include:
+    - php: 7.4
+      env: setup=basic
+    - php: 7.4
+      env: setup=stable
     - php: 7.1
       env: setup=coveralls coverage=yes
   allow_failures:
