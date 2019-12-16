@@ -162,52 +162,53 @@ class DocumentTest extends TestCase
 
     public function dataCollectionProvider()
     {
-        return [
-            [
+        yield [
 '<api>
     <user followers="5">
         <id>1</id>
         <email type="primary">crynobone@gmail.com</email>
     </user>
 </api>',
-                [
-                    'id' => ['uses' => 'user.id'],
-                    'email' => ['uses' => 'user.email'],
-                    'followers' => ['uses' => 'user::followers'],
-                    'email_type' => ['uses' => 'user.email::type'],
-                ],
-                [
-                    'id' => 1,
-                    'email' => 'crynobone@gmail.com',
-                    'followers' => 5,
-                    'email_type' => 'primary',
-                ],
+            [
+                'id' => ['uses' => 'user.id'],
+                'email' => ['uses' => 'user.email'],
+                'followers' => ['uses' => 'user::followers'],
+                'email_type' => ['uses' => 'user.email::type'],
             ],
             [
+                'id' => 1,
+                'email' => 'crynobone@gmail.com',
+                'followers' => 5,
+                'email_type' => 'primary',
+            ],
+        ];
+
+        yield [
 '<foo>
     <bar hello="hello world">foobar</bar>
     <world></world>
 </foo>',
-                [
-                    'foo' => ['uses' => 'bar', 'filter' => '@strToUpper'],
-                    'hello' => ['uses' => ['bar::hello', 'bar'], 'filter' => '@notFilterable'],
-                    'world' => ['uses' => 'world', 'default' => false],
-                    'foobar' => ['uses' => 'bar::foobar', 'default' => false],
-                    'username' => ['uses' => 'user::name', 'default' => 'Guest', 'filter' => '\Laravie\Parser\TestCase\Xml\FilterStub@filterStrToLower'],
-                    'google' => 'google.com',
-                    'facebook' => ['default' => 'facebook.com'],
-                ],
-                [
-                    'foo' => 'FOOBAR',
-                    'hello' => ['hello world', 'foobar'],
-                    'world' => false,
-                    'foobar' => false,
-                    'username' => 'guest',
-                    'google' => 'google.com',
-                    'facebook' => 'facebook.com',
-                ],
+            [
+                'foo' => ['uses' => 'bar', 'filter' => '@strToUpper'],
+                'hello' => ['uses' => ['bar::hello', 'bar'], 'filter' => '@notFilterable'],
+                'world' => ['uses' => 'world', 'default' => false],
+                'foobar' => ['uses' => 'bar::foobar', 'default' => false],
+                'username' => ['uses' => 'user::name', 'default' => 'Guest', 'filter' => '\Laravie\Parser\TestCase\Xml\FilterStub@filterStrToLower'],
+                'google' => 'google.com',
+                'facebook' => ['default' => 'facebook.com'],
             ],
             [
+                'foo' => 'FOOBAR',
+                'hello' => ['hello world', 'foobar'],
+                'world' => false,
+                'foobar' => false,
+                'username' => 'guest',
+                'google' => 'google.com',
+                'facebook' => 'facebook.com',
+            ],
+        ];
+
+        yield [
 '<api>
     <collection>
         <user>
@@ -220,23 +221,24 @@ class DocumentTest extends TestCase
         </user>
     </collection>
 </api>',
-                [
-                    'users' => ['uses' => 'collection.user[id,name]'],
-                ],
-                [
-                    'users' => [
-                        [
-                            'id' => '1',
-                            'name' => 'Mior Muhammad Zaki',
-                        ],
-                        [
-                            'id' => '2',
-                            'name' => 'Taylor Otwell',
-                        ],
+            [
+                'users' => ['uses' => 'collection.user[id,name]'],
+            ],
+            [
+                'users' => [
+                    [
+                        'id' => '1',
+                        'name' => 'Mior Muhammad Zaki',
+                    ],
+                    [
+                        'id' => '2',
+                        'name' => 'Taylor Otwell',
                     ],
                 ],
             ],
-            [
+        ];
+
+        yield [
 '<api>
     <user>
         <id>1</id>
@@ -247,23 +249,24 @@ class DocumentTest extends TestCase
         <name>Taylor Otwell</name>
     </user>
 </api>',
-                [
-                    'users' => ['uses' => 'user[id,name]'],
-                ],
-                [
-                    'users' => [
-                        [
-                            'id' => '1',
-                            'name' => 'Mior Muhammad Zaki',
-                        ],
-                        [
-                            'id' => '2',
-                            'name' => 'Taylor Otwell',
-                        ],
+            [
+                'users' => ['uses' => 'user[id,name]'],
+            ],
+            [
+                'users' => [
+                    [
+                        'id' => '1',
+                        'name' => 'Mior Muhammad Zaki',
+                    ],
+                    [
+                        'id' => '2',
+                        'name' => 'Taylor Otwell',
                     ],
                 ],
             ],
-            [
+        ];
+
+        yield [
 '<api>
     <user>
         <id>1</id>
@@ -274,23 +277,24 @@ class DocumentTest extends TestCase
         <name>Taylor Otwell</name>
     </user>
 </api>',
-                [
-                    'users' => ['uses' => 'user[id,name>fullname]'],
-                ],
-                [
-                    'users' => [
-                        [
-                            'id' => '1',
-                            'fullname' => 'Mior Muhammad Zaki',
-                        ],
-                        [
-                            'id' => '2',
-                            'fullname' => 'Taylor Otwell',
-                        ],
+            [
+                'users' => ['uses' => 'user[id,name>fullname]'],
+            ],
+            [
+                'users' => [
+                    [
+                        'id' => '1',
+                        'fullname' => 'Mior Muhammad Zaki',
+                    ],
+                    [
+                        'id' => '2',
+                        'fullname' => 'Taylor Otwell',
                     ],
                 ],
             ],
-            [
+        ];
+
+        yield [
 '<api>
     <user>
         <property id="id">
@@ -309,23 +313,24 @@ class DocumentTest extends TestCase
         </property>
     </user>
 </api>',
-                [
-                    'users' => ['uses' => 'user[property(::id=value)]'],
-                ],
-                [
-                    'users' => [
-                        [
-                            'id' => '1',
-                            'name' => 'Mior Muhammad Zaki',
-                        ],
-                        [
-                            'id' => '2',
-                            'name' => 'Taylor Otwell',
-                        ],
+            [
+                'users' => ['uses' => 'user[property(::id=value)]'],
+            ],
+            [
+                'users' => [
+                    [
+                        'id' => '1',
+                        'name' => 'Mior Muhammad Zaki',
+                    ],
+                    [
+                        'id' => '2',
+                        'name' => 'Taylor Otwell',
                     ],
                 ],
             ],
-            [
+        ];
+
+        yield [
 '<api>
     <user>
         <property id="id">1</property>
@@ -336,41 +341,44 @@ class DocumentTest extends TestCase
         <property id="name">Taylor Otwell</property>
     </user>
 </api>',
-                [
-                    'users' => ['uses' => 'user[property(::id=@)]'],
-                ],
-                [
-                    'users' => [
-                        [
-                            'id' => '1',
-                            'name' => 'Mior Muhammad Zaki',
-                        ],
-                        [
-                            'id' => '2',
-                            'name' => 'Taylor Otwell',
-                        ],
+            [
+                'users' => ['uses' => 'user[property(::id=@)]'],
+            ],
+            [
+                'users' => [
+                    [
+                        'id' => '1',
+                        'name' => 'Mior Muhammad Zaki',
+                    ],
+                    [
+                        'id' => '2',
+                        'name' => 'Taylor Otwell',
                     ],
                 ],
             ],
-            [
+        ];
+
+        yield [
 '<api></api>',
-                [
-                    'users' => ['uses' => 'user[id,name]', 'default' => null],
-                ],
-                [
-                    'users' => null,
-                ],
+            [
+                'users' => ['uses' => 'user[id,name]', 'default' => null],
             ],
             [
+                'users' => null,
+            ],
+        ];
+
+        yield [
 '<api><user></user></api>',
-                [
-                    'users' => ['uses' => 'user[id,name]', 'default' => null],
-                ],
-                [
-                    'users' => [],
-                ],
+            [
+                'users' => ['uses' => 'user[id,name]', 'default' => null],
             ],
             [
+                'users' => [],
+            ],
+        ];
+
+        yield [
 '<products>
     <product ID="123456">
         <name>Lord of the Rings</name>
@@ -403,80 +411,24 @@ class DocumentTest extends TestCase
         </properties>
     </product>
 </products>',
-                [
-                    'books' => ['uses' => 'product[::ID>id,name,properties.property(::name=value)>meta]', 'default' => null],
-                ],
-                [
-                    'books' => [
-                        [
-                            'id' => '123456',
-                            'name' => 'Lord of the Rings',
-                            'meta' => [
-                                'id' => '2108',
-                                'avail' => '1',
-                                'cat' => 'Fantasy Books',
-                            ],
-                        ],
-                        [
-                            'id' => '123457',
-                            'name' => 'Winnie The Pooh',
-                            'meta' => [
-                                'id' => '3763',
-                                'avail' => '0',
-                                'cat' => 'Child Books',
-                            ],
-                        ],
-                    ],
-                ],
+            [
+                'books' => ['uses' => 'product[::ID>id,name,properties.property(::name=value)>meta]', 'default' => null],
             ],
             [
-'<products>
-    <product ID="123456">
-        <name>Lord of the Rings</name>
-        <description>Just a book.</description>
-        <properties>
-            <property name="id">
-                <value>2108</value>
-            </property>
-            <property name="avail">
-                <value>1</value>
-            </property>
-            <property name="cat">
-                <value>Fantasy Books</value>
-            </property>
-        </properties>
-    </product>
-    <product ID="123457">
-        <name>Winnie The Pooh</name>
-        <description>Good for children.</description>
-        <properties>
-            <property name="id">
-                <value>3763</value>
-            </property>
-            <property name="avail">
-                <value>0</value>
-            </property>
-            <property name="cat">
-                <value>Child Books</value>
-            </property>
-        </properties>
-    </product>
-</products>',
-                [
-                    'books' => ['uses' => 'product[::ID>bookID,name,properties.property(::name=value)]', 'default' => null],
-                ],
-                [
-                    'books' => [
-                        [
-                            'bookID' => '123456',
-                            'name' => 'Lord of the Rings',
+                'books' => [
+                    [
+                        'id' => '123456',
+                        'name' => 'Lord of the Rings',
+                        'meta' => [
                             'id' => '2108',
                             'avail' => '1',
                             'cat' => 'Fantasy Books',
                         ],
-                        [
-                            'bookID' => '123457',
-                            'name' => 'Winnie The Pooh',
+                    ],
+                    [
+                        'id' => '123457',
+                        'name' => 'Winnie The Pooh',
+                        'meta' => [
                             'id' => '3763',
                             'avail' => '0',
                             'cat' => 'Child Books',
@@ -484,7 +436,65 @@ class DocumentTest extends TestCase
                     ],
                 ],
             ],
+        ];
+
+        yield [
+'<products>
+    <product ID="123456">
+        <name>Lord of the Rings</name>
+        <description>Just a book.</description>
+        <properties>
+            <property name="id">
+                <value>2108</value>
+            </property>
+            <property name="avail">
+                <value>1</value>
+            </property>
+            <property name="cat">
+                <value>Fantasy Books</value>
+            </property>
+        </properties>
+    </product>
+    <product ID="123457">
+        <name>Winnie The Pooh</name>
+        <description>Good for children.</description>
+        <properties>
+            <property name="id">
+                <value>3763</value>
+            </property>
+            <property name="avail">
+                <value>0</value>
+            </property>
+            <property name="cat">
+                <value>Child Books</value>
+            </property>
+        </properties>
+    </product>
+</products>',
             [
+                'books' => ['uses' => 'product[::ID>bookID,name,properties.property(::name=value)]', 'default' => null],
+            ],
+            [
+                'books' => [
+                    [
+                        'bookID' => '123456',
+                        'name' => 'Lord of the Rings',
+                        'id' => '2108',
+                        'avail' => '1',
+                        'cat' => 'Fantasy Books',
+                    ],
+                    [
+                        'bookID' => '123457',
+                        'name' => 'Winnie The Pooh',
+                        'id' => '3763',
+                        'avail' => '0',
+                        'cat' => 'Child Books',
+                    ],
+                ],
+            ],
+        ];
+
+        yield [
 '<api>
     <Country name="Albania" id="ALB">
         <Competition id="ALB_1" name="Albania 1" event_name="Super League" sport="soccer" levels_on_pyramid="0" competition_type="league" image="" timestamp="0"/>
@@ -493,65 +503,66 @@ class DocumentTest extends TestCase
         <Competition id="ALG_1" name="Algeria 1" event_name="Ligue 1" sport="soccer" levels_on_pyramid="0" competition_type="league" image="" timestamp="0"/>
     </Country>
 </api>',
-                [
-                    'data' => ['uses' => 'Country[Competition::id>id,Competition::name>name,Competition::event_name>event_name]', 'default' => null],
-                ],
-                [
-                    'data' => [
-                        [
-                            'id' => 'ALB_1',
-                            'name' => 'Albania 1',
-                            'event_name' => 'Super League',
-                        ],
-                        [
-                            'id' => 'ALG_1',
-                            'name' => 'Algeria 1',
-                            'event_name' => 'Ligue 1',
-                        ],
+            [
+                'data' => ['uses' => 'Country[Competition::id>id,Competition::name>name,Competition::event_name>event_name]', 'default' => null],
+            ],
+            [
+                'data' => [
+                    [
+                        'id' => 'ALB_1',
+                        'name' => 'Albania 1',
+                        'event_name' => 'Super League',
+                    ],
+                    [
+                        'id' => 'ALG_1',
+                        'name' => 'Algeria 1',
+                        'event_name' => 'Ligue 1',
                     ],
                 ],
             ],
-            [
+        ];
+
+        yield [
 '<xml time="1460026675">
     <Country id="ALG" name="Algeria" image="Algeria.png" lastupdate="1315773004"/>
     <Country id="ASM" name="American Samoa" image="American-Samoa.png" lastupdate="1315773004"/>
     <Country id="AND" name="Andorra" image="Andorra.png" lastupdate="1315773004"/>
 </xml>',
-                [
-                    'countries' => ['uses' => 'Country[::id>id,::name>name]', 'default' => null],
-                ],
-                [
-                    'countries' => [
-                        [
-                            'id' => 'ALG',
-                            'name' => 'Algeria',
-                        ],
-                        [
-                            'id' => 'ASM',
-                            'name' => 'American Samoa',
-                        ],
-                        [
-                            'id' => 'AND',
-                            'name' => 'Andorra',
-                        ],
+            [
+                'countries' => ['uses' => 'Country[::id>id,::name>name]', 'default' => null],
+            ],
+            [
+                'countries' => [
+                    [
+                        'id' => 'ALG',
+                        'name' => 'Algeria',
+                    ],
+                    [
+                        'id' => 'ASM',
+                        'name' => 'American Samoa',
+                    ],
+                    [
+                        'id' => 'AND',
+                        'name' => 'Andorra',
                     ],
                 ],
             ],
-            [
+        ];
+
+        yield [
 '<course code="ABC">
     <title lang="sv">Utmattning</title>
     <title lang="en">Fatigue</title>
 </course>',
-                [
-                    'code' => ['uses' => '::code'],
-                    'title' => ['uses' => 'title[::lang>locale,@>name]'],
-                ],
-                [
-                    'code' => 'ABC',
-                    'title' => [
-                        ['locale' => 'sv', 'name' => 'Utmattning'],
-                        ['locale' => 'en', 'name' => 'Fatigue'],
-                    ],
+            [
+                'code' => ['uses' => '::code'],
+                'title' => ['uses' => 'title[::lang>locale,@>name]'],
+            ],
+            [
+                'code' => 'ABC',
+                'title' => [
+                    ['locale' => 'sv', 'name' => 'Utmattning'],
+                    ['locale' => 'en', 'name' => 'Fatigue'],
                 ],
             ],
         ];
