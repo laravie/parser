@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `parser`.
 
+## 2.0.4
+
+Released: 2020-02-27
+
+### Changes
+
+* Add support for `tightenco/collect` `7.0+`.
+
 ## 2.0.3
 
 Released: 2019-11-03
