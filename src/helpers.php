@@ -24,7 +24,13 @@ function data_get($target, $key, $default = null)
 
     $key = \is_array($key) ? $key : \explode('.', $key);
 
-    while (! \is_null($segment = \array_shift($key))) {
+    foreach ($key as $i => $segment) {
+        unset($key[$i]);
+
+        if (\is_null($segment)) {
+            return $target;
+        }
+
         if ($segment === '*') {
             if ($target instanceof Collection || $target instanceof Collect) {
                 $target = $target->all();
