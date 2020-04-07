@@ -2,6 +2,15 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `parser`.
 
+## 2.1.0
+
+Released: 2020-04-07
+
+### Changes
+
+* Allow broader support to support `Closure` instead of just `string` or `null` when defining `$filter`.
+* Performance improvements to `data_get()` based on Laravel Framework changes.
+
 ## 2.0.4
 
 Released: 2020-02-27
