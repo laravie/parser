@@ -25,6 +25,8 @@ Imagine if you can parse
 to
 
 ```php
+<?php
+
 $user = [
     'id' => '1',
     'email' => 'crynobone@gmail.com',
@@ -35,6 +37,8 @@ $user = [
 by just writing this:
 
 ```php
+<?php
+
 use Laravie\Parser\Xml\Reader;
 use Laravie\Parser\Xml\Document;
 
