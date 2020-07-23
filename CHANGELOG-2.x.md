@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `parser`.
 
+## 2.1.1
+
+Released: 2020-07-24
+
+### Fixes
+
+* Fixes variable usage when filtering using `Closure`.
+
 ## 2.1.0
 
 Released: 2020-04-07
