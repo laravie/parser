@@ -90,7 +90,7 @@ abstract class Document
     protected function filterValue($value, $filter = null)
     {
         if ($filter instanceof Closure) {
-            return $this->callFilterResolver($resolver, $value);
+            return $this->callFilterResolver($filter, $value);
         }
 
         $resolver = $this->getFilterResolver($filter);
