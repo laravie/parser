@@ -4,38 +4,51 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * 1'
 
 jobs:
   tests:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
-      fail-fast: false
       matrix:
-        php: [7.4, 7.3, 7.2, 7.1]
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - "ubuntu-latest"
+          - "windows-latest"
+        php:
+          - "7.1"
+          - "7.2"
+          - "7.3"
+          - "7.4"
+        dependencies:
+          - "locked"
+          - "lowest"
+          - "highest"
+        experimental:
+          - false
+        include:
+          - os: "ubuntu-latest"
+            php: "8.0"
+            dependencies: "highest"
+            composer-options: "--ignore-platform-reqs"
+            experimental: true
 
-    name: PHP${{ matrix.php }} on ${{ matrix.os }}
+    name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
 
-      - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite3, pdo_sqlite, bcmath, intl, gd, exif, iconv, imagick, fileinfo
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
           coverage: none
 
       - name: Install dependencies
-        run: |
-          composer update --prefer-dist --no-interaction --no-suggest
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "--prefer-dist"
       - name: Execute tests
         run: vendor/bin/phpunit
