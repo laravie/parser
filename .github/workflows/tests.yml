@@ -30,7 +30,6 @@ jobs:
           - os: "ubuntu-latest"
             php: "8.0"
             dependencies: "highest"
-            composer-options: "--ignore-platform-reqs"
             experimental: true
 
     name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
@@ -50,5 +49,6 @@ jobs:
         uses: "ramsey/composer-install@v1"
         with:
           composer-options: "--prefer-dist --no-cache"
+
       - name: Execute tests
         run: vendor/bin/phpunit
