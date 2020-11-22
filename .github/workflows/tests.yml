@@ -20,17 +20,13 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
         dependencies:
           - "locked"
           - "lowest"
           - "highest"
         experimental:
           - false
-        include:
-          - os: "ubuntu-latest"
-            php: "8.0"
-            dependencies: "highest"
-            experimental: true
 
     name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
 
