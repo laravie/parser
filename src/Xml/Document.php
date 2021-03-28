@@ -3,8 +3,7 @@
 namespace Laravie\Parser\Xml;
 
 use SimpleXMLElement;
-use Tightenco\Collect\Support\Arr;
-use function Laravie\Parser\data_get;
+use Illuminate\Support\Arr;
 use function Laravie\Parser\alias_get;
 use function Laravie\Parser\object_get;
 use Laravie\Parser\Document as BaseDocument;

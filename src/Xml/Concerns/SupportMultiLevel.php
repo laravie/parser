@@ -3,7 +3,7 @@
 namespace Laravie\Parser\Xml\Concerns;
 
 use SimpleXMLElement;
-use Tightenco\Collect\Support\Arr;
+use Illuminate\Support\Arr;
 use function Laravie\Parser\alias_get;
 use Laravie\Parser\Xml\Definitions\MultiLevel;
 
