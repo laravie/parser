@@ -137,7 +137,6 @@ trait SupportMultiLevel
         $result = [];
         $features = $content->{$multilevel->getRoot()};
 
-
         if (! empty($features)) {
             foreach ($features as $key => $feature) {
                 foreach ($multilevel as $use) {

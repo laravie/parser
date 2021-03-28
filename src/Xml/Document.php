@@ -226,6 +226,7 @@ class Document extends BaseDocument
 
                     Arr::set($value, $as, $this->getValue($content, $name));
                 }
+
                 $result = $value;
             }
         }
