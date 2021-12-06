@@ -67,7 +67,7 @@ class MultiLevel implements IteratorAggregate
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->uses);
     }
