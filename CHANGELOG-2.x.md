@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `parser`.
 
+## 2.1.3
+
+Released: 2021-12-07
+
+### Changes
+
+* Add PHP 8.1 Compatibility.
+
 ## 2.1.2
 
 Released: 2020-09-11
