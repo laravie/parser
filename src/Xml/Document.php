@@ -36,13 +36,13 @@ class Document extends BaseDocument
     /**
      * Set document namespace and parse the XML.
      *
-     * @param  string  $namespace
+     * @param  string|null  $namespace
      * @param  array  $schema
      * @param  array  $config
      *
      * @return array
      */
-    public function namespaced(string $namespace, array $schema, array $config = []): array
+    public function namespaced(?string $namespace, array $schema, array $config = []): array
     {
         $document = $this->getContent();
         $namespaces = $this->getAvailableNamespaces();
@@ -61,10 +61,10 @@ class Document extends BaseDocument
      */
     protected function getValue($content, ?string $use, ?string $default = null)
     {
-        if (\preg_match('/^(.*)\[(.*)\]$/', $use, $matches) && $content instanceof SimpleXMLElement) {
+        if (\preg_match('/^(.*)\[(.*)\]$/', $use ?? '', $matches) && $content instanceof SimpleXMLElement) {
             return $this->getValueCollection($content, $matches, $default);
-        } elseif (\strpos($use, '::') !== false && $content instanceof SimpleXMLElement) {
-            return $this->getValueAttribute($content, $use, $default);
+        } elseif (\strpos($use ?? '', '::') !== false && $content instanceof SimpleXMLElement) {
+            return $this->getValueAttribute($content, $use ?? '', $default);
         }
 
         return $this->getValueData($content, $use, $default);
@@ -104,12 +104,12 @@ class Document extends BaseDocument
      * Resolve value by uses as attribute as raw.
      *
      * @param  \SimpleXMLElement  $content
-     * @param  string|null  $use
+     * @param  string  $use
      * @param  mixed  $default
      *
      * @return mixed
      */
-    protected function getRawValueAttribute(SimpleXMLElement $content, ?string $use, $default = null)
+    protected function getRawValueAttribute(SimpleXMLElement $content, string $use, $default = null)
     {
         [$value, $attribute] = \explode('::', $use, 2);
 

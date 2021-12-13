@@ -21,12 +21,12 @@ function alias_get($alias, $compared = null)
  * Get an item from an object using "dot" notation.
  *
  * @param  object  $object
- * @param  string  $key
+ * @param  string|null  $key
  * @param  mixed   $default
  *
  * @return mixed
  */
-function object_get($object, string $key, $default = null)
+function object_get($object, ?string $key, $default = null)
 {
     if (\is_null($key) || \trim($key) == '') {
         return $object;

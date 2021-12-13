@@ -61,13 +61,13 @@ class Reader extends BaseReader
     /**
      * Validate given XML.
      *
-     * @param  object $xml
+     * @param  \SimpleXMLElement|bool|null  $xml
      *
      * @throws \Laravie\Parser\InvalidContentException
      *
      * @return \Laravie\Parser\Document
      */
-    protected function resolveXmlObject($xml): Document
+    protected function resolveXmlObject($xml): BaseDocument
     {
         if (! $xml) {
             throw new InvalidContentException('Unable to parse XML from string.');

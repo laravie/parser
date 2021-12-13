@@ -4,6 +4,7 @@ namespace Laravie\Parser\Xml\Concerns;
 
 use SimpleXMLElement;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 use function Laravie\Parser\alias_get;
 use Laravie\Parser\Xml\Definitions\MultiLevel;
 
@@ -12,7 +13,7 @@ trait SupportMultiLevel
     /**
      * prepare use variable for using.
      *
-     * @param  string  $use
+     * @param  string  $uses
      *
      * @return \Laravie\Parser\Xml\Definitions\MultiLevel|string
      */
@@ -129,7 +130,7 @@ trait SupportMultiLevel
      * @param  \SimpleXMLElement  $content
      * @param  \Laravie\Parser\Xml\Definitions\MultiLevel  $multilevel
      *
-     * @return array
+     * @return array<int, mixed>
      */
     protected function parseMultiLevelsValueCollection(SimpleXMLElement $content, MultiLevel $multilevel): array
     {
@@ -142,6 +143,10 @@ trait SupportMultiLevel
                 foreach ($multilevel as $use) {
                     if (\strpos($use, '{') !== false) {
                         $secondary = $this->resolveUses($use);
+
+                        if (is_string($secondary)) {
+                            throw new InvalidArgumentException('Unable to resolve given $secondary variable as ['.MultiLevel::class.']');
+                        }
 
                         $value[$secondary->getKey()] = $this->parseMultiLevelsValueCollection($feature, $secondary);
                     } else {

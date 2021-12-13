@@ -93,7 +93,7 @@ abstract class Document
             return $this->callFilterResolver($filter, $value);
         }
 
-        $resolver = $this->getFilterResolver($filter);
+        $resolver = $this->getFilterResolver((string) $filter);
 
         if (\method_exists($resolver[0], $resolver[1])) {
             return $this->callFilterResolver($resolver, $value);
@@ -105,7 +105,7 @@ abstract class Document
     /**
      * Resolve value from content.
      *
-     * @param  array   $config
+     * @param  array<string, mixed>  $config
      * @param  string  $hash
      *
      * @return mixed
@@ -116,13 +116,17 @@ abstract class Document
             return $config['default'] ?? null;
         }
 
-        if (! \is_array($config['uses'])) {
-            return $this->getValue($this->getContent(), $config['uses'], $hash);
+        /** @var array<int, string|null>|string|null $uses */
+        $uses = $config['uses'];
+
+        if (! \is_array($uses)) {
+            return $this->getValue($this->getContent(), $uses, $hash);
         }
 
         $values = [];
 
-        foreach ($config['uses'] as $use) {
+        foreach ($uses as $use) {
+            /** @var string|null $use */
             $values[] = $this->getValue($this->getContent(), $use, $hash);
         }
 
@@ -143,15 +147,13 @@ abstract class Document
     /**
      * Get filter resolver.
      *
-     * @param  string|null  $filter
+     * @param  class-string|string  $filter
      *
-     * @return array
+     * @return array{0: object, 1: string}
      */
     protected function getFilterResolver(string $filter): array
     {
-        $class = $filter;
         $method = 'filter';
-
         $position = \strpos($filter, '@');
 
         if ($position === 0) {
@@ -161,7 +163,14 @@ abstract class Document
         }
 
         if ($position !== false) {
+            /**
+             * @var class-string $class
+             * @var string $method
+             */
             [$class, $method] = \explode('@', $filter, 2);
+        } else {
+            /** @var class-string $class */
+            $class = $filter;
         }
 
         return $this->makeFilterResolver($class, $method);
@@ -170,13 +179,13 @@ abstract class Document
     /**
      * Parse single data.
      *
-     * @param  mixed  $data
+     * @param  array<string, mixed>  $data
      *
      * @return mixed
      */
     protected function parseData($data)
     {
-        $hash = \hash('sha256', microtime(true));
+        $hash = \hash('sha256', (string) microtime(true));
         $value = $data;
         $filter = null;
 
@@ -199,10 +208,10 @@ abstract class Document
     /**
      * Make filter resolver.
      *
-     * @param  string  $class
+     * @param  class-string  $class
      * @param  string  $method
      *
-     * @return array
+     * @return array{0: object, 1: string}
      */
     protected function makeFilterResolver(string $class, string $method): array
     {
@@ -214,12 +223,12 @@ abstract class Document
     /**
      * Call filter to parse the value.
      *
-     * @param  callable  $resolver
+     * @param  callable|mixed  $resolver
      * @param  mixed  $value
      *
      * @return mixed
      */
-    protected function callFilterResolver(callable $resolver, $value)
+    protected function callFilterResolver($resolver, $value)
     {
         return \call_user_func($resolver, $value);
     }
