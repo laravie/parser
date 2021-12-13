@@ -13,4 +13,5 @@
 /CONTRIBUTING.md export-ignore
 /LICENSE export-ignore
 /phpunit.xml export-ignore
+/phpstan.neon.dist export-ignore
 /README.md export-ignore
