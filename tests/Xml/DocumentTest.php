@@ -788,8 +788,7 @@ class DocumentTest extends TestCase
 				</Error>
 			</ErrorItem>
 		</ErrorsProcess>
-	</StepProcess>
-<StepProcess>"));
+	</StepProcess>"));
 
         $data = $stub->parse([
             'errors' => ['uses' => 'ErrorsProcess[ErrorItem{DataArea,DynPar,StatusItem,Error{Code,Severity,Text,Localization{DataAreaCode,Detail.DynPar}}}]'],
