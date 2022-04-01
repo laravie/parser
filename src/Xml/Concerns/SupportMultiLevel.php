@@ -110,6 +110,10 @@ trait SupportMultiLevel
                         $uses[$current] = '';
                         --$level;
                         break;
+                    } else {
+                        $uses[$current] .= '}';
+                        --$level;
+                        break;
                     }
                     // no break
                 default:
