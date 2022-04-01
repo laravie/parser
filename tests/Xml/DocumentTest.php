@@ -720,13 +720,17 @@ class DocumentTest extends TestCase
                     'DynPar' => 'T0019:1,R0109:,R0108:,R0107:,T0025:X',
                     'StatusItem' => 'REJECTED',
                     'Error' => [
-                        'Code' => 'ERR_2059',
-                        'Severity' => 'Critical',
-                        'Text' => 'Error message ERR_2059.',
-                        'Localization' => [
-                            'DataAreaCode' => 'AREA1_CODE',
-                            'Detail' =>[
-                                'DynPar' => 'T0019:1,R0109:test1,R0108:,R0107:,T0025:X'
+                        [
+                            'Code' => 'ERR_2059',
+                            'Severity' => 'Critical',
+                            'Text' => 'Error message ERR_2059.',
+                            'Localization' => [
+                                [
+                                    'DataAreaCode' => 'AREA1_CODE',
+                                    'Detail' =>[
+                                        'DynPar' => 'T0019:1,R0109:test1,R0108:,R0107:,T0025:X'
+                                    ]
+                               ]
                             ]
                         ]
                     ]
@@ -735,13 +739,17 @@ class DocumentTest extends TestCase
                     'DynPar' => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
                     'StatusItem' => 'REJECTED',
                     'Error' => [
-                        'Code' => 'ERR_2060',
-                        'Severity' => 'Warning',
-                        'Text' => 'Error message ERR_2060.',
-                        'Localization' => [
-                            'DataAreaCode' => 'AREA2_CODE',
-                            'Detail' => [
-                                'DynPar' => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X'
+                        [
+                            'Code' => 'ERR_2060',
+                            'Severity' => 'Warning',
+                            'Text' => 'Error message ERR_2060.',
+                            'Localization' => [
+                                [
+                                    'DataAreaCode' => 'AREA2_CODE',
+                                    'Detail' => [
+                                        'DynPar' => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X'
+                                    ]
+                                ]
                             ]
                         ]
                     ]
