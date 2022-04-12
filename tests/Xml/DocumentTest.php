@@ -709,6 +709,106 @@ class DocumentTest extends TestCase
 
         $this->assertEquals($expected, $data);
     }
+    
+     /** @test */
+    public function testParseValueCollectionMultiLevelsPartTwo()
+    {
+	$expected = [
+            'errors' => [
+                [
+                    'ErrorItem' => [
+                        [
+                            'DataArea'   => 'AREA1',
+                            'DynPar'     => 'T0019:1,R0109:,R0108:,R0107:,T0025:X',
+                            'StatusItem' => 'REJECTED',
+                            'Error'      => [
+                                [
+                                    'Code'         => 'ERR_2059',
+                                    'Severity'     => 'Critical',
+                                    'Text'         => 'Error message ERR_2059.',
+                                    'Localization' => [
+                                        [
+                                            'DataAreaCode' => 'AREA1_CODE',
+                                            'Detail'       => [
+                                                'DynPar' => 'T0019:1,R0109:test1,R0108:,R0107:,T0025:X',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'DataArea'   => 'AREA2',
+                            'DynPar'     => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
+                            'StatusItem' => 'REJECTED',
+                            'Error'      => [
+                                [
+                                    'Code'         => 'ERR_2060',
+                                    'Severity'     => 'Warning',
+                                    'Text'         => 'Error message ERR_2060.',
+                                    'Localization' => [
+                                        [
+                                            'DataAreaCode' => 'AREA2_CODE',
+                                            'Detail'       => [
+                                                'DynPar' => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+	    
+        $stub = new DocumentStub();
+
+        $stub->setContent(simplexml_load_string("<StepProcess>
+		<StepName>FORMAT_CONTROL</StepName>
+		<Result>NOT_ACCEPTED</Result>
+		<ErrorsProcess>
+			<ErrorItem>
+				<DataArea>AREA1</DataArea>
+				<DynPar>T0019:1,R0109:,R0108:,R0107:,T0025:X</DynPar>
+				<StatusItem>REJECTED</StatusItem>
+				<Error>
+					<Code>ERR_2059</Code>
+					<Severity>Critical</Severity>
+					<Text>Error message ERR_2059.</Text>
+					<Localization>
+						<DataAreaCode>AREA1_CODE</DataAreaCode>
+						<Detail>
+							<DynPar>T0019:1,R0109:test1,R0108:,R0107:,T0025:X</DynPar>
+						</Detail>
+					</Localization>
+				</Error>
+			</ErrorItem>
+			<ErrorItem>
+				<DataArea>AREA2</DataArea>
+				<DynPar>T0019:2,R0109:test2,R0108:,R0107:,T0025:X</DynPar>
+				<StatusItem>REJECTED</StatusItem>
+				<Error>
+					<Code>ERR_2060</Code>
+					<Severity>Warning</Severity>
+					<Text>Error message ERR_2060.</Text>
+					<Localization>
+						<DataAreaCode>AREA2_CODE</DataAreaCode>
+						<Detail>
+							<DynPar>T0019:2,R0109:test2,R0108:,R0107:,T0025:X</DynPar>
+						</Detail>
+					</Localization>
+				</Error>
+			</ErrorItem>
+		</ErrorsProcess>
+	</StepProcess>"));
+	    
+        $data = $stub->parse([
+            'errors' => ['uses' => 'ErrorsProcess[ErrorItem{DataArea,DynPar,StatusItem,Error{Code,Severity,Text,Localization{DataAreaCode,Detail.DynPar}}}]'],
+        ]);
+
+        $this->assertEquals($expected, $data);
+    }
 }
 
 class DocumentStub extends \Laravie\Parser\Xml\Document
