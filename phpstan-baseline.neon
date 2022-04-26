@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$resolver of method Laravie\\\\Parser\\\\Document\\:\\:callFilterResolver\\(\\) expects callable\\(\\)\\: mixed, array\\{object, string\\} given\\.$#"
+			count: 1
+			path: src/Document.php
+

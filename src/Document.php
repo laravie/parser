@@ -223,12 +223,12 @@ abstract class Document
     /**
      * Call filter to parse the value.
      *
-     * @param  callable|mixed  $resolver
+     * @param  callable  $resolver
      * @param  mixed  $value
      *
      * @return mixed
      */
-    protected function callFilterResolver($resolver, $value)
+    protected function callFilterResolver(callable $resolver, $value)
     {
         return \call_user_func($resolver, $value);
     }
