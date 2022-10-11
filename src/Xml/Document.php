@@ -65,7 +65,7 @@ class Document extends BaseDocument
             if (\preg_match('/^(.*)\[(.*)\]$/', $use ?? '', $matches)) {
                 return $this->getValueCollection($content, $matches, $default);
             } elseif (\strpos($use ?? '', '::') !== false) {
-                return $this->getValueAttribute($content, $use ?? '', $default);
+                return $this->getValueAttribute($content, $use, $default);
             }
         }
 
