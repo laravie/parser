@@ -73,7 +73,7 @@ class Document extends BaseDocument
     }
 
     /**
-     * Cast value to string only when it is an instance of SimpleXMLElement.
+     * Cast value to string|array only when it is an instance of SimpleXMLElement.
      *
      * @param  mixed  $value
      *
@@ -82,7 +82,11 @@ class Document extends BaseDocument
     protected function castValue($value)
     {
         if ($value instanceof SimpleXMLElement) {
-            $value = (string) $value;
+            if ($value->count() > 1) {
+                $value = (array) $value;
+            } else {
+                $value = (string) $value;
+            }
         }
 
         return $value;
