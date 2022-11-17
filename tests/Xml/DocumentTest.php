@@ -750,7 +750,10 @@ class DocumentTest extends TestCase
                                         [
                                             'DataAreaCode' => 'AREA2_CODE',
                                             'Detail'       => [
-                                                'DynPar' => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
+                                                'DynPar' => [
+                                                    'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
+                                                    'T0019:3,R0109:test3,R0108:,R0107:,T0025:Y',
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -796,6 +799,7 @@ class DocumentTest extends TestCase
 						<DataAreaCode>AREA2_CODE</DataAreaCode>
 						<Detail>
 							<DynPar>T0019:2,R0109:test2,R0108:,R0107:,T0025:X</DynPar>
+							<DynPar>T0019:3,R0109:test3,R0108:,R0107:,T0025:Y</DynPar>
 						</Detail>
 					</Localization>
 				</Error>
