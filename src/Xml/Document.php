@@ -61,10 +61,10 @@ class Document extends BaseDocument
      */
     protected function getValue($content, ?string $use, ?string $default = null)
     {
-        if ($content instanceof SimpleXMLElement) {
-            if (\preg_match('/^(.*)\[(.*)\]$/', $use ?? '', $matches)) {
+        if ($content instanceof SimpleXMLElement && ! \is_null($use)) {
+            if (\preg_match('/^(.*)\[(.*)\]$/', $use, $matches)) {
                 return $this->getValueCollection($content, $matches, $default);
-            } elseif (\strpos($use ?? '', '::') !== false) {
+            } elseif (\strpos($use, '::') !== false) {
                 return $this->getValueAttribute($content, $use, $default);
             }
         }
