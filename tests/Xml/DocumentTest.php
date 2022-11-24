@@ -2,9 +2,9 @@
 
 namespace Laravie\Parser\TestCase\Xml;
 
+use Laravie\Parser\Xml\Document;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Laravie\Parser\Xml\Document;
 
 class DocumentTest extends TestCase
 {
@@ -163,7 +163,7 @@ class DocumentTest extends TestCase
     public function dataCollectionProvider()
     {
         yield [
-'<api>
+            '<api>
     <user followers="5">
         <id>1</id>
         <email type="primary">crynobone@gmail.com</email>
@@ -184,7 +184,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<foo>
+            '<foo>
     <bar hello="hello world">foobar</bar>
     <world></world>
 </foo>',
@@ -209,7 +209,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api>
+            '<api>
     <collection>
         <user>
             <id>1</id>
@@ -239,7 +239,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api>
+            '<api>
     <user>
         <id>1</id>
         <name>Mior Muhammad Zaki</name>
@@ -267,7 +267,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api>
+            '<api>
     <user>
         <id>1</id>
         <name>Mior Muhammad Zaki</name>
@@ -295,7 +295,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api>
+            '<api>
     <user>
         <property id="id">
             <value>1</value>
@@ -331,7 +331,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api>
+            '<api>
     <user>
         <property id="id">1</property>
         <property id="name">Mior Muhammad Zaki</property>
@@ -359,7 +359,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api></api>',
+            '<api></api>',
             [
                 'users' => ['uses' => 'user[id,name]', 'default' => null],
             ],
@@ -369,7 +369,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api><user></user></api>',
+            '<api><user></user></api>',
             [
                 'users' => ['uses' => 'user[id,name]', 'default' => null],
             ],
@@ -379,7 +379,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<products>
+            '<products>
     <product ID="123456">
         <name>Lord of the Rings</name>
         <description>Just a book.</description>
@@ -439,7 +439,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<products>
+            '<products>
     <product ID="123456">
         <name>Lord of the Rings</name>
         <description>Just a book.</description>
@@ -495,7 +495,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<api>
+            '<api>
     <Country name="Albania" id="ALB">
         <Competition id="ALB_1" name="Albania 1" event_name="Super League" sport="soccer" levels_on_pyramid="0" competition_type="league" image="" timestamp="0"/>
     </Country>
@@ -523,7 +523,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<xml time="1460026675">
+            '<xml time="1460026675">
     <Country id="ALG" name="Algeria" image="Algeria.png" lastupdate="1315773004"/>
     <Country id="ASM" name="American Samoa" image="American-Samoa.png" lastupdate="1315773004"/>
     <Country id="AND" name="Andorra" image="Andorra.png" lastupdate="1315773004"/>
@@ -550,7 +550,7 @@ class DocumentTest extends TestCase
         ];
 
         yield [
-'<course code="ABC">
+            '<course code="ABC">
     <title lang="sv">Utmattning</title>
     <title lang="en">Fatigue</title>
 </course>',
@@ -709,27 +709,27 @@ class DocumentTest extends TestCase
 
         $this->assertEquals($expected, $data);
     }
-    
-     /** @test */
+
+    /** @test */
     public function testParseValueCollectionMultiLevelsPartTwo()
     {
-	$expected = [
+        $expected = [
             'errors' => [
                 [
                     'ErrorItem' => [
                         [
-                            'DataArea'   => 'AREA1',
-                            'DynPar'     => 'T0019:1,R0109:,R0108:,R0107:,T0025:X',
+                            'DataArea' => 'AREA1',
+                            'DynPar' => 'T0019:1,R0109:,R0108:,R0107:,T0025:X',
                             'StatusItem' => 'REJECTED',
-                            'Error'      => [
+                            'Error' => [
                                 [
-                                    'Code'         => 'ERR_2059',
-                                    'Severity'     => 'Critical',
-                                    'Text'         => 'Error message ERR_2059.',
+                                    'Code' => 'ERR_2059',
+                                    'Severity' => 'Critical',
+                                    'Text' => 'Error message ERR_2059.',
                                     'Localization' => [
                                         [
                                             'DataAreaCode' => 'AREA1_CODE',
-                                            'Detail'       => [
+                                            'Detail' => [
                                                 'DynPar' => 'T0019:1,R0109:test1,R0108:,R0107:,T0025:X',
                                             ],
                                         ],
@@ -738,18 +738,18 @@ class DocumentTest extends TestCase
                             ],
                         ],
                         [
-                            'DataArea'   => 'AREA2',
-                            'DynPar'     => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
+                            'DataArea' => 'AREA2',
+                            'DynPar' => 'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
                             'StatusItem' => 'REJECTED',
-                            'Error'      => [
+                            'Error' => [
                                 [
-                                    'Code'         => 'ERR_2060',
-                                    'Severity'     => 'Warning',
-                                    'Text'         => 'Error message ERR_2060.',
+                                    'Code' => 'ERR_2060',
+                                    'Severity' => 'Warning',
+                                    'Text' => 'Error message ERR_2060.',
                                     'Localization' => [
                                         [
                                             'DataAreaCode' => 'AREA2_CODE',
-                                            'Detail'       => [
+                                            'Detail' => [
                                                 'DynPar' => [
                                                     'T0019:2,R0109:test2,R0108:,R0107:,T0025:X',
                                                     'T0019:3,R0109:test3,R0108:,R0107:,T0025:Y',
@@ -764,10 +764,10 @@ class DocumentTest extends TestCase
                 ],
             ],
         ];
-	    
+
         $stub = new DocumentStub();
 
-        $stub->setContent(simplexml_load_string("<StepProcess>
+        $stub->setContent(simplexml_load_string('<StepProcess>
 		<StepName>FORMAT_CONTROL</StepName>
 		<Result>NOT_ACCEPTED</Result>
 		<ErrorsProcess>
@@ -805,8 +805,8 @@ class DocumentTest extends TestCase
 				</Error>
 			</ErrorItem>
 		</ErrorsProcess>
-	</StepProcess>"));
-	    
+	</StepProcess>'));
+
         $data = $stub->parse([
             'errors' => ['uses' => 'ErrorsProcess[ErrorItem{DataArea,DynPar,StatusItem,Error{Code,Severity,Text,Localization{DataAreaCode,Detail.DynPar}}}]'],
         ]);

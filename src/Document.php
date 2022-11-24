@@ -25,7 +25,6 @@ abstract class Document
      *
      * @param  array  $schema
      * @param  array  $config
-     *
      * @return array
      */
     public function parse(array $schema, array $config = []): array
@@ -48,7 +47,6 @@ abstract class Document
      * Set the content.
      *
      * @param  mixed  $content
-     *
      * @return $this
      */
     public function setContent($content)
@@ -82,9 +80,8 @@ abstract class Document
     /**
      * Filter value.
      *
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  \Closure|string|null  $filter
-     *
      * @return mixed
      */
     protected function filterValue($value, $filter = null)
@@ -95,7 +92,7 @@ abstract class Document
 
         $resolver = $this->getFilterResolver((string) $filter);
 
-        if (\method_exists($resolver[0], $resolver[1])) {
+        if (method_exists($resolver[0], $resolver[1])) {
             return $this->callFilterResolver($resolver, $value);
         }
 
@@ -107,7 +104,6 @@ abstract class Document
      *
      * @param  array<string, mixed>  $config
      * @param  string  $hash
-     *
      * @return mixed
      */
     protected function resolveValue(array $config, string $hash)
@@ -136,10 +132,9 @@ abstract class Document
     /**
      * Resolve value from uses filter.
      *
-     * @param  mixed   $content
+     * @param  mixed  $content
      * @param  string|null  $use
      * @param  string|null  $default
-     *
      * @return mixed
      */
     abstract protected function getValue($content, ?string $use, ?string $default = null);
@@ -148,16 +143,15 @@ abstract class Document
      * Get filter resolver.
      *
      * @param  class-string|string  $filter
-     *
      * @return array{0: object, 1: string}
      */
     protected function getFilterResolver(string $filter): array
     {
         $method = 'filter';
-        $position = \strpos($filter, '@');
+        $position = strpos($filter, '@');
 
         if ($position === 0) {
-            $method = 'filter'.\ucwords(\substr($filter, 1));
+            $method = 'filter'.ucwords(substr($filter, 1));
 
             return [$this, $method];
         }
@@ -167,7 +161,7 @@ abstract class Document
              * @var class-string $class
              * @var string $method
              */
-            [$class, $method] = \explode('@', $filter, 2);
+            [$class, $method] = explode('@', $filter, 2);
         } else {
             /** @var class-string $class */
             $class = $filter;
@@ -180,12 +174,11 @@ abstract class Document
      * Parse single data.
      *
      * @param  array<string, mixed>  $data
-     *
      * @return mixed
      */
     protected function parseData($data)
     {
-        $hash = \hash('sha256', (string) microtime(true));
+        $hash = hash('sha256', (string) microtime(true));
         $value = $data;
         $filter = null;
 
@@ -210,7 +203,6 @@ abstract class Document
      *
      * @param  class-string  $class
      * @param  string  $method
-     *
      * @return array{0: object, 1: string}
      */
     protected function makeFilterResolver(string $class, string $method): array
@@ -225,7 +217,6 @@ abstract class Document
      *
      * @param  callable  $resolver
      * @param  mixed  $value
-     *
      * @return mixed
      */
     protected function callFilterResolver(callable $resolver, $value)

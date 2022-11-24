@@ -25,7 +25,6 @@ abstract class Reader
      * Extract content from string.
      *
      * @param  string  $content
-     *
      * @return \Laravie\Parser\Document
      */
     abstract public function extract(string $content): Document;
@@ -34,7 +33,6 @@ abstract class Reader
      * Load content from file.
      *
      * @param  string  $filename
-     *
      * @return \Laravie\Parser\Document
      */
     abstract public function load(string $filename): Document;
@@ -43,7 +41,6 @@ abstract class Reader
      * Load content from local file.
      *
      * @param  string  $filename
-     *
      * @return \Laravie\Parser\Document
      */
     abstract public function local(string $filename): Document;
@@ -52,7 +49,6 @@ abstract class Reader
      * Load content from remote file.
      *
      * @param  string  $filename
-     *
      * @return \Laravie\Parser\Document
      */
     abstract public function remote(string $filename): Document;

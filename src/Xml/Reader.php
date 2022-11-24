@@ -2,11 +2,11 @@
 
 namespace Laravie\Parser\Xml;
 
-use Throwable;
-use Laravie\Parser\Reader as BaseReader;
+use Laravie\Parser\Document as BaseDocument;
 use Laravie\Parser\FileNotFoundException;
 use Laravie\Parser\InvalidContentException;
-use Laravie\Parser\Document as BaseDocument;
+use Laravie\Parser\Reader as BaseReader;
+use Throwable;
 
 class Reader extends BaseReader
 {
@@ -16,7 +16,7 @@ class Reader extends BaseReader
     public function extract(string $content): BaseDocument
     {
         try {
-            $xml = @\simplexml_load_string($content);
+            $xml = @simplexml_load_string($content);
         } catch (Throwable $e) {
             $xml = null;
         }
@@ -30,7 +30,7 @@ class Reader extends BaseReader
     public function load(string $filename): BaseDocument
     {
         try {
-            $xml = @\simplexml_load_file($filename);
+            $xml = @simplexml_load_file($filename);
         } catch (Throwable $e) {
             $xml = null;
         }
@@ -43,7 +43,7 @@ class Reader extends BaseReader
      */
     public function local(string $filename): BaseDocument
     {
-        if (! \file_exists($filename)) {
+        if (! file_exists($filename)) {
             throw new FileNotFoundException('Could not find the file: '.$filename);
         }
 
@@ -62,10 +62,9 @@ class Reader extends BaseReader
      * Validate given XML.
      *
      * @param  \SimpleXMLElement|bool|null  $xml
+     * @return \Laravie\Parser\Document
      *
      * @throws \Laravie\Parser\InvalidContentException
-     *
-     * @return \Laravie\Parser\Document
      */
     protected function resolveXmlObject($xml): BaseDocument
     {

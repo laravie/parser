@@ -2,11 +2,11 @@
 
 namespace Laravie\Parser\Xml;
 
-use SimpleXMLElement;
 use Illuminate\Support\Arr;
 use function Laravie\Parser\alias_get;
-use function Laravie\Parser\object_get;
 use Laravie\Parser\Document as BaseDocument;
+use function Laravie\Parser\object_get;
+use SimpleXMLElement;
 
 class Document extends BaseDocument
 {
@@ -23,7 +23,6 @@ class Document extends BaseDocument
      * Rebase document node.
      *
      * @param  string|null  $base
-     *
      * @return $this
      */
     public function rebase(string $base = null): self
@@ -39,7 +38,6 @@ class Document extends BaseDocument
      * @param  string|null  $namespace
      * @param  array  $schema
      * @param  array  $config
-     *
      * @return array
      */
     public function namespaced(?string $namespace, array $schema, array $config = []): array
@@ -62,9 +60,9 @@ class Document extends BaseDocument
     protected function getValue($content, ?string $use, ?string $default = null)
     {
         if ($content instanceof SimpleXMLElement && ! \is_null($use)) {
-            if (\preg_match('/^(.*)\[(.*)\]$/', $use, $matches)) {
+            if (preg_match('/^(.*)\[(.*)\]$/', $use, $matches)) {
                 return $this->getValueCollection($content, $matches, $default);
-            } elseif (\strpos($use, '::') !== false) {
+            } elseif (strpos($use, '::') !== false) {
                 return $this->getValueAttribute($content, $use, $default);
             }
         }
@@ -76,7 +74,6 @@ class Document extends BaseDocument
      * Cast value to string|array only when it is an instance of SimpleXMLElement.
      *
      * @param  mixed  $value
-     *
      * @return mixed
      */
     protected function castValue($value)
@@ -98,7 +95,6 @@ class Document extends BaseDocument
      * @param  \SimpleXMLElement  $content
      * @param  string  $use
      * @param  mixed  $default
-     *
      * @return mixed
      */
     protected function getValueAttribute(SimpleXMLElement $content, string $use, $default = null)
@@ -112,12 +108,11 @@ class Document extends BaseDocument
      * @param  \SimpleXMLElement  $content
      * @param  string  $use
      * @param  mixed  $default
-     *
      * @return mixed
      */
     protected function getRawValueAttribute(SimpleXMLElement $content, string $use, $default = null)
     {
-        [$value, $attribute] = \explode('::', $use, 2);
+        [$value, $attribute] = explode('::', $use, 2);
 
         if (! empty($value)) {
             if (\is_null($parent = object_get($content, $value))) {
@@ -138,7 +133,6 @@ class Document extends BaseDocument
      * @param  \SimpleXMLElement  $content
      * @param  string|null  $use
      * @param  mixed  $default
-     *
      * @return mixed
      */
     protected function getValueData(SimpleXMLElement $content, ?string $use, $default = null)
@@ -158,7 +152,6 @@ class Document extends BaseDocument
      * @param  \SimpleXMLElement  $content
      * @param  array  $matches
      * @param  mixed  $default
-     *
      * @return mixed
      */
     protected function getValueCollection(SimpleXMLElement $content, array $matches, $default = null)
@@ -166,8 +159,8 @@ class Document extends BaseDocument
         $parent = $matches[1];
         $namespace = null;
 
-        if (\strpos($parent, '/') !== false) {
-            [$parent, $namespace] = \explode('/', $parent, 2);
+        if (strpos($parent, '/') !== false) {
+            [$parent, $namespace] = explode('/', $parent, 2);
         }
 
         $collection = data_get($content, $parent);
@@ -201,7 +194,6 @@ class Document extends BaseDocument
      *
      * @param  \SimpleXMLElement  $content
      * @param  array  $uses
-     *
      * @return array
      */
     protected function parseValueCollection(SimpleXMLElement $content, array $uses): array
@@ -215,15 +207,15 @@ class Document extends BaseDocument
             if ($primary instanceof Definitions\MultiLevel) {
                 $result[$primary->getKey()] = $this->parseMultiLevelsValueCollection($content, $primary);
             } else {
-                [$name, $as] = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
+                [$name, $as] = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
-                if (\preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                     $as = alias_get($as, $name);
 
                     $item = $this->getSelfMatchingValue($content, $matches, $as);
 
                     if (\is_null($as)) {
-                        $value = \array_merge($value, $item);
+                        $value = array_merge($value, $item);
                     } else {
                         Arr::set($value, $as, $item);
                     }
@@ -246,7 +238,6 @@ class Document extends BaseDocument
      * @param  \SimpleXMLElement  $content
      * @param  array  $matches
      * @param  string|null  $alias
-     *
      * @return array
      */
     protected function getSelfMatchingValue(
@@ -265,7 +256,7 @@ class Document extends BaseDocument
             $alias = $name;
         }
 
-        $collection = $this->getValue($content, \sprintf('%s[%s]', $name, $uses));
+        $collection = $this->getValue($content, sprintf('%s[%s]', $name, $uses));
 
         foreach ((array) $collection as $collect) {
             $v = $collect[$meta];

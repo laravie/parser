@@ -2,11 +2,11 @@
 
 namespace Laravie\Parser\Xml\Concerns;
 
-use SimpleXMLElement;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use function Laravie\Parser\alias_get;
 use Laravie\Parser\Xml\Definitions\MultiLevel;
+use SimpleXMLElement;
 
 trait SupportMultiLevel
 {
@@ -14,7 +14,6 @@ trait SupportMultiLevel
      * prepare use variable for using.
      *
      * @param  string  $uses
-     *
      * @return \Laravie\Parser\Xml\Definitions\MultiLevel|string
      */
     protected function resolveUses(string $uses)
@@ -28,7 +27,6 @@ trait SupportMultiLevel
      * split the use.
      *
      * @param  string  $value
-     *
      * @return array
      */
     protected function parseBasicUses(string $value): array
@@ -37,7 +35,7 @@ trait SupportMultiLevel
         $uses = [''];
         $current = 0;
 
-        foreach (\str_split($value) as $char) {
+        foreach (str_split($value) as $char) {
             switch ($char) {
                 case '{':
                     $level++;
@@ -49,7 +47,7 @@ trait SupportMultiLevel
                     break;
                 case ',':
                     if ($level == 0) {
-                        ++$current;
+                        $current++;
                         $uses[$current] = '';
                         break;
                     }
@@ -66,7 +64,6 @@ trait SupportMultiLevel
      * split the use.
      *
      * @param  string  $value
-     *
      * @return \Laravie\Parser\Xml\Definitions\MultiLevel
      */
     protected function parseAdvancedUses(string $value): MultiLevel
@@ -76,23 +73,23 @@ trait SupportMultiLevel
         $current = 0;
         $root = '';
 
-        foreach (\str_split($value) as $char) {
+        foreach (str_split($value) as $char) {
             switch ($char) {
                 case '{':
                     if ($level == 0) {
                         $root = $uses[0];
                         $uses[$current] = '';
-                        ++$level;
+                        $level++;
                         break;
                     } else {
                         $uses[$current] .= '{';
-                        ++$level;
+                        $level++;
                         break;
                     }
                     // no break
                 case ',':
                     if ($level === 1) {
-                        ++$current;
+                        $current++;
                         $uses[$current] = '';
                         break;
                     } else {
@@ -103,16 +100,16 @@ trait SupportMultiLevel
                 case '}':
                     if ($level === 2) {
                         $uses[$current] .= '}';
-                        --$level;
+                        $level--;
                         break;
                     } elseif ($level === 1) {
-                        ++$current;
+                        $current++;
                         $uses[$current] = '';
-                        --$level;
+                        $level--;
                         break;
                     } else {
                         $uses[$current] .= '}';
-                        --$level;
+                        $level--;
                         break;
                     }
                     // no break
@@ -121,9 +118,9 @@ trait SupportMultiLevel
             }
         }
 
-        $alias = $uses[$current] ? \str_replace('>', '', $uses[$current]) : $root;
+        $alias = $uses[$current] ? str_replace('>', '', $uses[$current]) : $root;
 
-        \array_pop($uses);
+        array_pop($uses);
 
         return new MultiLevel($root, $alias, $uses);
     }
@@ -133,7 +130,6 @@ trait SupportMultiLevel
      *
      * @param  \SimpleXMLElement  $content
      * @param  \Laravie\Parser\Xml\Definitions\MultiLevel  $multilevel
-     *
      * @return array<int, mixed>
      */
     protected function parseMultiLevelsValueCollection(SimpleXMLElement $content, MultiLevel $multilevel): array
@@ -145,24 +141,24 @@ trait SupportMultiLevel
         if (! empty($features)) {
             foreach ($features as $key => $feature) {
                 foreach ($multilevel as $use) {
-                    if (\strpos($use, '{') !== false) {
+                    if (strpos($use, '{') !== false) {
                         $secondary = $this->resolveUses($use);
 
-                        if (is_string($secondary)) {
+                        if (\is_string($secondary)) {
                             throw new InvalidArgumentException('Unable to resolve given $secondary variable as ['.MultiLevel::class.']');
                         }
 
                         $value[$secondary->getKey()] = $this->parseMultiLevelsValueCollection($feature, $secondary);
                     } else {
-                        [$name, $as] = \strpos($use, '>') !== false ? \explode('>', $use, 2) : [$use, $use];
+                        [$name, $as] = strpos($use, '>') !== false ? explode('>', $use, 2) : [$use, $use];
 
-                        if (\preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
+                        if (preg_match('/^([A-Za-z0-9_\-\.]+)\((.*)\=(.*)\)$/', $name, $matches)) {
                             $as = alias_get($as, $name);
 
                             $item = $this->getSelfMatchingValue($feature, $matches, $as);
 
                             if (\is_null($as)) {
-                                $value = \array_merge($value, $item);
+                                $value = array_merge($value, $item);
                             } else {
                                 Arr::set($value, $as, $item);
                             }

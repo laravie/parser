@@ -9,7 +9,6 @@ use Closure;
  *
  * @param  string  $alias
  * @param  string  $compared
- *
  * @return string|null
  */
 function alias_get($alias, $compared = null)
@@ -22,17 +21,16 @@ function alias_get($alias, $compared = null)
  *
  * @param  object  $object
  * @param  string|null  $key
- * @param  mixed   $default
- *
+ * @param  mixed  $default
  * @return mixed
  */
 function object_get($object, ?string $key, $default = null)
 {
-    if (\is_null($key) || \trim($key) == '') {
+    if (\is_null($key) || trim($key) == '') {
         return $object;
     }
 
-    foreach (\explode('.', $key) as $segment) {
+    foreach (explode('.', $key) as $segment) {
         if (! \is_object($object) || ! isset($object->{$segment})) {
             return value($default);
         }
@@ -47,7 +45,6 @@ function object_get($object, ?string $key, $default = null)
  * Return the default value of the given value.
  *
  * @param  mixed  $value
- *
  * @return mixed
  */
 function value($value)

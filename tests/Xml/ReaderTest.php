@@ -2,9 +2,9 @@
 
 namespace Laravie\Parser\Xml\TestCase;
 
+use Laravie\Parser\Xml\Document;
 use Laravie\Parser\Xml\Reader;
 use PHPUnit\Framework\TestCase;
-use Laravie\Parser\Xml\Document;
 
 class ReaderTest extends TestCase
 {
