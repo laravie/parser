@@ -22,12 +22,12 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "ext-simplexml": "*",
-        "illuminate/collections": "^8.0 || ^9.0"
+        "illuminate/collections": "^8.0 || ^9.0 || ^10.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
         "phpstan/phpstan": "^1.0",
-        "phpunit/phpunit": "^8.4 || ^9.3.3"
+        "phpunit/phpunit": "^9.5.10"
     },
     "extra": {
         "branch-alias": {
