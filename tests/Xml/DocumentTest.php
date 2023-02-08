@@ -104,6 +104,7 @@ class DocumentTest extends TestCase
      * Test Laravie\Parser\Xml\Document::parse() method.
      *
      * @test
+     *
      * @dataProvider dataCollectionProvider
      */
     public function it_can_parse_content($content, $schema, $expected)
