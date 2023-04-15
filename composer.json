@@ -27,12 +27,12 @@
     "require-dev": {
         "mockery/mockery": "^1.4.2",
         "phpstan/phpstan": "^1.9.14",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.6"
     },
     "extra": {
         "branch-alias": {
             "dev-master": "3.0-dev"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
