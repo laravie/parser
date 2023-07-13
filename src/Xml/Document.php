@@ -25,7 +25,7 @@ class Document extends BaseDocument
      * @param  string|null  $base
      * @return $this
      */
-    public function rebase(string $base = null): self
+    public function rebase(?string $base = null): self
     {
         $this->content = data_get($this->getOriginalContent(), $base);
 
