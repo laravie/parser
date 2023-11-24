@@ -4,9 +4,10 @@ namespace Laravie\Parser\Xml\Concerns;
 
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
-use function Laravie\Parser\alias_get;
 use Laravie\Parser\Xml\Definitions\MultiLevel;
 use SimpleXMLElement;
+
+use function Laravie\Parser\alias_get;
 
 trait SupportMultiLevel
 {

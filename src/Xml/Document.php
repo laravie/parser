@@ -3,10 +3,11 @@
 namespace Laravie\Parser\Xml;
 
 use Illuminate\Support\Arr;
-use function Laravie\Parser\alias_get;
 use Laravie\Parser\Document as BaseDocument;
-use function Laravie\Parser\object_get;
 use SimpleXMLElement;
+
+use function Laravie\Parser\alias_get;
+use function Laravie\Parser\object_get;
 
 class Document extends BaseDocument
 {
