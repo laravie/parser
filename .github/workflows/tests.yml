@@ -15,19 +15,20 @@ jobs:
           - "ubuntu-latest"
           - "windows-latest"
         php:
-          - 7.3
-          - 7.4
-          - '8.0'
           - 8.1
           - 8.2
           - 8.3
+          - 8.4
+        laravel:
+          - "11.x"
+          - "10.x"
         dependencies:
           - "highest"
           - "lowest"
         experimental:
           - false
 
-    name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
+    name: Laravel:${{ matrix.laravel }} / PHP:${{ matrix.php }} / OS:${{ matrix.os }} ${{ matrix.dependencies == 'highest' && '⬆️' || '⬇️' }}
 
     steps:
       - name: Checkout code
@@ -43,7 +44,7 @@ jobs:
       - name: Install dependencies
         uses: "ramsey/composer-install@v3"
         with:
-          composer-options: "--prefer-dist --no-cache"
+          composer-options: "--prefer-dist --no-cache --with=illuminate/collections:${{ matrix.laravel }}"
 
       - name: Execute tests
         run: vendor/bin/phpunit

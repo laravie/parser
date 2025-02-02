@@ -20,14 +20,14 @@
         ]
     },
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^8.2",
         "ext-simplexml": "*",
-        "illuminate/collections": "^8.0 || ^9.0 || ^10.0 || ^11.0"
+        "illuminate/collections": "^10.0 || ^11.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
         "phpstan/phpstan": "^1.9.14",
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^10.5 || ^11.5"
     },
     "extra": {
         "branch-alias": {

@@ -14,13 +14,11 @@ jobs:
         os:
           - "ubuntu-latest"
         php:
-          - 8.2
-        dependencies:
-          - "highest"
+          - 8.3
         experimental:
           - false
 
-    name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
+    name: PHP:${{ matrix.php }} Code Analysis
 
     steps:
       - name: Checkout code
@@ -40,7 +38,7 @@ jobs:
       - name: Install dependencies
         uses: "ramsey/composer-install@v3"
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
+          dependency-versions: "highest"
           composer-options: "--prefer-dist --no-cache"
 
       - name: Installed dependencies
@@ -50,4 +48,4 @@ jobs:
         run: vendor/bin/pint --test
 
       - name: Execute Static Code Analysis
-        run: vendor/bin/phpstan analyse
+        run: vendor/bin/phpstan analyse --verbose

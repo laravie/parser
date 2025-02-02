@@ -13,13 +13,11 @@ jobs:
         os:
           - "ubuntu-latest"
         php:
-          - 8.2
-        dependencies:
-          - "highest"
+          - 8.3
         experimental:
           - false
 
-    name: PHP${{ matrix.php }}-${{ matrix.os }} (${{ matrix.dependencies }})
+    name: PHP:${{ matrix.php }} Code Coverage
 
     steps:
       - name: Checkout code
@@ -35,7 +33,7 @@ jobs:
       - name: Install dependencies
         uses: "ramsey/composer-install@v3"
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
+          dependency-versions: "highest"
           composer-options: "--prefer-dist"
 
       - name: Execute tests
