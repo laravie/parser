@@ -19,6 +19,7 @@ jobs:
           - 8.3
           - 8.4
         laravel:
+          - "12.x"
           - "11.x"
           - "10.x"
         dependencies:
