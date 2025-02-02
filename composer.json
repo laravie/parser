@@ -26,8 +26,8 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
-        "phpstan/phpstan": "^1.9.14",
-        "phpunit/phpunit": "^10.5 || ^11.5"
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^11.5.3"
     },
     "extra": {
         "branch-alias": {

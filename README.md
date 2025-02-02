@@ -4,7 +4,7 @@ XML Document Parser PHP
 
 Parser Component is a framework agnostic package that provide a simple way to parse XML to array without having to write a complex logic.
 
-[![tests](https://github.com/laravie/parser/workflows/tests/badge.svg?branch=2.x)](https://github.com/laravie/parser/actions?query=workflow%3Atests+branch%3A2.x)
+[![tests](https://github.com/laravie/parser/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/laravie/parser/actions/workflows/tests.yml)
 [![Latest Stable Version](https://poser.pugx.org/laravie/parser/version)](https://packagist.org/packages/laravie/parser)
 [![Total Downloads](https://poser.pugx.org/laravie/parser/downloads)](https://packagist.org/packages/laravie/parser)
 [![Latest Unstable Version](https://poser.pugx.org/laravie/parser/v/unstable)](//packagist.org/packages/laravie/parser)
