@@ -8,6 +8,7 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
          cacheDirectory=".phpunit.cache"
          backupStaticProperties="false">
+    <coverage/>
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests/</directory>
