@@ -207,7 +207,7 @@ abstract class Document
      */
     protected function makeFilterResolver(string $class, string $method): array
     {
-        $class = new $class();
+        $class = new $class;
 
         return [$class, $method];
     }

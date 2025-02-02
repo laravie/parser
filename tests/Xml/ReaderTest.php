@@ -17,7 +17,7 @@ class ReaderTest extends TestCase
     {
         $xml = '<xml><foo>foobar</foo></xml>';
 
-        $document = new Document();
+        $document = new Document;
         $stub = new Reader($document);
         $output = $stub->extract($xml);
 
@@ -31,7 +31,7 @@ class ReaderTest extends TestCase
      */
     public function it_can_load_document()
     {
-        $document = new Document();
+        $document = new Document;
         $stub = new Reader($document);
         $output = $stub->load(__DIR__.'/stubs/foo.xml');
 
@@ -47,7 +47,7 @@ class ReaderTest extends TestCase
     {
         $this->expectException('Laravie\Parser\FileNotFoundException');
 
-        $document = new Document();
+        $document = new Document;
         $stub = new Reader($document);
         $output = $stub->local('');
     }
@@ -61,7 +61,7 @@ class ReaderTest extends TestCase
     {
         $this->expectException('Laravie\Parser\InvalidContentException');
 
-        $document = new Document();
+        $document = new Document;
         $stub = new Reader($document);
         $output = $stub->load(__DIR__.'/stubs/invalid.xml');
     }
@@ -77,7 +77,7 @@ class ReaderTest extends TestCase
 
         $xml = '<xml><foo>foobar<foo></xml>';
 
-        $document = new Document();
+        $document = new Document;
         $stub = new Reader($document);
         $output = $stub->extract($xml);
     }

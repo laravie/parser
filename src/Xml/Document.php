@@ -257,7 +257,7 @@ class Document extends BaseDocument
             $alias = $name;
         }
 
-        $collection = $this->getValue($content, sprintf('%s[%s]', $name, $uses));
+        $collection = $this->getValue($content, \sprintf('%s[%s]', $name, $uses));
 
         foreach ((array) $collection as $collect) {
             $v = $collect[$meta];

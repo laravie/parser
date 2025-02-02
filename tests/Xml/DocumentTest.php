@@ -25,7 +25,7 @@ class DocumentTest extends TestCase
     {
         $expected = '<foo><bar>foobar</bar></foo>';
 
-        $stub = new Document();
+        $stub = new Document;
 
         $stub->setContent($expected);
 
@@ -45,7 +45,7 @@ class DocumentTest extends TestCase
      */
     public function it_can_read_namespaced_document()
     {
-        $stub = new DocumentStub();
+        $stub = new DocumentStub;
 
         $stub->setContent(simplexml_load_string(
             '<?xml version="1.0" standalone="yes"?>
@@ -69,7 +69,7 @@ class DocumentTest extends TestCase
     {
         $expected = '<foo><bar>foobar</bar></foo>';
 
-        $stub = new Document();
+        $stub = new Document;
 
         $stub->setContent($expected);
 
@@ -89,7 +89,7 @@ class DocumentTest extends TestCase
     {
         $expected = '<foo><bar>foobar</bar></foo>';
 
-        $stub = new Document();
+        $stub = new Document;
 
         $refl = new \ReflectionObject($stub);
         $content = $refl->getProperty('content');
@@ -109,7 +109,7 @@ class DocumentTest extends TestCase
      */
     public function it_can_parse_content($content, $schema, $expected)
     {
-        $stub = new DocumentStub();
+        $stub = new DocumentStub;
 
         $stub->setContent(simplexml_load_string($content));
 
@@ -139,7 +139,7 @@ class DocumentTest extends TestCase
             ],
         ];
 
-        $stub = new DocumentStub();
+        $stub = new DocumentStub;
 
         $stub->setContent(simplexml_load_string('<api>
     <user>
@@ -638,7 +638,7 @@ class DocumentTest extends TestCase
             ],
         ];
 
-        $stub = new DocumentStub();
+        $stub = new DocumentStub;
 
         $stub->setContent(simplexml_load_string('<api>
 <T_NEW_CATALOG>
@@ -766,7 +766,7 @@ class DocumentTest extends TestCase
             ],
         ];
 
-        $stub = new DocumentStub();
+        $stub = new DocumentStub;
 
         $stub->setContent(simplexml_load_string('<StepProcess>
 		<StepName>FORMAT_CONTROL</StepName>
