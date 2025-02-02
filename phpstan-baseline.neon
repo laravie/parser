@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$resolver of method Laravie\\\\Parser\\\\Document\\:\\:callFilterResolver\\(\\) expects callable\\(\\)\\: mixed, array\\{object, string\\} given\\.$#"
+			message: '#^PHPDoc tag @var with type array\<int, string\|null\>\|string\|null is not subtype of native type mixed\.$#'
+			identifier: varTag.nativeType
 			count: 1
 			path: src/Document.php
-

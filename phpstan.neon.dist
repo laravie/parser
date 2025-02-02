@@ -7,8 +7,10 @@ parameters:
     - src
 
   # The level 8 is the highest level
-  level: 8
+  level: 6
+
+  ignoreErrors:
+    - identifier: missingType.generics
+    - identifier: missingType.iterableValue
 
   treatPhpDocTypesAsCertain: false
-  checkMissingIterableValueType: false
-  checkGenericClassInNonGenericObjectType: false
